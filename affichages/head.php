@@ -6,6 +6,7 @@
     <meta name="description" content="<?=$description?>">
     <meta name="Cache-Control" content="max-age=31536000">
     <link rel="stylesheet" href="<?=$css?>">
-    <title><?=$title?></title>
+    <title><?=$title?>
+  </title>
   </head>
   <body>
