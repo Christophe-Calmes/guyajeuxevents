@@ -87,6 +87,14 @@ a {
 .bold::first-letter {
   text-transform: capitalize;
 }
+.alignLi {
+  display: block ruby;
+}
+/*Date*/
+.displayDate::first-letter{
+  text-transform: uppercase;
+}
+  
 
 /*Flex*/
 .flex-rows {
@@ -372,7 +380,10 @@ nav {
   .menu {
       display: none;
   }
-
+  .flex-rows {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
   .menu-btn {
       display: flex;
       background-color: var(--main-background-navBar);
@@ -407,6 +418,11 @@ nav {
   }
   .adress {
     display: none;
+  }
+  #hiddenForm {
+    top: 30%;
+    left: 15%;
+    width: 64%;
   }
 }
 /*Burger Menu*/
