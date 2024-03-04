@@ -10,4 +10,11 @@ Class SQLAcessNews {
             ['prep'=>':publish', 'variable'=>$publish],];
           return ActionDB::select($select, $param, 1);
     }
+    protected function selectLastArticle(){
+        $select="SELECT `title`, `text`, `creat_date`, `picture` 
+        FROM `articles` 
+        WHERE `publish`=1 AND `valid`=1 ORDER BY `creat_date` LIMIT 1";
+        return ActionDB::select($select, [], 1);
+      
+    }
 }

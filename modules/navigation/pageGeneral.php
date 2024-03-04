@@ -1,4 +1,2 @@
-
-<p>
-  Page d'index générale
-</p>
+<?php
+require ('sources/news/displayArticle.php');
