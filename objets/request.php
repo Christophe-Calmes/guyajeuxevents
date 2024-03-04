@@ -89,26 +89,25 @@ Class InsertRequest {
       $fields .= '`'.$key.'`,';
       array_push($buffer, $key);
     }
-    //print_r($buffer);
     if(count(array_diff($controlFields, $buffer)) == $secure) {
       $security = true;
     }
     if($security) {
       $fields = substr($fields, 0, -1);
-      //print_r($fields);
+ 
       // Creat values
       $values = '';
       for ($i=0; $i <count($buffer) ; $i++) {
         $values .= ':'.$buffer[$i].', ';
       }
       $values = substr($values,0, -2);
-      //print_r($values);
+   
 
       $sql = 'INSERT INTO `'.$this->tables.'`('.$fields.') VALUES ('.$values.')';
       return $sql;
     } else {
-      //print_r($security);
-      header('location:../index.php');
+    
+      header('location:../index.php?message=echec de l\'enregistrement');
     }
 
   }
