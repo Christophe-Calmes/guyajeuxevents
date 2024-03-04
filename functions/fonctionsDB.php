@@ -97,3 +97,12 @@ function yes($data) {
     return 'Non';
   }
 }
+function controlePicture($files, $sizePicture) {
+$nameValuePicture = key($files);
+if(($files[$nameValuePicture]['size'] < $sizePicture) && ($files[$nameValuePicture]['error'] == 0) && ($files[$nameValuePicture]['type'] == 'image/png' ||$files[$nameValuePicture]['type'] == 'image/jpeg' || $files['picture']['type'] == 'image/webp' )) {
+  return 1;
+} else {
+  return 0;
+}
+
+}

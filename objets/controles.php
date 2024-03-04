@@ -27,10 +27,7 @@ class Controles {
     }
   }
   public function controleIntegerPK($data) {
-
     $pk = intval($data);
-    //print_r($data);
-    //print_r($pk);
     if($pk != 0) {
       return true;
     } else {

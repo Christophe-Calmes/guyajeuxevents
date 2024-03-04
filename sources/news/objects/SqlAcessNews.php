@@ -8,6 +8,6 @@ Class SQLAcessNews {
     $param = [['prep'=>':idArticle', 'variable'=>$idArticle],
             ['prep'=>':valid', 'variable'=>$valid],
             ['prep'=>':publish', 'variable'=>$publish],];
-          return ActionDB::select($select, $param);
+          return ActionDB::select($select, $param, 1);
     }
 }

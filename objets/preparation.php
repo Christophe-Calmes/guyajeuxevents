@@ -32,4 +32,5 @@ class Preparation {
       array_push($prepare, ['prep' => ':token', 'variable' => $_SESSION['tokenConnexion']]);
       return $prepare;
   }
+
 }

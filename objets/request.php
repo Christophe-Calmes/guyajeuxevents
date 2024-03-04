@@ -69,13 +69,13 @@ Class InsertRequest pour toute les requêtes Insert
 */
 
 Class InsertRequest {
-  public function requestInsert($post, $secure, $table) {
+  public function requestInsert($post, $secure, $table, $db = 0) {
     $this->tables = $table;
     // $secure == nombre de champs maximum différent entre les attendus et ceux valides
     // Extraction des champs
     $security = false;
     $sql = 'DESCRIBE '.$this->tables;
-    $tableFields = ActionDB::select($sql, []);
+    $tableFields = ActionDB::select($sql, [], $db);
     $controlFields = array();
     foreach ($tableFields as $key => $value) {
       array_push($controlFields, $value['Field']);
