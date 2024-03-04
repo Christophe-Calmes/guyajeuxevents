@@ -23,7 +23,7 @@ if($mark == $controlePostData && controlePicture($_FILES, 75000)) {
         return header('location:../index.php?message=Nouvelle article enregistré');
     } 
 } else {
-    echo 'Pas ok';
+    return header('location:../index.php?message=Le fichier destination n\'existe pas');
 }
     
 } else {
