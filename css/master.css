@@ -317,6 +317,7 @@ transition: display 3s;
   display: none;
   flex-direction: column;
   cursor: pointer;
+  border-radius: var(--main-radius);
 }
 
 .btn-line {
