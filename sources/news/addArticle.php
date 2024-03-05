@@ -4,7 +4,20 @@
     <label for="title">Titre news</label>
     <input type="text" id="title" name="title" placeholder="Titre de votre news"/>
     <label for="text">Rédiger votre news</label>
-    <textarea id="text" name="text" rows="20" cols="30">
+    <textarea class="textAreaNew" id="text" name="text" rows="35" cols="50">
+    <?php
+        $dayWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+        $displayBlackboard = '';
+        for ($i=0; $i < count($dayWeek) ; $i++) { 
+$displayBlackboard = $displayBlackboard.'
+listStart
+strongStart '.$dayWeek[$i].' :EndStrong
+text activité semaine
+liEnd
+';
+        }
+echo 'ulStart'.$displayBlackboard.'ulEnd';
+    ?>
     </textarea>
     <label for="publish">Publier</label>
     <select id="publish" name="publish">

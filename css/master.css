@@ -156,6 +156,9 @@ input, textarea {
   border-radius: var(--main-radiusInput);
 
 }
+.textAreaNew {
+  text-align: left;
+}
 .buttonForm {
   margin: 0.5em;
 }
@@ -187,14 +190,19 @@ input, textarea {
 /*Bouton lien*/
 /*publish on site*/
 /*Grid*/
-.indexArticle {  display: grid;
+
+.indexArticle {
+  display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 0.2fr 1.8fr;
-  gap: 0px 0px;
+  gap: 1em 1em;
   grid-auto-flow: row;
-  grid-template-areas:
-    "TitleNews pictureNews"
-    "textNews pictureNews";
+  grid-template-areas: "TitleNews pictureNews"
+  "textNews pictureNews";
+  justify-items: start;
+  justify-content: space-evenly;
+  align-items: start;
+  margin-left: 5em;
 }
 
 .pictureNews { 
@@ -207,11 +215,19 @@ input, textarea {
 }
 .TitleNews { 
   grid-area: TitleNews;
-
 }
-
+.dateNews {
+  text-align: left;
+  font-weight: 600;
+}
 .textNews { 
-  grid-area: textNews; 
+  grid-area: textNews;
+  text-align: justify;
+  width: 100%;
+}
+.styleListNews, ul {
+  list-style: none;
+
 }
 
 /*Variable CSS boutton*/
@@ -463,11 +479,29 @@ nav {
     left: 15%;
     width: 64%;
   }
-  .indexArticle {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: stretch;
-    align-content: center;
+
+.indexArticle {  
+  display: inline;
 }
+.TitleNews { 
+  grid-area: TitleNews;
+  width: 100%;
+}
+
+.textNews { 
+  grid-area: textNews;
+  text-align: justify;
+  width: 100%;
+}
+
+
+  .listClass { 
+    list-style: none;
+    text-align: left;
+
+  }
+  .imgNews {
+    display: none;
+  }
 }
 /*Burger Menu*/

@@ -5,7 +5,7 @@ require('../functions/functionToken.php');
 $controlePostData = array();
 array_push($controlePostData, $checkId->controleInteger($_POST['publish']));
 array_push($controlePostData, sizePost($_POST['title'], 60));
-array_push($controlePostData, sizePost($_POST['text'], 800));
+array_push($controlePostData, sizePost($_POST['text'], 10500));
 array_push($controlePostData, borneSelect($_POST['publish'], 1));
 $mark = [1, 0, 0, 0];
 if($mark == $controlePostData && controlePicture($_FILES, 75000)) {

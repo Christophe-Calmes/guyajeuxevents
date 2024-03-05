@@ -13,7 +13,7 @@ Class SQLAcessNews {
     protected function selectLastArticle(){
         $select="SELECT `title`, `text`, `creat_date`, `picture` 
         FROM `articles` 
-        WHERE `publish`=1 AND `valid`=1 ORDER BY `creat_date` LIMIT 1";
+        WHERE `publish`=1 AND `valid`=1 ORDER BY `creat_date` DESC LIMIT 1";
         return ActionDB::select($select, [], 1);
       
     }
