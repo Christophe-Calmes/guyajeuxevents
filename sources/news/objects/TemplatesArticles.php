@@ -56,7 +56,7 @@ Class TemplateArticle extends SQLAcessNews {
     echo '<form class="'.$classRed.' formAdmin" action="'.encodeRoutage(31).'" method="post">
     <div class="tableAdminNews7">
             <div class="Id">'.$value['prenom'].' '.$value['nom'].'</div>
-            <div class="Title">'.$value['title'].'</div>
+            <div class="Title"><a class="link" href="'.findTargetRoute(105).'&idArticle='.$value['id'].'">'.$value['title'].'</a></div>
             <div class="CreatDate">'.brassageDate($value['creat_date']).'</div>
             <div class="publish">'.$this->yes[$value['publish']].'
                 <label for="publish"></label>
@@ -93,6 +93,52 @@ Class TemplateArticle extends SQLAcessNews {
             </div>
         </div>
         </form>';
+        }
+    }
+    public function adminArticle($idArticle, $idNav) {
+        $dataArticle = $this->displayOneArticle($idArticle);
+        if($dataArticle) {
+            $finalText = $this->presentationText($dataArticle[0]['text'], 'listClass');
+            
+            echo'<div class="indexArticle">
+            <div class="TitleNews"><h3 class="subTitleSite">'.$dataArticle[0]['title'].'</h3>   
+            </div>
+                    <div class="pictureNews"><img class="imgNews" src="'.$this->pictureDirectory.$dataArticle[0]['picture'].'" alt="'.$dataArticle[0]['title'].'"/></div>
+                    <div class="textNews">
+                    <p class="dateNews">Le '.brassageDate($dataArticle[0]['creat_date']).'</p>
+                    <p class="styleListNews">'.$finalText.'</p>
+                    </div>
+                </div>';
+            echo'<form action="'.encodeRoutage(32).'" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="'.$idArticle.'"/>
+                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Effacer '.$dataArticle[0]['title'].'</button>
+                </form>';
+            echo '<article>
+                    <form class="flex-colonne-form" action="'.encodeRoutage(33).'" method="post" enctype="multipart/form-data">
+                        <label for="title">Titre news</label>
+                        <input type="text" id="title" name="title" value="'.$dataArticle[0]['title'].'"/>
+                        <label for="text">Rédiger votre news</label>
+                        <textarea class="textAreaNew" id="text" name="text" rows="35" cols="50">
+                        '.$dataArticle[0]['text'].'
+                        </textarea>
+                        <label for="publish">Publier</label>
+                        <select id="publish" name="publish">
+                            <option value="0">Non</option>
+                            <option value="1" selected>Oui</option>
+                        </select>
+                        <label for="valid">Valide</label>
+                        <select id="valid" name="publish">
+                            <option value="0">Non</option>
+                            <option value="1" selected>Oui</option>
+                        </select>
+                        <label for="picture">Image d\'illustration de la news ?</label>
+                        <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
+                        <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Ajouter</button>
+                    </form>
+                  
+            </article>';
+        } else {
+            echo 'No article';
         }
     }
 }

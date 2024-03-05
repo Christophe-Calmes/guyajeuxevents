@@ -273,6 +273,9 @@ a {
   cursor: var(--main-cursor);
   margin: var(--main-marginButton);
 }
+.link {
+  text-decoration: none;
+}
 .lienTab {
   background-color: #ffffff;
 
