@@ -2,11 +2,16 @@
 require('SqlAcessNews.php');
 require('functions/functionDateTime.php');
 require('functions/functionPresentationText.php');
+
+
 Class TemplateArticle extends SQLAcessNews {
     public $pictureDirectory;
+    public $yes;
     public function __construct()
     {
         $this->pictureDirectory = 'sources/pictures/picturesNews/';
+        $this->yes = ['Non', 'Oui'];
+
     }
     protected function presentationText($data, $class) {
         $result = listHTML($data, $class);
@@ -16,8 +21,9 @@ Class TemplateArticle extends SQLAcessNews {
     }
     public function displayLastArticle() {
         $dataLastArticle=$this->selectLastArticle();
-        $finalText = $this->presentationText($dataLastArticle[0]['text'], 'listClass');
+        
         if($dataLastArticle) {
+            $finalText = $this->presentationText($dataLastArticle[0]['text'], 'listClass');
             echo'<div class="indexArticle">
             <div class="TitleNews"><h3 class="subTitleSite">'.$dataLastArticle[0]['title'].'</h3>   
             </div>
@@ -31,5 +37,62 @@ Class TemplateArticle extends SQLAcessNews {
             echo 'No article';
         }
         
+    }
+    public function displayTableAdminNews($variable, $idNav) {
+        echo '<div class="tableAdminNews7">
+                <div class="Id">Identité</div>
+                <div class="Title">Titre news</div>
+                <div class="CreatDate">Date de création</div>
+                <div class="publish">Publier</div>
+                <div class="Valid">Valide</div>
+                <div class="Update">Date mise à jour</div>
+                <div class="admin">Administration</div>
+            </div>';
+        foreach ($variable as $value) {
+            $classRed = '';
+            if($value['valid'] == 0) {
+            $classRed = 'red';
+            }
+    echo '<form class="'.$classRed.' formAdmin" action="'.encodeRoutage(31).'" method="post">
+    <div class="tableAdminNews7">
+            <div class="Id">'.$value['prenom'].' '.$value['nom'].'</div>
+            <div class="Title">'.$value['title'].'</div>
+            <div class="CreatDate">'.brassageDate($value['creat_date']).'</div>
+            <div class="publish">'.$this->yes[$value['publish']].'
+                <label for="publish"></label>
+                <select name="publish">'; 
+                for ($i=0; $i <count($this->yes); $i++) { 
+                    if($value['publish'] == $i) {
+                        echo '<option value="'.$i.'" selected>'.$this->yes[$i].'</option>';
+                    } else {
+                        echo '<option value="'.$i.'">'.$this->yes[$i].'</option>';
+                    }
+                    
+                }
+        echo '</select>
+            </div>
+            <div class="Valid">'.$this->yes[$value['valid']].'
+            <label for="valid"></label>
+            <select name="valid">'; 
+            for ($i=0; $i <count($this->yes); $i++) { 
+                if($value['valid'] == $i) {
+                    echo '<option value="'.$i.'" selected>'.$this->yes[$i].'</option>';
+                } else {
+                    echo '<option value="'.$i.'">'.$this->yes[$i].'</option>';
+                }
+                
+            }
+        echo'</select>
+            </div>
+                
+            <div class="Update">'.brassageDate($value['update_date']).'</div>
+            <div class="admin">
+                <input type="hidden" name="id" value="'.$value['id'].'"/>
+                <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">update</button>
+         
+            </div>
+        </div>
+        </form>';
+        }
     }
 }

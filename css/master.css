@@ -189,7 +189,21 @@ input, textarea {
 }
 /*Bouton lien*/
 /*publish on site*/
+/*Marquage admin*/
+.red{
+  background-color: #da121933;
+}
+.formAdmin {
+  margin: 1em;
+}
+
 /*Grid*/
+.tableAdminNews7 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 
 .indexArticle {
   display: grid;

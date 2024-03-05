@@ -1,5 +1,9 @@
 <?php
 function brassageDate($data) {
+if($data === null) {
+  return 'No date';
+}
+
 setlocale(LC_ALL, "fr_FR");
   $dateDay = new DateTime($data);
   $formatter = new IntlDateFormatter(
