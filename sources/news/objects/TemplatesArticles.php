@@ -1,6 +1,7 @@
 <?php
 require('SqlAcessNews.php');
 require('functions/functionDateTime.php');
+require('functions/functionPresentationText.php');
 Class TemplateArticle extends SQLAcessNews {
     public $pictureDirectory;
     public function __construct()
@@ -9,14 +10,9 @@ Class TemplateArticle extends SQLAcessNews {
     }
     public function displayLastArticle() {
         $dataLastArticle=$this->selectLastArticle();
-       $text = str_replace('ulStart','<ul class="listClass">',$dataLastArticle[0]['text']);
-       $textBR = str_replace('*', '<br/>', $text);
-       $stepUl = str_replace('ulEnd','</ul>',$textBR);
-       $stepLI = str_replace('listStart','<li>', $stepUl);
-       $setpEndLI = str_replace('liEnd','</li>', $stepLI);
-       $stepStrong = str_replace('strongStart', '<strong class="dayweek">', $setpEndLI);
-       $finalText = str_replace('EndStrong', ' </strong>', $stepStrong);
-      
+        $finalText = listHTML($dataLastArticle[0]['text'], 'listClass');
+        $finalText = lineBreak($finalText);
+        $finalText = strongHTML($finalText);
         if($dataLastArticle) {
             echo'<div class="indexArticle">
             <div class="TitleNews"><h3 class="subTitleSite">'.$dataLastArticle[0]['title'].'</h3>
