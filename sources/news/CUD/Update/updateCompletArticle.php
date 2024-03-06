@@ -1,15 +1,24 @@
 <?php 
 //print_r($_POST);
+
 $update = '';
 if($_FILES && controlePicture($_FILES, 75000)) {
+    require('../sources/news/objects/SqlAcessNews.php');
+    $namePicture = new SQLAcessNews();
+    $namePictureToDelete = $namePicture->getPicture (filter($_POST['id']));
+    $pathPictureToDelete = '../sources/pictures/picturesNews/'.$namePictureToDelete[0]['picture'];
+    if(file_exists($pathPictureToDelete)) {
+        unlink($pathPictureToDelete);
+    } 
+    
     require('../functions/functionToken.php');
     $namePicture = genToken (5).date('Y').filter($_FILES['picture']['name']);
     $_POST['picture'] = $namePicture;
-   /* if (file_exists('../sources/pictures/picturesNews')) {
+   if (file_exists('../sources/pictures/picturesNews')) {
             if(move_uploaded_file($_FILES['picture']['tmp_name'], $f = '../sources/pictures/picturesNews/'.$namePicture)) {
                 chmod($f, 0644);
         }
-    }*/
+    }
     $update = "UPDATE `articles` 
     SET `title`= :title,
     `text`= :text,
