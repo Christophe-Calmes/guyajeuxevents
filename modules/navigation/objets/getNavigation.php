@@ -4,7 +4,8 @@ Class GetNavigation {
   protected function AuthenticNav ($value) {
     $select = "SELECT `idNav`, `nomNav`, `cheminNav`, `menuVisible`, `zoneMenu`, `ordre`, `niveau`, `valide`, `deroulant`, `targetRoute`
     FROM `navigation`
-    WHERE `zoneMenu` = :zoneMenu AND `niveau` = :niveau AND `valide` = 1";
+    WHERE `zoneMenu` = :zoneMenu AND `niveau` = :niveau AND `valide` = 1
+    ORDER BY `ordre` ASC";
     $param = [
     ['prep'=>':zoneMenu', 'variable'=>$value['deroulant']],
     ['prep'=>':niveau', 'variable'=>$value['niveau']]];
@@ -15,7 +16,7 @@ Class GetNavigation {
     $select = "SELECT `nomNav`, `cheminNav`, `zoneMenu`, `ordre`, `niveau`, `valide`, `deroulant`, `targetRoute`
     FROM `navigation`
     WHERE `valide` = 1 AND `niveau` = :niveau AND `menuVisible` = 1 AND `zoneMenu` = 0
-    ORDER BY `ordre`";
+    ORDER BY `ordre` ASC";
     $param = [['prep'=>':niveau', 'variable'=>$zoneMenu]];
     return ActionDB::select($select, $param);
   }

@@ -18,7 +18,7 @@ Class PrintNavigation extends GetNavigation {
           </div>';
     echo '<nav class="nav menu"><ul class="navigationBandeau">';
     echo '<li><a href="index.php">Index</a></li>';
-      foreach ($variable as $key => $value) {
+      foreach ($variable as $value) {
         if(($value['zoneMenu'] == 0)&&($value['deroulant'] == 0)) {
           echo '<li><a href="index.php?idNav='.$value['targetRoute'].'">'.$value['nomNav'].'</a></li>';
         } else {
@@ -26,7 +26,7 @@ Class PrintNavigation extends GetNavigation {
           echo '<button class="buttonForm">'.$value['nomNav'].'</button>';
           $dataTraiter  = $this->AuthenticNav ($value);
           echo ' <div class="dropdown-child">';
-          foreach ($dataTraiter as $cle => $valeur) {
+          foreach ($dataTraiter as $valeur) {
               echo '<div><a href="index.php?idNav='.$valeur['targetRoute'].'">'.$valeur['nomNav'].'</a></div>';
           }
           echo '</div>';
@@ -47,7 +47,7 @@ Class PrintNavigation extends GetNavigation {
     echo '<label for="zoneMenu">Zone du menu</label>
           <select id="zoneMenu" name="zoneMenu">
           <option value="0">Bandeau de navigation</option>';
-          foreach ($variable as $key => $value) {
+          foreach ($variable  as $value) {
             echo '<option value="'.$value['idMenuDeroulant'].'">'.$value['titreMenu'].'</option>';
           }
     echo'</select>';
@@ -63,17 +63,17 @@ Class PrintNavigation extends GetNavigation {
   }
   public function listeMenuDeroulant($variable) {
     echo '<ul>';
-      foreach ($variable as $key => $value) {
+      foreach ($variable as $value) {
         echo '<li>'.$value['titreMenu'].'</li>';
       }
     echo '</ul>';
   }
   public function listeRouteForm($variable, $securiter) {
     $roles = $this->rolesUsers();
-      foreach ($roles as $keyRoles => $valueRoles) {
+      foreach ($roles as  $valueRoles) {
         echo '<ul class="listClass">';
           echo '<li class="bold">'.$valueRoles['name'].'</li>';
-            foreach ($variable as $key => $value) {
+            foreach ($variable as  $value) {
               echo '<ul class="listClass">';
               if($value['securiter'] == $valueRoles['role']) {
                 echo '<li>'.$value['chemin'].' |Action => encodeRoutage('.$value['idForm'].')</li>';
