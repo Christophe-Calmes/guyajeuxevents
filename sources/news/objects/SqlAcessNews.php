@@ -14,4 +14,14 @@ Class SQLAcessNews {
         WHERE `publish`=1 AND `valid`=1 ORDER BY `creat_date` DESC LIMIT 1";
         return ActionDB::select($select, [], 1);
     }
+    public function getPicture ($id) {
+        $select="SELECT  `picture` FROM `articles` WHERE `id` = :id";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        return ActionDB::select($select, $param, 1);
+    }
+    public function delArticle($id) {
+        $delete="DELETE FROM `articles` WHERE `id`= :id";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        return ActionDB::access($delete, $param, 1);
+    }
 }
