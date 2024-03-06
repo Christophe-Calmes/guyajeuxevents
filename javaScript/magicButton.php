@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script type="text/javascript" defer>
   let jeckyl = document.getElementById('magic');
   let magax = document.getElementById('hiddenForm');
   let open = false;

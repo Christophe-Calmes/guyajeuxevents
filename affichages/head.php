@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<?=$description?>">
     <meta name="Cache-Control" content="max-age=31536000">
-    <link rel="stylesheet" href="<?=$css?>">
+    <link rel="stylesheet" href="<?=$css?>" media="screen">
     <title><?=$title?>
   </title>
   </head>
