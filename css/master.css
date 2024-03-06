@@ -81,7 +81,6 @@ a {
 }
 /*Presentation*/
 .bold {
-
   font-weight: bolder;
   margin-bottom: 0.5em;
 }
@@ -189,6 +188,11 @@ input, textarea {
   border-radius: var(--main-radiusInput);
 
 }
+select {
+  background-color: var(--main-background-MagicForm);
+  border-radius: var(--main-radiusInput);
+}
+
 .textAreaNew {
   text-align: left;
 }
