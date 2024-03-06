@@ -5,7 +5,7 @@ class ControlerAffichage {
     if(isset($_SESSION['login'])) {
       //echo '<h3>Session de '.$_SESSION['login'].'</h3>';
     } else {
-      echo '<h3>Bienvenus</h3>';
+      //echo '<h3>Bienvenus</h3>';
     }
   }
   public static function displayNav($data, $session) {
@@ -19,7 +19,7 @@ class ControlerAffichage {
 
       }
       // Debug true => chemin / False Prod
-      $dev = true;
+      $dev = false;
       if (isset($data['idNav'])) {
           $idNav = filter($data['idNav']);
           $readNav = new PrintNavigation();

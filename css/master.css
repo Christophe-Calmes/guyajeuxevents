@@ -30,6 +30,7 @@
   --color-green: #078930;
   --color-yellow: #FCDD09;
   --color-chair: #D3A08E;
+  --color-blueOneChair: #1B384D;
   --color-red:#DA121A;
   --color-blood: #700B15;
   --color-darkGreen: #03470D;
@@ -72,6 +73,9 @@ h2 {
   font-weight: var(--font-weight);
   font-style: var(--font-style);
   color: var(--color-subTitle);
+}
+.titleEventItem {
+  color: var(--color-blueOneChair);
 }
 h3 {
   font-size: 1.5em;
@@ -235,9 +239,6 @@ select {
 }
 
 /*Grid*/
-
-
-
 .indexArticle {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -276,6 +277,29 @@ select {
   list-style: none;
 
 }
+/*Gallery Events*/
+.gallery {
+  margin: 100px auto 0;
+  padding: 0 20px;
+ max-width:100%;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, 300px);
+grid-gap: 5px;
+justify-content: center;
+}
+
+.item {
+min-height: auto;
+min-width: auto;
+padding: 0.5em;
+background: var(--color-chair);
+color: rgb(32, 32, 32);
+border-radius: 5px;
+display: inline;
+align-items: center;
+justify-content: center;
+}
+
 
 /*Variable CSS boutton*/
 
