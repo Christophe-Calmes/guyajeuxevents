@@ -127,13 +127,14 @@ Class TemplateArticle extends SQLAcessNews {
                             <option value="1" selected>Oui</option>
                         </select>
                         <label for="valid">Valide</label>
-                        <select id="valid" name="publish">
+                        <select id="valid" name="valid">
                             <option value="0">Non</option>
                             <option value="1" selected>Oui</option>
                         </select>
                         <label for="picture">Image d\'illustration de la news ?</label>
                         <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
-                        <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Ajouter</button>
+                        <input type="hidden" name="id" value="'.$dataArticle[0]['id'].'"/>
+                        <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>
                     </form>
                   
             </article>';

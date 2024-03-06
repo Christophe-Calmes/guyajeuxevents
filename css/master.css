@@ -128,6 +128,39 @@ a {
     width: auto;
     padding: 0.25em;
 }
+.tableAdminNews7 {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.Id {
+  width: 10em;
+  text-align: left;
+}
+.Title {
+  width: 10em;
+  text-align: left;
+}
+.CreatDate{
+  width: 10em;
+  text-align: left;
+}
+.publish{
+  width: 10em;
+  text-align: left;
+}
+.Valid {
+  width: 10em;
+  text-align: left;
+}
+.Update {
+  width: 10em;
+  text-align: left;
+} 
+.admin {
+  width: 10em;
+  text-align: left;
+}
 /*List*/
 .listClass {
   list-style: none;
@@ -198,11 +231,7 @@ input, textarea {
 }
 
 /*Grid*/
-.tableAdminNews7 {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
+
 
 
 .indexArticle {
@@ -225,7 +254,7 @@ input, textarea {
 }
 .imgNews {
   border-radius: var(--main-radius);
-
+  width: 100%;
 }
 .TitleNews { 
   grid-area: TitleNews;
@@ -274,7 +303,17 @@ a {
   margin: var(--main-marginButton);
 }
 .link {
-  text-decoration: none;
+  background-color: var(--body-color);
+  border: none;
+  border-radius: none;
+  color: var(--color-subTitle);
+  padding: 0em;
+  text-align: left;
+  text-decoration: var(--main-text-decoration);
+  display: inline;
+  font-size: 1em;
+  cursor: var(--main-cursor);
+  margin: 0em;
 }
 .lienTab {
   background-color: #ffffff;
