@@ -16,7 +16,6 @@ Class TemplateEvents extends SQLEvents{
         } else {
             $contribution = $value['contribution'];
         }
-        
             echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
@@ -117,11 +116,28 @@ Class TemplateEvents extends SQLEvents{
         echo '</article>';
 
     }
-    private function registrationUserOnEvent(){
-
+    private function registrationUserOnEvent($idEvent, $numberMax){
+        $listOfLoginRegistration=$this->listRegistered($idEvent);
+        $numberUserOnEvent = $this->numberUserOnEvent($idEvent);
+        echo '<p>Nombre d\'inscrit : '.$numberUserOnEvent.' / '.$numberMax.'</p>';
+        echo '<ul>';
+        foreach($listOfLoginRegistration as $value) {
+            echo '<li>'.$value['login'].'</li>';
+        }
+        echo '</ul>';
     }
     public function registrationOneEvent(){
         $dataNextEvent = $this->nextEvent ();
-       //$this->templateEvent($dataNextEvent);
+   
+        $picturePath='sources/pictures/picturesEvents/';
+        echo '<div class="gallery">';
+        foreach ($dataNextEvent as $value) {
+            echo '<div class="item">';
+            $this->templateOneEvent($value, $picturePath);
+            $this->registrationUserOnEvent($value['id'], $value['numberMax']);
+            echo '</div>';
+        };
+        echo '</div>';
+       
     }
 }

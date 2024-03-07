@@ -1,7 +1,7 @@
 <?php 
 Class SQLEvents {
     protected function nextEvent () {
-       $select = "SELECT  `dateEvent`, `title`, `description`, `picture`, `contribution`, `numberMax`
+       $select = "SELECT  `id`, `dateEvent`, `title`, `description`, `picture`, `contribution`, `numberMax`
        FROM `internalEvents` 
        WHERE `publish` =1 AND `valid` = 1 AND `archive` = 0 
        ORDER BY `dateEvent` ASC 
@@ -58,16 +58,18 @@ Class SQLEvents {
         $namePicture = ActionDB::select($select, $param, 1);
         return $namePicture[0]['picture'];
     }
-    protected function numberMaxUserOnEvent($id){
-        $select="SELECT`numberMax` FROM `internalEvents` WHERE `id`=:id;";
-        $param=[['prep'=>':id', 'variable'=>$id]];
-        $namePicture = ActionDB::select($select, $param, 1);
-        return $namePicture[0]['numberMax'];
-    }
     protected function numberUserOnEvent($idEvent) {
         $select = "SELECT COUNT(`idUser`) AS `registrationTotal` FROM `reserveEvents` WHERE `idEvent`=:idEvent;";
         $param=[['prep'=>':idEvent', 'variable'=>$idEvent]];
         $namePicture = ActionDB::select($select, $param, 1);
         return $namePicture[0]['registrationTotal'];
+    }
+    protected function listRegistered($idEvent) {
+        $select = "SELECT `login` 
+        FROM `reserveEvents`
+        INNER JOIN `guyagraines`.`users` ON `reserveEvents`.`idUser` = `users`.`idUser`
+        WHERE `idEvent`= :idEvent;";
+        $param=[['prep'=>':idEvent', 'variable'=>$idEvent]];
+        return  ActionDB::select($select, $param, 1);
     }
 }
