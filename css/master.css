@@ -253,7 +253,7 @@ select {
   justify-items: start;
   justify-content: space-evenly;
   align-items: start;
-  margin-left: 5em;
+  margin: 0vh 15vw 0vh 15vw;
 }
 
 .pictureNews { 
@@ -266,6 +266,8 @@ select {
 }
 .TitleNews { 
   grid-area: TitleNews;
+  margin-left: auto;
+  margin-right: auto;
 }
 .dateNews {
   text-align: left;
@@ -275,6 +277,15 @@ select {
   grid-area: textNews;
   text-align: justify;
   width: 100%;
+  padding-left: 4em;
+  font-size: larger;
+}
+.listClass li {
+  margin-bottom: 0.6em;
+}
+.dayweek{
+  color:var(--main-background-color);
+  font-size: 1.2em;
 }
 .styleListNews, ul {
   list-style: none;
@@ -580,15 +591,24 @@ nav {
   text-align: justify;
   width: 100%;
 }
-
-
   .listClass { 
     list-style: none;
     text-align: left;
-
+    padding:0vw;
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .listClass li {
+    margin-bottom: 0.6em;
+    list-style: none;
   }
   .imgNews {
-    display: none;
+    display: block;
+    margin-bottom: 0em;
+  }
+  .pictureNews{
+    margin:6vw;
   }
 }
 /*Burger Menu*/
