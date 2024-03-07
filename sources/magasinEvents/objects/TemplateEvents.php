@@ -16,23 +16,25 @@ Class TemplateEvents extends SQLEvents{
         } else {
             $contribution = $value['contribution'];
         }
-        echo '<div class="item">';
+        
             echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
-                echo '<p class="textNews">'.$finalText.'</p>';
+                echo '<p class="textEvents">'.$finalText.'</p>';
                 echo '<p>Nombre de participant max : '.$value['numberMax'].' personnes</p>';
                 echo '<p>Participation aux frais : '.$contribution.' €</p>';
             echo '</article>';
             echo '<img class="imgNews" src="'.$picturePath.$value['picture'].'" alt="illustration de'.$value['title'].'"/>';
-        echo '</div>';
+        
     }
     private function templateEvent($variable) {
         $picturePath='sources/pictures/picturesEvents/';
         echo '<div class="gallery">';
         foreach ($variable as $value) {
+            echo '<div class="item">';
             $this->templateOneEvent($value, $picturePath);
-        }
+            echo '</div>';
+        };
         echo '</div>';
     }
     public function displayEventPublic() {
@@ -48,21 +50,13 @@ Class TemplateEvents extends SQLEvents{
         }
         echo '<div class="gallery">';
         foreach ($variable as $value) {
-            $finalText = $this->presentationText($value['description'], 'listClass');
             echo '<div class="item">';
-                echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
-                echo '<article>';
-                    echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
-                    echo '<p class="textNews">'.$finalText.'</p>';
-                    echo '<p>Nombre de participant max : '.$value['numberMax'].' personnes</p>';
-                    echo '<p>Participation aux frais : '.$value['contribution'].' €</p>';
-                echo '</article>';
-                echo '<img class="imgNews" src="'.$picturePath.$value['picture'].'" alt="illustration de'.$value['title'].'"/>';
-                echo '<form class="form-AdmiEvent" action="'.encodeRoutage($routage).'" method="post">
-                <input type="hidden" name="id" value="'.$value['id'].'"/>
-                <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.'</button>
-                </form>';
-                echo '<a  href="'.findTargetRoute(112).'&idEvent='.$value['id'].'">Modifier</a>';
+                $this->templateOneEvent($value, $picturePath);
+                    echo '<form class="form-AdmiEvent" action="'.encodeRoutage($routage).'" method="post">
+                    <input type="hidden" name="id" value="'.$value['id'].'"/>
+                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.'</button>
+                    </form>';
+                    echo '<a  href="'.findTargetRoute(112).'&idEvent='.$value['id'].'">Modifier</a>';
             echo '</div>';
         }
         echo '</div>';
@@ -114,7 +108,9 @@ Class TemplateEvents extends SQLEvents{
     public function templateUpdateEvent($id, $idNav) {
         $dataEvent = $this->readOneEvent($id);
         echo '<div class="gallery">';
-        $this->templateOneEvent($dataEvent[0], 'sources/pictures/picturesEvents/');
+            echo '<div class="item">';
+                $this->templateOneEvent($dataEvent[0], 'sources/pictures/picturesEvents/');
+            echo '</div>';
         echo '</div>';
         echo '<article>';
         $this->updateFormEvent($dataEvent[0], $idNav);

@@ -280,6 +280,12 @@ select {
   padding-left: 4em;
   font-size: larger;
 }
+.textEvents {
+  text-align: justify;
+  width: 100%;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
 .listClass li {
   margin-bottom: 0.6em;
 }
@@ -293,26 +299,27 @@ select {
 }
 /*Gallery Events*/
 .gallery {
-  margin: 100px auto 0;
-  padding: 0 20px;
- max-width:100%;
- display: grid;
- grid-template-columns: repeat(auto-fit, 300px);
-grid-gap: 5px;
-justify-content: center;
-}
+    margin: 2vh auto 0;
+    padding: 0 1vw;
+    max-width:100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 300px);
+    grid-gap: 5px;
+    justify-content: center;
+  }
 
 .item {
-min-height: auto;
-min-width: auto;
-padding: 0.5em;
-background: var(--color-chair);
-color: rgb(32, 32, 32);
-border-radius: 5px;
-display: inline;
-align-items: center;
-justify-content: center;
-}
+    min-height: auto;
+    min-width: auto;
+    padding: 0.5em;
+    background: var(--color-chair);
+    color: rgb(32, 32, 32);
+    border-radius: var(--main-radiusInput);
+    display: inline;
+    align-items: center;
+    justify-content: center;
+    border: var(--color-blueOneChair) solid 1px;
+  }
 
 
 /*Variable CSS boutton*/
