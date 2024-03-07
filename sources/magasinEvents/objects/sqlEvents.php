@@ -58,4 +58,16 @@ Class SQLEvents {
         $namePicture = ActionDB::select($select, $param, 1);
         return $namePicture[0]['picture'];
     }
+    protected function numberMaxUserOnEvent($id){
+        $select="SELECT`numberMax` FROM `internalEvents` WHERE `id`=:id;";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        $namePicture = ActionDB::select($select, $param, 1);
+        return $namePicture[0]['numberMax'];
+    }
+    protected function numberUserOnEvent($idEvent) {
+        $select = "SELECT COUNT(`idUser`) AS `registrationTotal` FROM `reserveEvents` WHERE `idEvent`=:idEvent;";
+        $param=[['prep'=>':idEvent', 'variable'=>$idEvent]];
+        $namePicture = ActionDB::select($select, $param, 1);
+        return $namePicture[0]['registrationTotal'];
+    }
 }

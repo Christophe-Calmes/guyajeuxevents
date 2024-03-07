@@ -117,4 +117,11 @@ Class TemplateEvents extends SQLEvents{
         echo '</article>';
 
     }
+    private function registrationUserOnEvent(){
+
+    }
+    public function registrationOneEvent(){
+        $dataNextEvent = $this->nextEvent ();
+       //$this->templateEvent($dataNextEvent);
+    }
 }
