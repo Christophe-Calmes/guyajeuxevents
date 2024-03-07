@@ -47,11 +47,8 @@ $mark = [1, 0, 0, 0, 0, 0];
 if($controlePostData == $mark) {
     $parametre = new Preparation();
     $param = $parametre->creationPrep($_POST);
-    print_r($update);
-    echo '<br/>';
-    print_r($param);
     ActionDB::access($update, $param, 1);
-    header('location:../index.php?message=news modifier&idNav='.$idNav.'&idArticle='.filter($_POST['id']));
+    header('location:../index.php?message=news modifié&idNav='.$idNav.'&idArticle='.filter($_POST['id']));
 } else {
-    echo 'Pas Coucou';
+    header('location:../index.php?message=news non modifié&idNav='.$idNav.'&idArticle='.filter($_POST['id']));
 }

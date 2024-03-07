@@ -107,6 +107,7 @@ Class TemplateEvents extends SQLEvents{
             <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
             <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
         </aside>
+        <input type="hidden" name="id" value="'.$data['id'].'"/>
     <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>
     </form>';
     }

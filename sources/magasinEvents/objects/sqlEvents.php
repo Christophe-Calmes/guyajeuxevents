@@ -50,4 +50,12 @@ Class SQLEvents {
         $param=[['prep'=>':id', 'variable'=>$id]];
         return ActionDB::select($select, $param, 1);
     }
+    public function getNamePictureEvent($id) {
+        $select="SELECT `picture` 
+        FROM `internalEvents` 
+        WHERE `id`=:id";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        $namePicture = ActionDB::select($select, $param, 1);
+        return $namePicture[0]['picture'];
+    }
 }
