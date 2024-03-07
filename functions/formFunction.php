@@ -41,3 +41,13 @@ $type =  ['text',  'date', 'time', 'email',
   echo $NavButton;
   echo '</form>';
 }
+function optionSelect($status) {
+  $option = [['value'=>0, 'label'=>'Non'], ['value'=>1, 'label'=>'Oui']];
+  foreach ($option as  $value) {
+      $selected = null;
+      if($value['value'] == $status) {
+          $selected = 'selected';
+      } 
+      echo '<option value="'.$value['value'].'" '.$selected.'>'.$value['label'].'</option>';
+  }
+}

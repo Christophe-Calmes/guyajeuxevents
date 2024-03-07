@@ -12,7 +12,7 @@
             <label class="bold" for="numberMax">Nombre maximum de participants</label>
             <input type="number" id="numberMax" name="numberMax" min="1" max="25" value="10"/>
             <label class="bold" for="contribution">Participation au frais en €</label>
-            <input type="number" id="numberMax" name="contribution" min="5" max="50" value="12"/>
+            <input type="number" id="numberMax" name="contribution" min="0" max="50" value="12"/>
             <label class="bold" for="publish">Publier</label>
             <select id="publish" name="publish">
                 <option value="0">Non</option>

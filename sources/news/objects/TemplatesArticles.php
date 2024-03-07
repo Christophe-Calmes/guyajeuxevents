@@ -60,28 +60,14 @@ Class TemplateArticle extends SQLAcessNews {
             <div class="CreatDate">'.brassageDate($value['creat_date']).'</div>
             <div class="publish">'.$this->yes[$value['publish']].'
                 <label for="publish"></label>
-                <select name="publish">'; 
-                for ($i=0; $i <count($this->yes); $i++) { 
-                    if($value['publish'] == $i) {
-                        echo '<option value="'.$i.'" selected>'.$this->yes[$i].'</option>';
-                    } else {
-                        echo '<option value="'.$i.'">'.$this->yes[$i].'</option>';
-                    }
-                    
-                }
-        echo '</select>
+                <select name="publish">';
+            optionSelect($value['publish']);
+        echo'</select>
             </div>
             <div class="Valid">'.$this->yes[$value['valid']].'
             <label for="valid"></label>
-            <select name="valid">'; 
-            for ($i=0; $i <count($this->yes); $i++) { 
-                if($value['valid'] == $i) {
-                    echo '<option value="'.$i.'" selected>'.$this->yes[$i].'</option>';
-                } else {
-                    echo '<option value="'.$i.'">'.$this->yes[$i].'</option>';
-                }
-                
-            }
+            <select name="valid">';
+            optionSelect($value['valid']);
         echo'</select>
             </div>
                 
@@ -122,14 +108,13 @@ Class TemplateArticle extends SQLAcessNews {
                         '.$dataArticle[0]['text'].'
                         </textarea>
                         <label for="publish">Publier</label>
-                        <select id="publish" name="publish">
-                            <option value="0">Non</option>
-                            <option value="1" selected>Oui</option>
-                        </select>
+                        <select id="publish" name="publish">';
+                            optionSelect($dataArticle[0]['publish']);
+                        echo'</select>
                         <label for="valid">Valide</label>
-                        <select id="valid" name="valid">
-                            <option value="0">Non</option>
-                            <option value="1" selected>Oui</option>
+                        <select id="valid" name="valid">';
+                        optionSelect($dataArticle[0]['valid']);
+                    echo'</select>
                         </select>
                         <label for="picture">Image d\'illustration de la news ?</label>
                         <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>

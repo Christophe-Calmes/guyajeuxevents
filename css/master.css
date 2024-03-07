@@ -334,7 +334,7 @@ a {
   margin: var(--main-marginButton);
 }
 .link {
-  background-color: var(--body-color);
+  background-color: #fae9cb00;
   border: none;
   border-radius: none;
   color: var(--color-subTitle);

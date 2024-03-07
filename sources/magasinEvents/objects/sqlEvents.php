@@ -40,4 +40,14 @@ Class SQLEvents {
         $param=[['prep'=>':id', 'variable'=>$id]];
         return ActionDB::access($update, $param, 1);
     }
+    protected function readOneEvent($id) {
+        $select = "SELECT `id`, `idAuthor`, `dateCreat`, `dateUpdate`, `dateEvent`, `title`, 
+        `description`, `picture`, `numberMax`, `contribution`, `publish`, `archive`, `valid`, 
+        `sucess`, `prenom`, `nom`
+        FROM `internalEvents`
+        INNER JOIN `guyagraines`.`users` ON `internalEvents`.`idAuthor` = `guyagraines`.`users`.`idUser`
+        WHERE `id` = :id;";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        return ActionDB::select($select, $param, 1);
+    }
 }

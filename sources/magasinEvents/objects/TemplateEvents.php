@@ -9,25 +9,32 @@ Class TemplateEvents extends SQLEvents{
         $result = strongHTML($result);
         return $result;
     }
+    private function templateOneEvent($value, $picturePath) {
+        $finalText = $this->presentationText($value['description'], 'listClass');
+        if($value['contribution'] == 0) {
+            $contribution = 'Gratuit';
+        } else {
+            $contribution = $value['contribution'];
+        }
+        echo '<div class="item">';
+            echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
+            echo '<article>';
+                echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
+                echo '<p class="textNews">'.$finalText.'</p>';
+                echo '<p>Nombre de participant max : '.$value['numberMax'].' personnes</p>';
+                echo '<p>Participation aux frais : '.$contribution.' €</p>';
+            echo '</article>';
+            echo '<img class="imgNews" src="'.$picturePath.$value['picture'].'" alt="illustration de'.$value['title'].'"/>';
+        echo '</div>';
+    }
     private function templateEvent($variable) {
         $picturePath='sources/pictures/picturesEvents/';
         echo '<div class="gallery">';
         foreach ($variable as $value) {
-            $finalText = $this->presentationText($value['description'], 'listClass');
-            echo '<div class="item">';
-                echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
-                echo '<article>';
-                    echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
-                    echo '<p class="textNews">'.$finalText.'</p>';
-                    echo '<p>Nombre de participant max : '.$value['numberMax'].' personnes</p>';
-                    echo '<p>Participation aux frais : '.$value['contribution'].' €</p>';
-                echo '</article>';
-                echo '<img class="imgNews" src="'.$picturePath.$value['picture'].'" alt="illustration de'.$value['title'].'"/>';
-            echo '</div>';
+            $this->templateOneEvent($value, $picturePath);
         }
         echo '</div>';
     }
-
     public function displayEventPublic() {
         $dataNextEvent = $this->nextEvent ();
        $this->templateEvent($dataNextEvent);
@@ -55,6 +62,7 @@ Class TemplateEvents extends SQLEvents{
                 <input type="hidden" name="id" value="'.$value['id'].'"/>
                 <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.'</button>
                 </form>';
+                echo '<a  href="'.findTargetRoute(112).'&idEvent='.$value['id'].'">Modifier</a>';
             echo '</div>';
         }
         echo '</div>';
@@ -62,6 +70,54 @@ Class TemplateEvents extends SQLEvents{
     public function adminEvents($firstPage, $parPage, $archive, $valid, $idNav, $routage) {
         $dataEvents = $this->readEventPagination($firstPage, $parPage, $archive, $valid);
         $this->templateAdminEvent($dataEvents, $idNav, $routage);
+    }
+    private function updateFormEvent($data, $idNav) {
+        echo '<h1 class="subTitleSite">Modifier un événements</h1>
+    <form class="flex-colonne-form" action="'.encodeRoutage(37).'" method="post" enctype="multipart/form-data">
+    <label class="bold" for="title">Titre événement</label>
+    <input type="text" id="title" name="title" value="'.$data['title'].'"/>
+    <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
+    <input type="datetime-local" id="dateEvent" name="dateEvent" value="'.$data['dateEvent'].'"/>
+    <label class="bold" for="description">Votre événement</label>
+<textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
+'.$data['description'].'
+</textarea>
+        <aside class="flex-colonne-form">
+            <label class="bold" for="numberMax">Nombre maximum de participants</label>
+            <input type="number" id="numberMax" name="numberMax" min="1" max="25" value="'.$data['numberMax'].'"/>
+            <label class="bold" for="contribution">Participation au frais en €</label>
+            <input type="number" id="numberMax" name="contribution" min="0" max="50" value="'.$data['contribution'].'"/>
+            <label class="bold" for="publish">Publier</label>
+            <select id="publish" name="publish">'; 
+            optionSelect($data['publish']);
+        echo'</select>
+            <label class="bold" for="valid">Valider</label>
+            <select id="valid" name="valid">
+            '; 
+            optionSelect($data['valid']);
+        echo'
+            </select>
+            <label class="bold" for="archive">Archiver</label>
+            <select id="archive" name="archive">
+            '; 
+            optionSelect($data['archive']);
+        echo'
+            </select>
+            
+            <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
+            <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
+        </aside>
+    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>
+    </form>';
+    }
+    public function templateUpdateEvent($id, $idNav) {
+        $dataEvent = $this->readOneEvent($id);
+        echo '<div class="gallery">';
+        $this->templateOneEvent($dataEvent[0], 'sources/pictures/picturesEvents/');
+        echo '</div>';
+        echo '<article>';
+        $this->updateFormEvent($dataEvent[0], $idNav);
+        echo '</article>';
 
     }
 }
