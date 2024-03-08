@@ -18,7 +18,9 @@ class Preparation {
         array_push($prepare, ['prep' => ':'.$key, 'variable' => $value]);
       }
     }
-      array_push($prepare, ['prep' => ':idUser', 'variable' => $_SESSION['idUser']]);
+    $getIdUser = new Controles();
+    $idUser = $getIdUser->idUser($_SESSION);
+      array_push($prepare, ['prep' => ':idUser', 'variable' => $idUser]);
       return $prepare;
   }
   public function creationPrepTokenUser ($data) {

@@ -126,7 +126,23 @@ Class TemplateEvents extends SQLEvents{
         }
         echo '</ul>';
     }
-    public function registrationOneEvent(){
+    private function addUserOnEvent($session, $idEvent, $idNav){
+        $getIdUser = new Controles();
+        $idUser = $getIdUser->idUser($session);
+        $registred = $this->userIsRegistredOnEvent($idUser, $idEvent);
+        if($registred) {
+            echo '<form action="'.encodeRoutage(39).'" method="post">
+                    <input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Désinscription</button>';
+            echo '</form>';
+        } else {
+               echo '<form action="'.encodeRoutage(38).'" method="post">
+                    <input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>';
+            echo '</form>';
+        }
+    }
+    public function registrationOneEvent($session, $idNav){
         $dataNextEvent = $this->nextEvent ();
    
         $picturePath='sources/pictures/picturesEvents/';
@@ -135,6 +151,7 @@ Class TemplateEvents extends SQLEvents{
             echo '<div class="item">';
             $this->templateOneEvent($value, $picturePath);
             $this->registrationUserOnEvent($value['id'], $value['numberMax']);
+            $this->addUserOnEvent($session, $value['id'], $idNav);
             echo '</div>';
         };
         echo '</div>';

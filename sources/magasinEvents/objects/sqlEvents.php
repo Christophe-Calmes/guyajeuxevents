@@ -72,4 +72,28 @@ Class SQLEvents {
         $param=[['prep'=>':idEvent', 'variable'=>$idEvent]];
         return  ActionDB::select($select, $param, 1);
     }
+    public function userIsRegistredOnEvent ($idUser, $idEvent) {
+        $select="SELECT COUNT(`idUser`) AS `total` 
+        FROM `reserveEvents` 
+        WHERE `idEvent`=:idEvent AND `idUser`=:idUser;";
+        $param=[['prep'=>':idEvent', 'variable'=>$idEvent],
+                ['prep'=>':idUser', 'variable'=>$idUser]];
+        $data = ActionDB::select($select, $param, 1);
+        if($data[0]['total'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    public function signUpEventUser($param){
+        $insert="INSERT INTO `reserveEvents`( `idEvent`, `idUser`) 
+        VALUES (:idEvent, :idUser);";
+        return ActionDB::access($insert, $param, 1);
+    }
+    public function unsubscribeUser($param){
+        $insert="DELETE FROM `reserveEvents` 
+        WHERE `idEvent`=:idEvent AND `idUser`=:idUser;";
+        return ActionDB::access($insert, $param, 1);
+    }
 }
