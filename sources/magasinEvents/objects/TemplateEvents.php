@@ -10,13 +10,20 @@ Class TemplateEvents extends SQLEvents{
         return $result;
     }
     private function templateOneEvent($value, $picturePath) {
+        $soldOut = null;
+        $red = null;
+        if(!$this-> getSoldOut($value['id'])){
+            $soldOut = 'Complet -';
+            $red = 'red';
+        }
+
         $finalText = $this->presentationText($value['description'], 'listClass');
         if($value['contribution'] == 0) {
             $contribution = 'Gratuit';
         } else {
             $contribution = $value['contribution'];
         }
-            echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
+            echo'<h2 class="subTitleSite titleEventItem '.$red.'">'.$soldOut.$value['title'].'</h2>';
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
                 echo '<p class="textEvents">'.$finalText.'</p>';
@@ -119,12 +126,28 @@ Class TemplateEvents extends SQLEvents{
     private function registrationUserOnEvent($idEvent, $numberMax){
         $listOfLoginRegistration=$this->listRegistered($idEvent);
         $numberUserOnEvent = $this->numberUserOnEvent($idEvent);
-        echo '<p>Nombre d\'inscrit : '.$numberUserOnEvent.' / '.$numberMax.'</p>';
-        echo '<ul>';
-        foreach($listOfLoginRegistration as $value) {
-            echo '<li>'.$value['login'].'</li>';
+        if(!$this->getSoldOut($idEvent)){
+            $a=0;
+            echo'<ul>';
+            while ($a <= $numberMax-1) {
+                echo '<li>'.$listOfLoginRegistration[$a]['login'].'</li>';
+                $a++;
+            }
+            $waitingList = array_slice($listOfLoginRegistration, $a);
+
+            if($numberUserOnEvent>$numberMax){echo'<li>Liste d\'attente :</li>';}
+            foreach($waitingList as $value){
+                echo '<li>'.$value['login'].'</li>';
+            }
+            echo '</ul>';
+        } else {
+            echo '<ul>';
+            echo '<p>Nombre d\'inscrit: '.$numberUserOnEvent.' / '.$numberMax.'</p>';
+            foreach($listOfLoginRegistration as $value){
+                echo '<li>'.$value['login'].'</li>';
+            }
+            echo '</ul>';
         }
-        echo '</ul>';
     }
     private function addUserOnEvent($session, $idEvent, $idNav){
         $getIdUser = new Controles();

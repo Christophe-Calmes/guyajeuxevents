@@ -96,4 +96,17 @@ Class SQLEvents {
         WHERE `idEvent`=:idEvent AND `idUser`=:idUser;";
         return ActionDB::access($insert, $param, 1);
     }
+    protected function getSoldOut($idEvent) {
+        $select="SELECT `numberMax`, COUNT(`idUser`) AS `total`
+        FROM `internalEvents`
+        INNER JOIN `reserveEvents` ON `reserveEvents`.`idEvent` = `internalEvents`.`id`
+        WHERE `internalEvents`.`id`=:idEvent;";
+        $param=[['prep'=>':idEvent', 'variable'=>$idEvent]];
+        $totalAndNumberMax = ActionDB::select($select, $param, 1);
+        if($totalAndNumberMax[0]['numberMax'] <= $totalAndNumberMax[0]['total']){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
