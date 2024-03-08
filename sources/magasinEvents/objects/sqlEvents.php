@@ -68,7 +68,8 @@ Class SQLEvents {
         $select = "SELECT `login` 
         FROM `reserveEvents`
         INNER JOIN `guyagraines`.`users` ON `reserveEvents`.`idUser` = `users`.`idUser`
-        WHERE `idEvent`= :idEvent;";
+        WHERE `idEvent`= :idEvent
+        ORDER BY `dateRegistration` ASC;";
         $param=[['prep'=>':idEvent', 'variable'=>$idEvent]];
         return  ActionDB::select($select, $param, 1);
     }
