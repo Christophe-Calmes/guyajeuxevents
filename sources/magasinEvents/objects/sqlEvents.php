@@ -104,7 +104,7 @@ Class SQLEvents {
         WHERE `internalEvents`.`id`=:idEvent;";
         $param=[['prep'=>':idEvent', 'variable'=>$idEvent]];
         $totalAndNumberMax = ActionDB::select($select, $param, 1);
-        if($totalAndNumberMax[0]['numberMax'] <= $totalAndNumberMax[0]['total']){
+        if(($totalAndNumberMax[0]['numberMax'] <= $totalAndNumberMax[0]['total'])&&($totalAndNumberMax[0]['total'] !=0)){
             return false;
         } else {
             return true;
