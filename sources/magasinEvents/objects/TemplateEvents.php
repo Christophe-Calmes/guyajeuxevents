@@ -126,28 +126,31 @@ Class TemplateEvents extends SQLEvents{
     private function registrationUserOnEvent($idEvent, $numberMax){
         $listOfLoginRegistration=$this->listRegistered($idEvent);
         $numberUserOnEvent = $this->numberUserOnEvent($idEvent);
-        if(!$this->getSoldOut($idEvent)){
-            $a=0;
-            echo'<ul>';
-            while ($a <= $numberMax-1) {
-                echo '<li>'.$listOfLoginRegistration[$a]['login'].'</li>';
-                $a++;
+        if($numberUserOnEvent > 0) {
+            if(!$this->getSoldOut($idEvent)){
+                $a=0;
+                echo'<ul>';
+                while ($a <= $numberMax-1) {
+                    echo '<li>'.$listOfLoginRegistration[$a]['login'].'</li>';
+                    $a++;
+                }
+                $waitingList = array_slice($listOfLoginRegistration, $a);
+    
+                if($numberUserOnEvent>$numberMax){echo'<li>Liste d\'attente :</li>';}
+                foreach($waitingList as $value){
+                    echo '<li>'.$value['login'].'</li>';
+                }
+                echo '</ul>';
+            } else {
+                echo '<ul>';
+                echo '<p>Nombre d\'inscrit: '.$numberUserOnEvent.' / '.$numberMax.'</p>';
+                foreach($listOfLoginRegistration as $value){
+                    echo '<li>'.$value['login'].'</li>';
+                }
+                echo '</ul>';
             }
-            $waitingList = array_slice($listOfLoginRegistration, $a);
-
-            if($numberUserOnEvent>$numberMax){echo'<li>Liste d\'attente :</li>';}
-            foreach($waitingList as $value){
-                echo '<li>'.$value['login'].'</li>';
-            }
-            echo '</ul>';
-        } else {
-            echo '<ul>';
-            echo '<p>Nombre d\'inscrit: '.$numberUserOnEvent.' / '.$numberMax.'</p>';
-            foreach($listOfLoginRegistration as $value){
-                echo '<li>'.$value['login'].'</li>';
-            }
-            echo '</ul>';
         }
+      
     }
     private function addUserOnEvent($session, $idEvent, $idNav){
         $getIdUser = new Controles();
