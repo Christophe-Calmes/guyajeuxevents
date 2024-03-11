@@ -65,7 +65,7 @@ Class SQLEvents {
         return $namePicture[0]['registrationTotal'];
     }
     protected function listRegistered($idEvent) {
-        $select = "SELECT `login` 
+        $select = "SELECT `login`, `guyagraines`.`users`.`idUser` 
         FROM `reserveEvents`
         INNER JOIN `guyagraines`.`users` ON `reserveEvents`.`idUser` = `users`.`idUser`
         WHERE `idEvent`= :idEvent
@@ -109,5 +109,11 @@ Class SQLEvents {
         } else {
             return true;
         }
+    }
+    public function delAdminUserEvent($idEvent, $idUser) {
+        $delete="DELETE FROM `reserveEvents` WHERE `idEvent`=:idEvent AND `idUser`=:idUser";
+        $param=[['prep'=>':idEvent', 'variable'=>$idEvent],
+                ['prep'=>':idUser', 'variable'=>$idUser]];
+        return ActionDB::access($delete, $param,1);
     }
 }

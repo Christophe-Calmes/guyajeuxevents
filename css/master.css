@@ -168,6 +168,14 @@ a {
   text-align: left;
 }
 /*List*/
+.adminEventList{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+
 .listClass {
   list-style: none;
   text-align: initial;
