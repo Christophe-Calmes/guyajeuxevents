@@ -20,7 +20,7 @@ if($mark == $controlePostData && controlePicture($_FILES, 75000)) {
     if(move_uploaded_file($_FILES['picture']['tmp_name'], $f = '../sources/pictures/picturesNews/'.$namePicture)) {
         ActionDB::access($insert, $param, 1);
         chmod($f, 0644);
-        return header('location:../index.php?message=Nouvelle article enregistré');
+        return header('location:../index.php?message=Nouvel article enregistré');
     } 
 } else {
     return header('location:../index.php?message=Le fichier destination n\'existe pas');

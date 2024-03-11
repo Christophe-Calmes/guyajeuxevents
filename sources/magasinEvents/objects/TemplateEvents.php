@@ -2,6 +2,15 @@
 require('sqlEvents.php');
 require ('functions/functionDateTime.php');
 require('functions/functionPresentationText.php');
+function unsubscribeUIserForm($idNav, $login, $idEvent, $idUser) {
+    echo '<li>
+    <form action="'.encodeRoutage(40).'" method="post">
+        <input type="hidden" name="idEvent" value="'.$idEvent.'"/>
+        <input type="hidden" name="idUser" value="'.$idUser.'"/>
+        <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Retirer  '.$login.'</button>
+    </form>
+    </li>';
+}
 Class TemplateEvents extends SQLEvents{
     protected function presentationText($data, $class) {
         $result = listHTML($data, $class);
@@ -10,63 +19,44 @@ Class TemplateEvents extends SQLEvents{
         return $result;
     }
     private function templateOneEvent($value, $picturePath) {
+        $soldOut = null;
+        $red = null;
+        if(!$this-> getSoldOut($value['id'])){
+            $soldOut = 'Complet -';
+            $red = 'red';
+        }
+
         $finalText = $this->presentationText($value['description'], 'listClass');
         if($value['contribution'] == 0) {
             $contribution = 'Gratuit';
         } else {
             $contribution = $value['contribution'];
         }
-        echo '<div class="item">';
-            echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
+            echo'<h2 class="subTitleSite titleEventItem '.$red.'">'.$soldOut.$value['title'].'</h2>';
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
-                echo '<p class="textNews">'.$finalText.'</p>';
+                echo '<p class="textEvents">'.$finalText.'</p>';
                 echo '<p>Nombre de participant max : '.$value['numberMax'].' personnes</p>';
                 echo '<p>Participation aux frais : '.$contribution.' €</p>';
             echo '</article>';
             echo '<img class="imgNews" src="'.$picturePath.$value['picture'].'" alt="illustration de'.$value['title'].'"/>';
-        echo '</div>';
+        
     }
     private function templateEvent($variable) {
         $picturePath='sources/pictures/picturesEvents/';
         echo '<div class="gallery">';
         foreach ($variable as $value) {
+            echo '<div class="item">';
             $this->templateOneEvent($value, $picturePath);
-        }
+            echo '</div>';
+        };
         echo '</div>';
     }
     public function displayEventPublic() {
         $dataNextEvent = $this->nextEvent ();
        $this->templateEvent($dataNextEvent);
     }
-    private function templateAdminEvent($variable, $idNav, $routage) {
-        $picturePath='sources/pictures/picturesEvents/';
-        if($routage == 36) {
-            $buttonMessage = "Valider l'événement";
-        } else {
-            $buttonMessage = "Annuler événement";
-        }
-        echo '<div class="gallery">';
-        foreach ($variable as $value) {
-            $finalText = $this->presentationText($value['description'], 'listClass');
-            echo '<div class="item">';
-                echo'<h2 class="subTitleSite titleEventItem">'.$value['title'].'</h2>';
-                echo '<article>';
-                    echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
-                    echo '<p class="textNews">'.$finalText.'</p>';
-                    echo '<p>Nombre de participant max : '.$value['numberMax'].' personnes</p>';
-                    echo '<p>Participation aux frais : '.$value['contribution'].' €</p>';
-                echo '</article>';
-                echo '<img class="imgNews" src="'.$picturePath.$value['picture'].'" alt="illustration de'.$value['title'].'"/>';
-                echo '<form class="form-AdmiEvent" action="'.encodeRoutage($routage).'" method="post">
-                <input type="hidden" name="id" value="'.$value['id'].'"/>
-                <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.'</button>
-                </form>';
-                echo '<a  href="'.findTargetRoute(112).'&idEvent='.$value['id'].'">Modifier</a>';
-            echo '</div>';
-        }
-        echo '</div>';
-    }
+    
     public function adminEvents($firstPage, $parPage, $archive, $valid, $idNav, $routage) {
         $dataEvents = $this->readEventPagination($firstPage, $parPage, $archive, $valid);
         $this->templateAdminEvent($dataEvents, $idNav, $routage);
@@ -114,11 +104,134 @@ Class TemplateEvents extends SQLEvents{
     public function templateUpdateEvent($id, $idNav) {
         $dataEvent = $this->readOneEvent($id);
         echo '<div class="gallery">';
-        $this->templateOneEvent($dataEvent[0], 'sources/pictures/picturesEvents/');
+            echo '<div class="item">';
+                $this->templateOneEvent($dataEvent[0], 'sources/pictures/picturesEvents/');
+            echo '</div>';
         echo '</div>';
         echo '<article>';
         $this->updateFormEvent($dataEvent[0], $idNav);
         echo '</article>';
 
+    }
+    private function registrationUserOnEvent($idEvent, $numberMax){
+        $listOfLoginRegistration=$this->listRegistered($idEvent);
+        $numberUserOnEvent = $this->numberUserOnEvent($idEvent);
+        echo '<aside>
+                <article>';
+                echo '<ul class="adminEventList">';
+                echo '<p>Nombre d\'inscrit: '.$numberUserOnEvent.' / '.$numberMax.'</p>';
+                    if($numberUserOnEvent > 0) {
+                        if(!$this->getSoldOut($idEvent)){
+                            $a=0;
+                        
+                            while ($a <= $numberMax-1) {
+                                echo '<li>'.$listOfLoginRegistration[$a]['login'].'</li>';
+                                $a++;
+                            }
+                            $waitingList = array_slice($listOfLoginRegistration, $a);
+                
+                            if($numberUserOnEvent>$numberMax){echo'<li class="margin"><h4>Liste d\'attente :</h4></li>';}
+                            foreach($waitingList as $value){
+                                echo '<li>'.$value['login'].'</li>';
+                            }
+                        } else {
+                     
+                            foreach($listOfLoginRegistration as $value){
+                                echo '<li>'.$value['login'].'</li>';
+                            }
+                      
+                        }
+                        echo '<ul>';
+                    }
+                    echo '</article>
+        </aside>';
+    }
+    private function adminRegistrationUserOnEvent($idEvent, $numberMax, $idNav){
+
+        $listOfLoginRegistration=$this->listRegistered($idEvent);
+        $numberUserOnEvent = $this->numberUserOnEvent($idEvent);
+        if($numberUserOnEvent>0){
+            echo '<aside><h4>Administration inscrits</h4>
+                <article>';
+                echo '<ul class="adminEventList">';
+                    if($numberUserOnEvent > 0) {
+                        if(!$this->getSoldOut($idEvent)){
+                            $a=0;
+                            while ($a <= $numberMax-1) {
+                                unsubscribeUIserForm($idNav, $listOfLoginRegistration[$a]['login'], $idEvent, $listOfLoginRegistration[$a]['idUser']);
+                                $a++;
+                            }
+                            $waitingList = array_slice($listOfLoginRegistration, $a);
+                            if($numberUserOnEvent>$numberMax){echo'<li class="margin"><h4>Liste d\'attente :</h4></li>';}
+                            foreach($waitingList as $value){
+                                unsubscribeUIserForm($idNav, $value['login'], $idEvent, $value['idUser']);
+                            }
+                        } else {
+                            foreach($listOfLoginRegistration as $value){
+                                unsubscribeUIserForm($idNav, $value['login'], $idEvent, $value['idUser']);
+                            }
+                        }
+                        echo '<ul>';
+                    }
+                    echo '</article>
+            </aside>';
+        }    
+
+    }
+    private function addUserOnEvent($session, $idEvent, $idNav){
+        $getIdUser = new Controles();
+        $idUser = $getIdUser->idUser($session);
+        $registred = $this->userIsRegistredOnEvent($idUser, $idEvent);
+        if($registred) {
+            echo '<form action="'.encodeRoutage(39).'" method="post">
+                    <input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Désinscription</button>';
+            echo '</form>';
+        } else {
+               echo '<form action="'.encodeRoutage(38).'" method="post">
+                    <input type="hidden" name="idEvent" value="'.$idEvent.'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>';
+            echo '</form>';
+        }
+    }
+    public function registrationOneEvent($session, $idNav){
+        $dataNextEvent = $this->nextEvent ();
+   
+        $picturePath='sources/pictures/picturesEvents/';
+        echo '<div class="gallery">';
+        foreach ($dataNextEvent as $value) {
+            echo '<div class="item">';
+            $this->templateOneEvent($value, $picturePath);
+            $this->registrationUserOnEvent($value['id'], $value['numberMax']);
+            $this->addUserOnEvent($session, $value['id'], $idNav);
+            echo '</div>';
+        };
+        echo '</div>';
+       
+    }
+    private function templateAdminEvent($variable, $idNav, $routage) {
+        $picturePath='sources/pictures/picturesEvents/';
+        if($routage == 36) {
+            $buttonMessage = "Valider l'événement";
+        } else {
+            $buttonMessage = "Annuler événement";
+        }
+        echo '<div class="gallery">';
+        foreach ($variable as $value) {
+            echo '<div class="item">';
+                $this->templateOneEvent($value, $picturePath);
+                    echo '<form class="form-AdmiEvent" action="'.encodeRoutage($routage).'" method="post">
+                    <input type="hidden" name="id" value="'.$value['id'].'"/>
+                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.'</button>
+                    </form>';
+                    echo '<a  href="'.findTargetRoute(112).'&idEvent='.$value['id'].'">Modifier</a>';
+                    echo '<article class="adminEventList">';
+                        $this->registrationUserOnEvent($value['id'], $value['numberMax']);
+                        $this->adminRegistrationUserOnEvent($value['id'], $value['numberMax'], $idNav);
+                    echo '</article>';
+            echo '</div>';
+
+        }
+        echo '</div>';
     }
 }

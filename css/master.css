@@ -168,6 +168,14 @@ a {
   text-align: left;
 }
 /*List*/
+.adminEventList{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+
 .listClass {
   list-style: none;
   text-align: initial;
@@ -253,7 +261,7 @@ select {
   justify-items: start;
   justify-content: space-evenly;
   align-items: start;
-  margin-left: 5em;
+  margin: 0vh 15vw 0vh 15vw;
 }
 
 .pictureNews { 
@@ -266,6 +274,8 @@ select {
 }
 .TitleNews { 
   grid-area: TitleNews;
+  margin-left: auto;
+  margin-right: auto;
 }
 .dateNews {
   text-align: left;
@@ -275,6 +285,21 @@ select {
   grid-area: textNews;
   text-align: justify;
   width: 100%;
+  padding-left: 4em;
+  font-size: larger;
+}
+.textEvents {
+  text-align: justify;
+  width: 100%;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
+.listClass li {
+  margin-bottom: 0.6em;
+}
+.dayweek{
+  color:var(--main-background-color);
+  font-size: 1.2em;
 }
 .styleListNews, ul {
   list-style: none;
@@ -282,26 +307,27 @@ select {
 }
 /*Gallery Events*/
 .gallery {
-  margin: 100px auto 0;
-  padding: 0 20px;
- max-width:100%;
- display: grid;
- grid-template-columns: repeat(auto-fit, 300px);
-grid-gap: 5px;
-justify-content: center;
-}
+    margin: 2vh auto 0;
+    padding: 0 1vw;
+    max-width:100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 300px);
+    grid-gap: 5px;
+    justify-content: center;
+  }
 
 .item {
-min-height: auto;
-min-width: auto;
-padding: 0.5em;
-background: var(--color-chair);
-color: rgb(32, 32, 32);
-border-radius: 5px;
-display: inline;
-align-items: center;
-justify-content: center;
-}
+    min-height: auto;
+    min-width: auto;
+    padding: 0.5em;
+    background: var(--color-chair);
+    color: rgb(32, 32, 32);
+    border-radius: var(--main-radiusInput);
+    display: inline;
+    align-items: center;
+    justify-content: center;
+    border: var(--color-blueOneChair) solid 1px;
+  }
 
 
 /*Variable CSS boutton*/
@@ -580,15 +606,24 @@ nav {
   text-align: justify;
   width: 100%;
 }
-
-
   .listClass { 
     list-style: none;
     text-align: left;
-
+    padding:0vw;
+    font-size: 0.8em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .listClass li {
+    margin-bottom: 0.6em;
+    list-style: none;
   }
   .imgNews {
-    display: none;
+    display: block;
+    margin-bottom: 0em;
+  }
+  .pictureNews{
+    margin:6vw;
   }
 }
 /*Burger Menu*/

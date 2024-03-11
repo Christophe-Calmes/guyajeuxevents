@@ -29,7 +29,10 @@ Class TemplateArticle extends SQLAcessNews {
             </div>
                     <div class="pictureNews"><img class="imgNews" src="'.$this->pictureDirectory.$dataLastArticle[0]['picture'].'" alt="'.$dataLastArticle[0]['title'].'"/></div>
                     <div class="textNews">
+<<<<<<< HEAD
                     <!--<p class="dateNews">Le '.brassageDate($dataLastArticle[0]['creat_date']).'</p>-->
+=======
+>>>>>>> events
                     <p class="styleListNews">'.$finalText.'</p>
                     </div>
                 </div>';
