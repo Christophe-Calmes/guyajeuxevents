@@ -106,3 +106,10 @@ if(($files[$nameValuePicture]['size'] < $sizePicture) && ($files[$nameValuePictu
 }
 
 }
+function timeIntervalPositive ($start, $end) {
+  if(strtotime($start) < strtotime($end)) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
