@@ -33,7 +33,6 @@ if(count($_POST) == 6) {
     array_push($controlePostData,timeIntervalPositive ($_POST['openAfternoon'], $_POST['closeAfternoon']));
     array_push($controlePostData,timeIntervalPositive ($_POST['closeMorning'], $_POST['openAfternoon']));
     array_push($controlePostData,timeIntervalPositive ($_POST['openMorning'], $_POST['closeAfternoon']));
-
     $mark = [1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1];
     if ($controlePostData == $mark) {
         $parametre = new preparation();
@@ -45,23 +44,6 @@ if(count($_POST) == 6) {
         return header('location:../index.php?message=Erreur&idNav='.$idNav);
     }
 } else {
-    echo 'Erreur 2';
-    echo '<br/>';
-    print_r($_POST);
-    echo '<br/>';
-    print_r($controlePostData);
-    echo '<br/>';
-    print_r($mark);
-    //return header('location:../index.php?message=Erreur&idNav='.$idNav);
-}
 
-/*if((count($_POST) != 2)||(count($_POST) != 6)){
-    echo 'Erreur 3';
-    echo '<br/>';
-    print_r($_POST);
-    echo '<br/>';
-    print_r($controlePostData);
-    echo '<br/>';
-    print_r($mark);
-   //return header('location:../index.php?message=Erreur');
-}*/
+    return header('location:../index.php?message=Erreur&idNav='.$idNav);
+}
