@@ -14,4 +14,8 @@ Class SQLAcessReserTables {
         $update="UPDATE `shopOpeingHours` SET `openMorning`=:openMorning,`closeMorning`=:closeMorning,`openAfternoon`=:openAfternoon,`closeAfternoon`=:closeAfternoon,`closeDay`=:closeDay WHERE `dayOfWeekW` = :dayOfWeekW;";
         return ActionDB::access($update, $param, 1);
     }
+    public function insertTable($param) {
+        $insert = "INSERT INTO `gamesTables`( `name`, `max`, `PositionTable`, `pictureOfTable`) VALUES (:name, :max, :PositionTable, :pictureOfTable)";
+        return ActionDB::access($insert, $param, 1);
+    }
 }
