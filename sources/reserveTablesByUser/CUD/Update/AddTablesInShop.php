@@ -19,9 +19,11 @@ if(($mark == $controlePostData)&&(controlePicture($_FILES, 90000))){
             $insertNewTable->insertTable($param);
             chmod($f, 0644);
             return header('location:../index.php?message=Nouvelle table enregistré&idNav='.$idNav);
-        } 
+        } else {
+            return header('location:../index.php?message=Directory pictureTables missing&idNav='.$idNav);
+        }
     }
 
 } else {
-   
+    return header('location:../index.php?message=Erreurs&idNav='.$idNav);
 }

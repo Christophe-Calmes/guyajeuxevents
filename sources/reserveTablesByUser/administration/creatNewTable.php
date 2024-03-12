@@ -1,5 +1,5 @@
 <div>
-<button type="button" id="magic" class="open">Ouvrir le formulaire</button>
+<button type="button" id="magic" class="open">Ajouter une nouvelle table ?</button>
 </div>
 <div id="hiddenForm">
 <form class="flex-colonne-form" action="<?=encodeRoutage(42)?>" method="post" enctype="multipart/form-data">
@@ -16,3 +16,4 @@
 </div>
 <?php
     include 'javaScript/magicButton.php';
+    require ('sources/reserveTablesByUser/objects/TemplateReserveTable.php');
