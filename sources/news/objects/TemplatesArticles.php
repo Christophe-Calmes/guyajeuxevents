@@ -73,7 +73,7 @@ Class TemplateArticle extends SQLAcessNews {
             <div class="Update">'.brassageDate($value['update_date']).'</div>
             <div class="admin">
                 <input type="hidden" name="id" value="'.$value['id'].'"/>
-                <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">update</button>
+                <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>
          
             </div>
         </div>

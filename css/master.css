@@ -250,6 +250,40 @@ select {
 }
 
 /*Grid*/
+.adminTable {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: -1;
+  grid-auto-flow: row;
+  grid-template-areas: "idTable nameTable maxTable PositionTable pictureOfTable ValidTable ButtonAdmin";
+  border: 1px solid var(--color-darkGreen);
+  justify-items: center;
+  width: 98%;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: space-evenly;
+}
+
+.idTable { grid-area: idTable; }
+
+.nameTable { grid-area: nameTable; }
+
+.maxTable { grid-area: maxTable; }
+
+.PositionTable { grid-area: PositionTable; }
+
+.pictureOfTable { grid-area: pictureOfTable; 
+width: 25%;}
+.vignette{
+  width: 10em;
+  border-radius: var(--main-radius);
+}
+.ValidTable { grid-area: ValidTable; }
+
+.ButtonAdmin { grid-area: ButtonAdmin; }
+
+
 .indexArticle {
   display: grid;
   grid-template-columns: 1fr 1fr;

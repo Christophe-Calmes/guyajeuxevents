@@ -9,7 +9,7 @@
     <input type="number" id="max" name="max" min="1" max="20"/>
     <lable for="PositionTable">Position relative de la table noté de 0 à 99</lable>
     <input type="number" id="PositionTable" name="PositionTable" min="0" max="99"/>
-    <label for="picture">Image d'illustration de la news ?</label>
+    <label for="picture">Image d'illustration de la table ?</label>
     <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
     <button class="buttonForm" type="submit" name="idNav" value="<?=$idNav?>">Ajouter</button>
 </form>
@@ -17,3 +17,6 @@
 <?php
     include 'javaScript/magicButton.php';
     require ('sources/reserveTablesByUser/objects/TemplateReserveTable.php');
+    $adminTables = new TemplateReserveTables();
+    $adminTables->arrayAdminTable(1, $idNav);
+    $adminTables->arrayAdminTable(0, $idNav);

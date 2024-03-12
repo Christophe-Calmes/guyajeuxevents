@@ -18,4 +18,19 @@ Class SQLAcessReserTables {
         $insert = "INSERT INTO `gamesTables`( `name`, `max`, `PositionTable`, `pictureOfTable`) VALUES (:name, :max, :PositionTable, :pictureOfTable)";
         return ActionDB::access($insert, $param, 1);
     }
+    protected function getTables($valid) {
+        $select="SELECT `id`, `name`, `max`, `PositionTable`, `pictureOfTable`, `valid` FROM `gamesTables` WHERE `valid`=:valid;";
+        $param= [['prep'=>':valid', 'variable'=>$valid]];
+        return ActionDB::select($select, $param, 1);
+    }
+    public function getPictureOfTable($id){
+        $select="SELECT `pictureOfTable` FROM `gamesTables` WHERE `id` =:id;";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        $namePicture =  ActionDB::select($select, $param, 1);
+        return $namePicture[0]['pictureOfTable'];
+    }
+    public function updateTable($param){
+        $update="UPDATE `gamesTables` SET `name`=:name,`max`=:max,`PositionTable`=:PositionTable,`pictureOfTable`=:pictureOfTable,`valid`=:valid WHERE `id`=:id";
+        return ActionDB::access($update, $param, 1);
+    }
 }

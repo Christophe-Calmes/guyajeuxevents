@@ -56,4 +56,58 @@ Class TemplateReserveTables extends SQLAcessReserTables {
         }
         echo'</table>';
     }
+    public function arrayAdminTable($valid, $idNav) {
+        $dataTable = $this->getTables($valid);
+        $titlePanel = "Table non valide";
+        if($valid ==1) {
+            $titlePanel = "Table valide";
+        } 
+        if($dataTable !=[]){
+            $pathPicture = "sources/pictures/pictureTables/";
+            echo '<h2>'.$titlePanel.'</h2>';
+            echo'<div class="adminTable">
+                    <div class="idTable">IdTable</div>
+                    <div class="nameTable">Nom</div>
+                    <div class="maxTable">Maximum</div>
+                    <div class="PositionTable">Position</div>
+                    <div class="pictureOfTable">Image table</div>
+                    <div class="ValidTable">Table valide ?</div>
+                    <div class="ButtonAdmin">Modification rapide</div>
+                </div>';
+            foreach($dataTable as $value) {
+            echo'<form formAdmin" action="'.encodeRoutage(43).'" method="post" enctype="multipart/form-data">
+            <div class="adminTable">
+                    <div class="idTable">'.$value['id'].'</div>
+                    <div class="nameTable">
+                    <label for="name">'.$value['name'].'</label>
+                    <input type="text" name="name" value="'.$value['name'].'"/>
+                    </div>
+                    <div class="maxTable">
+                    <label for="max">'.$value['max'].'</label>
+                    <input type="number" name="max" value="'.$value['max'].'" min="1" max="99"/>
+                    </div>
+                    <div class="PositionTable">
+                    <lable for="PositionTable">Position :'.$value['PositionTable'].'</lable>
+                    <input type="number" id="PositionTable" name="PositionTable" min="0" max="99" value="'.$value['PositionTable'].'"/>
+                    </div>
+                    <div class="pictureOfTable">
+                        <img class="vignette" src="'.$pathPicture.$value['pictureOfTable'].'" alt="'.$value['name'].'"/>
+                        <label for="picture"></label>
+                        <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
+                    </div>
+                    <div class="ValidTable">
+                    <label for="valid"></label>
+                        <select name="valid">';
+                        optionSelect($value['valid']);
+                        echo'</select>
+                    </div>
+                    <div class="ButtonAdmin">
+                    <input type="hidden" name="id" value="'.$value['id'].'"/>
+                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button></div>
+                </div>
+                </form>';
+            }
+        }
+
+    }
 }
