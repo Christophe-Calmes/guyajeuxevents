@@ -14,9 +14,21 @@ Class SQLAcessReserTables {
         $update="UPDATE `shopOpeingHours` SET `openMorning`=:openMorning,`closeMorning`=:closeMorning,`openAfternoon`=:openAfternoon,`closeAfternoon`=:closeAfternoon,`closeDay`=:closeDay WHERE `dayOfWeekW` = :dayOfWeekW;";
         return ActionDB::access($update, $param, 1);
     }
+    private function updateNumberOfChair () {
+        $select ="SELECT SUM(`max`) AS `totalOfChair` FROM `gamesTables` WHERE `valid`=1;";
+        $data =  ActionDB::select($select, [], 1);
+        $param = [['prep'=>':numberOfChair', 'variable'=>$data[0]['totalOfChair']]];
+        $insert ="INSERT INTO `maxOfChair`( `numberOfChair`) VALUES (:numberOfChair);";
+        return ActionDB::access($insert, $param, 1);
+    }
+    protected function readNumberOfChair () {
+        $select = "SELECT `numberOfChair`, `dateCreat` FROM `maxOfChair` ORDER BY `dateCreat` DESC LIMIT 1;";
+        return ActionDB::select($select, [], 1);
+    }
     public function insertTable ($param) {
         $insert = "INSERT INTO `gamesTables`( `name`, `max`, `PositionTable`, `pictureOfTable`) VALUES (:name, :max, :PositionTable, :pictureOfTable)";
-        return ActionDB::access($insert, $param, 1);
+        ActionDB::access($insert, $param, 1); 
+        return $this->updateNumberOfChair ();
     }
     protected function getTables ($valid) {
         $select="SELECT `id`, `name`, `max`, `PositionTable`, `pictureOfTable`, `valid` FROM `gamesTables` WHERE `valid`=:valid;";
@@ -31,10 +43,13 @@ Class SQLAcessReserTables {
     }
     public function updateTable ($param){
         $update="UPDATE `gamesTables` SET `name`=:name,`max`=:max,`PositionTable`=:PositionTable,`pictureOfTable`=:pictureOfTable,`valid`=:valid WHERE `id`=:id";
-        return ActionDB::access($update, $param, 1);
+        ActionDB::access($update, $param, 1);  
+        return $this->updateNumberOfChair ();
     }
     public function updateJusteTableNoPicture ($param) {
         $update="UPDATE `gamesTables` SET `name`=:name,`max`=:max,`PositionTable`=:PositionTable,`valid`=:valid WHERE `id`=:id";
-        return ActionDB::access($update, $param, 1);
+        ActionDB::access($update, $param, 1);
+        return  $this->updateNumberOfChair ();
     }
+    
 }

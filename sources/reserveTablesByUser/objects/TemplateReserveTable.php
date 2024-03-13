@@ -56,7 +56,12 @@ Class TemplateReserveTables extends SQLAcessReserTables {
         }
         echo'</table>';
     }
+    private function readNumberOfChairAdmin() {
+        $dataNumberOfChair = $this->readNumberOfChair ();
+        return $dataNumberOfChair[0]['numberOfChair'];
+    }
     public function arrayAdminTable($valid, $idNav) {
+        
         $dataTable = $this->getTables($valid);
         $titlePanel = "Table non valide";
         if($valid ==1) {
@@ -67,7 +72,7 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             echo '<h2>'.$titlePanel.'</h2>';
             echo'<div class="adminTable">
                     <div class="nameTable">Nom</div>
-                    <div class="maxTable">Maximum</div>
+                    <div class="maxTable">Maximum chaises : '.$this->readNumberOfChairAdmin().'</div>
                     <div class="PositionTable">Position</div>
                     <div class="pictureOfTable">Image table</div>
                     <div class="ValidTable">Table valide ?</div>
@@ -106,6 +111,6 @@ Class TemplateReserveTables extends SQLAcessReserTables {
                 </form>';
             }
         }
-
     }
+
 }
