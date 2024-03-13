@@ -252,11 +252,11 @@ select {
 /*Grid*/
 .adminTable {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   gap: -1;
   grid-auto-flow: row;
-  grid-template-areas: "idTable nameTable maxTable PositionTable pictureOfTable ValidTable ButtonAdmin";
+  grid-template-areas: "nameTable maxTable PositionTable pictureOfTable ValidTable ButtonAdmin";
   border: 1px solid var(--color-darkGreen);
   justify-items: center;
   width: 98%;
@@ -264,8 +264,6 @@ select {
   margin-right: auto;
   justify-content: space-evenly;
 }
-
-.idTable { grid-area: idTable; }
 
 .nameTable { grid-area: nameTable; }
 

@@ -66,7 +66,6 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             $pathPicture = "sources/pictures/pictureTables/";
             echo '<h2>'.$titlePanel.'</h2>';
             echo'<div class="adminTable">
-                    <div class="idTable">IdTable</div>
                     <div class="nameTable">Nom</div>
                     <div class="maxTable">Maximum</div>
                     <div class="PositionTable">Position</div>
@@ -77,7 +76,6 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             foreach($dataTable as $value) {
             echo'<form formAdmin" action="'.encodeRoutage(43).'" method="post" enctype="multipart/form-data">
             <div class="adminTable">
-                    <div class="idTable">'.$value['id'].'</div>
                     <div class="nameTable">
                     <label for="name">'.$value['name'].'</label>
                     <input type="text" name="name" value="'.$value['name'].'"/>
