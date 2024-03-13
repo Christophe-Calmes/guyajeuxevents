@@ -1,5 +1,6 @@
 <?php
 include '../functions/functionToken.php';
+require ('../sources/magasinEvents/objects/sqlEvents.php');
 //Vérifier le mot de passe :
 $select = "SELECT `idUser`, `login`, `mdp`, `role` FROM `users` WHERE `login` = :login AND `valide` = 1";
 $param = [['prep'=>':login', 'variable'=>filter($_POST['login'])]];

@@ -31,7 +31,7 @@ Class SQLAcessReserTables {
         return $this->updateNumberOfChair ();
     }
     protected function getTables ($valid) {
-        $select="SELECT `id`, `name`, `max`, `PositionTable`, `pictureOfTable`, `valid` FROM `gamesTables` WHERE `valid`=:valid;";
+        $select="SELECT `id`, `name`, `max`, `PositionTable`, `pictureOfTable`, `valid` FROM `gamesTables` WHERE `valid`=:valid ORDER BY `PositionTable`;";
         $param= [['prep'=>':valid', 'variable'=>$valid]];
         return ActionDB::select($select, $param, 1);
     }
@@ -51,5 +51,13 @@ Class SQLAcessReserTables {
         ActionDB::access($update, $param, 1);
         return  $this->updateNumberOfChair ();
     }
-    
+    public function insertNewActivity ($param) {
+        $insert = "INSERT INTO `activity`(`name`) VALUES (:name)";
+        ActionDB::access($insert, $param, 1);
+    }
+    protected function getActivityByValid ($valid) {
+        $select = "SELECT `id`, `name`, `valid` FROM `activity` WHERE `valid` =  :valid;";
+        $param= [['prep'=>':valid', 'variable'=>$valid]];
+        return ActionDB::select($select, $param, 1);
+    }
 }

@@ -112,5 +112,85 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             }
         }
     }
+   
+    public function displayAndAdminActivity ($valid, $idNav){
+        $dataActivity = $this->getActivityByValid ($valid);
+        if(($valid == 1)&&($dataActivity != [])) {
+            echo '<h3>Activité valide</h3>';
+            $buttonMessage = "Invalider";
+        } else if (($valid == 0)&&($dataActivity != [])){
+            echo '<h3>Activité non valide</h3>';
+            $buttonMessage = "Valider";
+        }
+      foreach($dataActivity as $value){
+        echo '<form action="'.encodeRoutage(45).'" method="post">';
+        echo '<input type="hidden" name="id" value="'.$value['id'].'"/>';
+        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.'</button>';
+        echo '</form>';
+      }
+
+    }
+
+    public function displayTableForUser ($idNav) {
+        $dataValidTable = $this->getTables (1);
+        print_r($dataValidTable);
+        echo '<style>';
+        foreach($dataValidTable as $value) {
+            echo '#hiddenForm'.$value['PositionTable'].' {
+                padding-top: 0.5em;
+                padding-bottom: 0.2em;
+                top: 35%;
+                left: 35%;
+                background-color: var(--main-background-MagicForm);
+                -webkit-box-shadow: var(--main-shadow);
+                box-shadow: var(--main-shadow);
+                position: absolute;
+                width: 30%;
+                display: none;
+                /* border: 1px solid black; */
+                border: var(--main-border);
+                border-radius: var(--main-radius);
+                z-index: 2;
+              }
+              #magic'.$value['PositionTable'].'{
+
+              }';
+        }
+        echo '</style>';
+
+        foreach($dataValidTable as $value) {
+            echo '<div>
+            <button type="button" id="magic'.$value['PositionTable'].'" class="open">Ouvrir '.$value['name'].'</button>
+            </div>
+            <div id="hiddenForm'.$value['PositionTable'].'">
+                <form action="'.encodeRoutage(44).'" method="post">
+                    <input type="hidden" name="idTable" value="'.$value['id'].'"/>
+                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>
+                </form>
+            </div>';
+        }
+        echo '<script type="text/javascript" defer>';
+        foreach($dataValidTable as $value) {
+           
+            echo 'let jeckyl'.$value['id'].' = document.getElementById("magic'.$value['PositionTable'].'");
+            let magax'.$value['id'].' = document.getElementById("hiddenForm'.$value['PositionTable'].'");
+            let open'.$value['PositionTable'].' = false;
+            jeckyl'.$value['id'].'.addEventListener("click", function(){
+              if(!open'.$value['PositionTable'].') {
+                jeckyl'.$value['id'].'.innerText = "Fermer '.$value['name'].'";
+                magax'.$value['id'].'.style.display = "block";
+                open'.$value['PositionTable'].' = true;
+              } else {
+                jeckyl'.$value['id'].'.innerText = "Ouvrir '.$value['name'].'";
+                magax'.$value['id'].'.style.display = "none";
+                open'.$value['PositionTable'].' = false;
+              }
+
+              return open'.$value['PositionTable'].';
+            });';
+         
+        }
+        echo '</script>';
+    }
 
 }
