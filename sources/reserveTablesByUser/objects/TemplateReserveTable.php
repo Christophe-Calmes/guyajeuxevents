@@ -138,6 +138,31 @@ Class TemplateReserveTables extends SQLAcessReserTables {
       }
 
     }
+    public function displayAndAdminConsommation ($valid, $idNav){
+        $dataConsommation = $this->getConsommationByValid ($valid);
+        if(($valid == 1)&&($dataConsommation != [])) {
+            echo '<h3>Consommation valide</h3>';
+            $buttonMessage = "Invalider";
+        } else if (($valid == 0)&&($dataConsommation != [])){
+            echo '<h3>Consommation non valide</h3>';
+            $buttonMessage = "Valider";
+        }
+      foreach($dataConsommation as $value){
+        echo '<div class="flex-rows">';
+        echo '<form action="'.encodeRoutage(49).'" method="post">';
+        echo '<input type="hidden" name="id" value="'.$value['id'].'"/>';
+        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.' '.$value['name'].'</button>';
+        echo '</form>';
+        if($value['valid'] == 0){
+            echo '<form action="'.encodeRoutage(48).'" method="post">';
+            echo '<input type="hidden" name="id" value="'.$value['id'].'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Suppression de '.$value['name'].'</button>';
+            echo '</form>';
+        }
+        echo '</div>';
+      }
+
+    }
 
     public function displayTableForUser ($idNav) {
         $dataValidTable = $this->getTables (1);

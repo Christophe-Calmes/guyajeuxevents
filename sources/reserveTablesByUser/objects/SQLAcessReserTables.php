@@ -51,14 +51,39 @@ Class SQLAcessReserTables {
         ActionDB::access($update, $param, 1);
         return  $this->updateNumberOfChair ();
     }
-    public function insertNewActivity ($param) {
-        $insert = "INSERT INTO `activity`(`name`) VALUES (:name)";
+    protected function getConsommationByValid ($valid) {
+        $select = "SELECT `id`, `name`, `valid` FROM `consommations` WHERE `valid` =  :valid ORDER BY `name` ;";
+        $param= [['prep'=>':valid', 'variable'=>$valid]];
+        return ActionDB::select($select, $param, 1);
+    }
+    public function insertNewConsommation ($param) {
+        $insert = "INSERT INTO `consommations`(`name`) VALUES (:name)";
         ActionDB::access($insert, $param, 1);
+    }
+    public function inverseConsommation($id) {
+        $select = "SELECT `valid` FROM `consommations` WHERE `id` = :id;";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        $valid = ActionDB::select($select, $param, 1);
+        if($valid[0]['valid'] == 1) {
+            $update = "UPDATE `consommations` SET`valid`= 0 WHERE `id`=:id";
+        } else {
+            $update = "UPDATE `consommations` SET`valid`= 1 WHERE `id`=:id";
+        }
+        return ActionDB::access($update, $param, 1);
+    }
+    public function delInvalidConsommation($id) {
+        $delete="DELETE FROM `consommations` WHERE `id`=:id AND `valid`=0;";
+        $param=[['prep'=>':id', 'variable'=>$id]];
+        return ActionDB::access($delete, $param, 1);
     }
     protected function getActivityByValid ($valid) {
         $select = "SELECT `id`, `name`, `valid` FROM `activity` WHERE `valid` =  :valid ORDER BY `name` ;";
         $param= [['prep'=>':valid', 'variable'=>$valid]];
         return ActionDB::select($select, $param, 1);
+    }
+    public function insertNewActivity ($param) {
+        $insert = "INSERT INTO `activity`(`name`) VALUES (:name)";
+        ActionDB::access($insert, $param, 1);
     }
     public function inverseValidActivity($id) {
         $select = "SELECT `valid` FROM `activity` WHERE `id` = :id;";
