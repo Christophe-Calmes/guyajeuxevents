@@ -123,10 +123,18 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             $buttonMessage = "Valider";
         }
       foreach($dataActivity as $value){
+        echo '<div class="flex-rows">';
         echo '<form action="'.encodeRoutage(45).'" method="post">';
         echo '<input type="hidden" name="id" value="'.$value['id'].'"/>';
-        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.'</button>';
+        echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">'.$buttonMessage.' '.$value['name'].'</button>';
         echo '</form>';
+        if($value['valid'] == 0){
+            echo '<form action="'.encodeRoutage(46).'" method="post">';
+            echo '<input type="hidden" name="id" value="'.$value['id'].'"/>';
+            echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Suppression de '.$value['name'].'</button>';
+            echo '</form>';
+        }
+        echo '</div>';
       }
 
     }

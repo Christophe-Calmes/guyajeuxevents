@@ -34,9 +34,6 @@ class Controles {
       return false;
     }
   }
-  public function findIdUserByLogin($login) {
-    
-  }
   function __destruct() {
   }
 
