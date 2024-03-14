@@ -194,7 +194,6 @@ Class TemplateReserveTables extends SQLAcessReserTables {
                 z-index: 2;
               }
               #magic'.$value['PositionTable'].'{
-
               }';
         }
         echo '</style>';
@@ -211,9 +210,9 @@ Class TemplateReserveTables extends SQLAcessReserTables {
                 <label class="bold" for="dateRserve">Le jour de votre réservation ?</label>
                 <input type="datetime-local" id="dateReserve" name="dateReserve" required/>
                 <label class="bold" for="endOfReserve">Horraire de fin de réservation</label>
-                <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="21:30" required/>
-                <label class="bold" for="max">Réservation pour combien de personnes ?</label>
-                <br/><input type="number" id="max" name="max" min="1" value="'.$valueNumber.'" max="'.$value['max'].'"/>
+                <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="23:30" required/>
+                <label class="bold" for="numberPeople">Réservation pour combien de personnes ?</label>
+                <input type="number" id="numberPeople" name="numberPeople" min="1" value="'.$valueNumber.'" max="'.$value['max'].'"/>
                     <input type="hidden" name="idTable" value="'.$value['id'].'"/>'; 
                     $this->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
                     $this->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
@@ -261,15 +260,20 @@ Pas de commentaire.
        
         foreach($dataScheduling as $value) {
             if($value['closeDay'] == 0) {
+                if(substr($value['closeAfternoon'],0,-3) == '23:59') {
+                    $hour = '00:00';
+                } else {
+                    $hour = substr($value['closeAfternoon'],0,-3);
+                }
                 echo '<div class="shoppingHour">
                 <div class="dayOfWeek">'.$this->dayOfWeek[$value['dayOfWeekW']].'</div>
                 <div class="OpenMorning">'.substr($value['openMorning'],0,-3).'</div>
                 <div class="CloseMorning">'.substr($value['closeMorning'],0,-3).'</div>
                 <div class="OpenAfternoon">'.substr($value['openAfternoon'],0,-3).'</div>
-                <div class="CloseAfternoon">'.substr($value['closeAfternoon'],0,-3).'</div>
+                <div class="CloseAfternoon">'.$hour.'</div>
               </div>';
             } else {
-                echo '<div>Fermeture</div>';
+                echo '<div>Fermeture le '.$this->dayOfWeek[$value['dayOfWeekW']].'</div>';
             }
         }
        

@@ -87,9 +87,11 @@ a {
 .bold {
   font-weight: bolder;
   margin-bottom: 0.5em;
+  color: var(--color-darkGreen);
 }
 .bold::first-letter {
   text-transform: capitalize;
+ 
 }
 .alignLi {
   display: block ruby;
@@ -101,6 +103,12 @@ a {
   
 
 /*Flex*/
+.hoursOfShopping {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  margin-bottom: auto;
+}
 .flex-colonne-left {
   display: flex;
   flex-direction: column;
@@ -182,7 +190,9 @@ a {
     flex-wrap: nowrap;
     align-items: flex-start;
 }
-
+.open{
+  width: 15vw;
+}
 
 .listClass {
   list-style: none;

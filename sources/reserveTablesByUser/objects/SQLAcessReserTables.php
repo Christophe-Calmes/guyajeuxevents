@@ -143,5 +143,12 @@ Class SQLAcessReserTables {
         }
         
     }
+    public function addReservedTableByUser($param){
+        $insert = "INSERT INTO `reserveTables`
+        ( `idUser`, `idTable`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`) 
+        VALUES 
+        (:idUser, :idTable, :numberPeople, :comment, :dateReserve, :endOfReserve, :idActivity, :idConsommation)";
+        ActionDB::access($insert, $param, 1);
+    }
     
 }
