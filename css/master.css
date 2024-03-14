@@ -471,6 +471,25 @@ transition: display 3s;
 }
 /*Fin présentation graines*/
 /*Grid */
+.shoppingHour {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0em 5px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "dayOfWeek OpenMorning CloseMorning OpenAfternoon CloseAfternoon";
+}
+
+.dayOfWeek { grid-area: dayOfWeek; }
+
+.OpenMorning { grid-area: OpenMorning; }
+
+.CloseMorning { grid-area: CloseMorning; }
+
+.OpenAfternoon { grid-area: OpenAfternoon; }
+
+.CloseAfternoon { grid-area: CloseAfternoon; }
+
 .moduleNav {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;

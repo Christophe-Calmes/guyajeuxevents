@@ -249,5 +249,30 @@ Pas de commentaire.
         }
         echo '</script>';
     }
+    public function schedulingShopping () {
+        $dataScheduling = $this->scheduleShop ();
+        echo '<div class="shoppingHour">
+                <div class="dayOfWeek">Jour de la semaine</div>
+                <div class="OpenMorning">Ouverture matin</div>
+                <div class="CloseMorning">Fermeture matin</div>
+                <div class="OpenAfternoon">Ouverture après midi</div>
+                <div class="CloseAfternoon">Fermeture</div>
+              </div>';
+       
+        foreach($dataScheduling as $value) {
+            if($value['closeDay'] == 0) {
+                echo '<div class="shoppingHour">
+                <div class="dayOfWeek">'.$this->dayOfWeek[$value['dayOfWeekW']].'</div>
+                <div class="OpenMorning">'.substr($value['openMorning'],0,-3).'</div>
+                <div class="CloseMorning">'.substr($value['closeMorning'],0,-3).'</div>
+                <div class="OpenAfternoon">'.substr($value['openAfternoon'],0,-3).'</div>
+                <div class="CloseAfternoon">'.substr($value['closeAfternoon'],0,-3).'</div>
+              </div>';
+            } else {
+                echo '<div>Fermeture</div>';
+            }
+        }
+       
+    }
 
 }
