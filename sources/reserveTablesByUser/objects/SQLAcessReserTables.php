@@ -131,6 +131,28 @@ Class SQLAcessReserTables {
             return false;
         }
     }
+    public function controleDoublonReservation($idTable, $dateReserve, $endOfReserve){
+        $select="SELECT`dateReserve`, `endOfReserve` 
+        FROM `reserveTables` 
+        WHERE `idTable`= :idTable AND `dateReserve`>= :dateReserve AND `endOfReserve`>=:endOfReserve;";
+        $param=[['prep'=>':idTable', 'variable'=>$idTable],
+            ['prep'=>':dateReserve', 'variable'=>$dateReserve],
+            ['prep'=>':endOfReserve', 'variable'=>$endOfReserve],];
+        $data = ActionDB::select($select,$param,1);
+        if($data ==[]) {
+            return false;
+        } else {
+            return true;
+        }
+       
+    }
+    protected function getReservedDateOfTable($idTable) {
+        $select="SELECT `dateReserve`, `endOfReserve` 
+        FROM `reserveTables` 
+        WHERE `idTable`=:idTable AND `valid`=1;";
+        $param=[['prep'=>':idTable', 'variable'=>$idTable],];
+        return ActionDB::select($select, $param, 1);
+    }
 
     public function checkAReserveDate($dateTime) {
         $dayOfWeek = $this->weekOfDay($dateTime);
@@ -143,6 +165,7 @@ Class SQLAcessReserTables {
         }
         
     }
+    
     public function addReservedTableByUser($param){
         $insert = "INSERT INTO `reserveTables`
         ( `idUser`, `idTable`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`) 

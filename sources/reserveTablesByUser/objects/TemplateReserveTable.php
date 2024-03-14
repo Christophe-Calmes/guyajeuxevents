@@ -1,6 +1,7 @@
 <?php
 require('sources/reserveTablesByUser/objects/SQLAcessReserTables.php');
 require('functions/functionPresentationText.php');
+require ('functions/functionDateTime.php');
 function inputOpenClose ($open, $close, $nameOpen, $nameClose) {
     echo '<td>
     <label for="openMorning"></label>
@@ -179,15 +180,14 @@ Class TemplateReserveTables extends SQLAcessReserTables {
         echo '<style>';
         foreach($dataValidTable as $value) {
             echo '#hiddenForm'.$value['PositionTable'].' {
-                padding-top: 0.5em;
-                padding-bottom: 0.2em;
+                padding:0.5em;
                 top: 15%;
                 left: 55%;
                 background-color: var(--main-background-MagicForm);
                 -webkit-box-shadow: var(--main-shadow);
                 box-shadow: var(--main-shadow);
                 position: absolute;
-                width: 30%;
+                width: auto;
                 display: none;
                 border: var(--main-border);
                 border-radius: var(--main-radius);
@@ -203,14 +203,22 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             echo '<div>
             <button type="button" id="magic'.$value['PositionTable'].'" class="open">Ouvrir la table '.$value['name'].'</button>
             </div>
-            <div id="hiddenForm'.$value['PositionTable'].'">
-                <form class="flex-colonne-form" action="'.encodeRoutage(50).'" method="post">
+            <div id="hiddenForm'.$value['PositionTable'].'" class="flex-rows">';
+            echo'<aside>
+                    <ul>';
+                    $dataReserve = $this->getReservedDateOfTable($value['id']);
+                    foreach($dataReserve as $valeur){
+                        echo '<li>Réservé le '.formatDateHeureFr($valeur['dateReserve']).' jusqu\'a '.justHeureFr($valeur['endOfReserve']).' </li>';
+                    }
+                    echo '</ul>
+                </aside>';
+        echo '<form class="flex-colonne-form" action="'.encodeRoutage(50).'" method="post">
                 <h3 class="subTitleSite">Table '.$value['name'].'</h3>
                 <img class="modal" src="'.$pathPicture.$value['pictureOfTable'].'" alt=".'.$value['name'].'."/>
                 <label class="bold" for="dateRserve">Le jour de votre réservation ?</label>
                 <input type="datetime-local" id="dateReserve" name="dateReserve" required/>
                 <label class="bold" for="endOfReserve">Horraire de fin de réservation</label>
-                <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="23:30" required/>
+                <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="23:59" required/>
                 <label class="bold" for="numberPeople">Réservation pour combien de personnes ?</label>
                 <input type="number" id="numberPeople" name="numberPeople" min="1" value="'.$valueNumber.'" max="'.$value['max'].'"/>
                     <input type="hidden" name="idTable" value="'.$value['id'].'"/>'; 
@@ -221,8 +229,10 @@ Class TemplateReserveTables extends SQLAcessReserTables {
 Pas de commentaire.
 </textarea>';
             echo'<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>
-                </form>
-            </div>';
+                </form>';
+        
+    echo '</div>';
+         
         }
         echo '</div>';
         echo '<script type="text/javascript" defer>';

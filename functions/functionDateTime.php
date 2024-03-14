@@ -35,3 +35,31 @@ function year($data) {
   $year = substr($date,0,4);
   return $year;
 }
+function formatDateHeureFr($data) {
+    if($data === null) {
+      return 'No date';
+    }
+  
+    setlocale(LC_ALL, "fr_FR");
+    $dateDay = new DateTime($data);
+    $formatter = new IntlDateFormatter(
+      "fr_FR",
+      IntlDateFormatter::FULL,
+      IntlDateFormatter::SHORT
+    );
+    return $formatter->format($dateDay);
+}
+function justHeureFr($data) {
+  if($data === null) {
+    return 'No date';
+  }
+
+  setlocale(LC_ALL, "fr_FR");
+  $dateDay = new DateTime($data);
+  $formatter = new IntlDateFormatter(
+    "fr_FR",
+    IntlDateFormatter::NONE,
+    IntlDateFormatter::SHORT
+  );
+  return $formatter->format($dateDay);
+}
