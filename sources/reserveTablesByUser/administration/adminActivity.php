@@ -2,7 +2,9 @@
 <button type="button" id="magic" class="open">Ajouter une nouvelle activité ?</button>
 </div>
 <div id="hiddenForm">
+<h3 class="subTitleSite">Ajouter une nouvelle activité ?</h3>
 <form class="flex-colonne-form" action="<?=encodeRoutage(44)?>" method="post" enctype="multipart/form-data">
+    
     <label for="name">Nom de l'activité ?</label>
     <input type="text" id="name" name="name" placeholder="Nom de la table"/>
     <button class="buttonForm" type="submit" name="idNav" value="<?=$idNav?>">Ajouter</button>

@@ -101,4 +101,47 @@ Class SQLAcessReserTables {
         $param=[['prep'=>':id', 'variable'=>$id]];
         return ActionDB::access($delete, $param, 1);
     }
+    protected function abstractParam($tableName) {
+        $select ="SELECT `id`, `name`, `valid` FROM `{$tableName}` WHERE `valid`=1";
+        return ActionDB::select($select, [], 1);
+    }
+    private function weekOfDay($dateTime){
+        $date = new DateTime($dateTime);
+        return $date->format('w');
+    }
+    private function openingDay($dayOfWeek){
+        $select="SELECT `closeDay` FROM `shopOpeingHours` WHERE `dayOfWeekW` = :dayOfWeekW;";
+        $param =[['prep'=>':dayOfWeekW', 'variable'=>$dayOfWeek]];
+        $data = ActionDB::select($select, $param, 1);
+        if($data[0]['closeDay']==0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function schedulingIntervall($dayOfWeek, $dateTime) {
+        $select ="SELECT `openMorning`, `closeMorning`, `openAfternoon`, `closeAfternoon` FROM `shopOpeingHours` WHERE `dayOfWeekW` = :dayOfWeekW;";
+        $param =[['prep'=>':dayOfWeekW', 'variable'=>$dayOfWeek]];
+        $data = ActionDB::select($select, $param, 1);
+        $Reserve = new DateTime($dateTime);
+        $time = $Reserve->format("H:i");
+        if(($time>=$data[0]['openMorning'])&&($time<$data[0]['closeMorning'])||(($time>=$data[0]['openAfternoon'])&&($time<$data[0]['closeAfternoon']))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkAReserveDate($dateTime) {
+        $dayOfWeek = $this->weekOfDay($dateTime);
+        $opening = $this->openingDay($dayOfWeek);
+   
+        if($opening) {
+            return $this->schedulingIntervall($dayOfWeek, $dateTime);
+        } else {
+            return $opening;
+        }
+        
+    }
+    
 }

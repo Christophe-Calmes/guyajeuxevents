@@ -163,24 +163,32 @@ Class TemplateReserveTables extends SQLAcessReserTables {
       }
 
     }
+    private function selectAbstractParam($tableName, $fieldName, $label) {
+        $data = $this->abstractParam($tableName);
+        echo '<label class="bold"  for="id'.$fieldName.'">'.$label.'</label>';
+        echo '<select name="id'.$fieldName.'">';
+            foreach($data as $value){
+                echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+            }
+        echo '</select>';
+    }
 
     public function displayTableForUser ($idNav) {
+        $pathPicture ="sources/pictures/pictureTables/";
         $dataValidTable = $this->getTables (1);
-        print_r($dataValidTable);
         echo '<style>';
         foreach($dataValidTable as $value) {
             echo '#hiddenForm'.$value['PositionTable'].' {
                 padding-top: 0.5em;
                 padding-bottom: 0.2em;
-                top: 35%;
-                left: 35%;
+                top: 15%;
+                left: 55%;
                 background-color: var(--main-background-MagicForm);
                 -webkit-box-shadow: var(--main-shadow);
                 box-shadow: var(--main-shadow);
                 position: absolute;
                 width: 30%;
                 display: none;
-                /* border: 1px solid black; */
                 border: var(--main-border);
                 border-radius: var(--main-radius);
                 z-index: 2;
@@ -190,35 +198,51 @@ Class TemplateReserveTables extends SQLAcessReserTables {
               }';
         }
         echo '</style>';
-
+        echo '<div class="flex-colonne-left">';
         foreach($dataValidTable as $value) {
+            $valueNumber = round(log($value['max']))+2;
             echo '<div>
-            <button type="button" id="magic'.$value['PositionTable'].'" class="open">Ouvrir '.$value['name'].'</button>
+            <button type="button" id="magic'.$value['PositionTable'].'" class="open">Ouvrir la table '.$value['name'].'</button>
             </div>
             <div id="hiddenForm'.$value['PositionTable'].'">
-                <form action="'.encodeRoutage(44).'" method="post">
-                    <input type="hidden" name="idTable" value="'.$value['id'].'"/>
-                    <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>
+                <form class="flex-colonne-form" action="'.encodeRoutage(50).'" method="post">
+                <h3 class="subTitleSite">Table '.$value['name'].'</h3>
+                <img class="modal" src="'.$pathPicture.$value['pictureOfTable'].'" alt=".'.$value['name'].'."/>
+                <label class="bold" for="dateRserve">Le jour de votre réservation ?</label>
+                <input type="datetime-local" id="dateReserve" name="dateReserve" required/>
+                <label class="bold" for="endOfReserve">Horraire de fin de réservation</label>
+                <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="21:30" required/>
+                <label class="bold" for="max">Réservation pour combien de personnes ?</label>
+                <br/><input type="number" id="max" name="max" min="1" value="'.$valueNumber.'" max="'.$value['max'].'"/>
+                    <input type="hidden" name="idTable" value="'.$value['id'].'"/>'; 
+                    $this->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
+                    $this->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
+            echo '<label class="bold" for="comment">Nous faire parvenir un commentaire ?</label>
+<textarea class="textAreaNew" id="text" name="comment" rows="7" cols="30">
+Pas de commentaire.
+</textarea>';
+            echo'<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>
                 </form>
             </div>';
         }
+        echo '</div>';
         echo '<script type="text/javascript" defer>';
         foreach($dataValidTable as $value) {
-           
             echo 'let jeckyl'.$value['id'].' = document.getElementById("magic'.$value['PositionTable'].'");
             let magax'.$value['id'].' = document.getElementById("hiddenForm'.$value['PositionTable'].'");
             let open'.$value['PositionTable'].' = false;
             jeckyl'.$value['id'].'.addEventListener("click", function(){
               if(!open'.$value['PositionTable'].') {
-                jeckyl'.$value['id'].'.innerText = "Fermer '.$value['name'].'";
+                jeckyl'.$value['id'].'.innerText = "Fermer la table '.$value['name'].'";
+                jeckyl'.$value['id'].'.style.backgroundColor = "#700B15";
                 magax'.$value['id'].'.style.display = "block";
                 open'.$value['PositionTable'].' = true;
               } else {
-                jeckyl'.$value['id'].'.innerText = "Ouvrir '.$value['name'].'";
+                jeckyl'.$value['id'].'.innerText = "Ouvrir la table '.$value['name'].'";
+                jeckyl'.$value['id'].'.style.backgroundColor = "#03470D";
                 magax'.$value['id'].'.style.display = "none";
                 open'.$value['PositionTable'].' = false;
               }
-
               return open'.$value['PositionTable'].';
             });';
          
