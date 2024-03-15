@@ -17,7 +17,6 @@ $_POST['endOfReserve']=$dateTime->format('Y-m-d H:i');
 $checkDateShedulingShop = new SQLAcessReserTables();
 $checkDateShedulingShop->controleDoublonReservation(filter($_POST['idTable']),filter($_POST['dateReserve']), filter($_POST['endOfReserve']));
 if(($mark == $controlePostData)&&($checkDateShedulingShop->checkAReserveDate(filter($_POST['dateReserve'])))&&(!$checkDateShedulingShop->controleDoublonReservation(filter($_POST['idTable']),filter($_POST['dateReserve']), filter($_POST['endOfReserve'])))){
-    
     $parametre = new Preparation();
     $param = $parametre->creationPrepIdUser ($_POST);
     $checkDateShedulingShop->addReservedTableByUser($param);

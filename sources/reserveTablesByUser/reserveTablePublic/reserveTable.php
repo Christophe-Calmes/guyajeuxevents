@@ -1,6 +1,7 @@
 <?php
 require('sources/reserveTablesByUser/objects/TemplateReserveTable.php');
 $tables = new TemplateReserveTables();
+$tables->archiveReserveOfTable();
 echo '<section class="flex-rows">';
     echo '<article>';
         $tables->displayTableForUser ($idNav);

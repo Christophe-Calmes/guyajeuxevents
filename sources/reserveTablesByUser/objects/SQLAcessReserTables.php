@@ -144,12 +144,11 @@ Class SQLAcessReserTables {
         } else {
             return true;
         }
-       
     }
-    protected function getReservedDateOfTable($idTable) {
-        $select="SELECT `dateReserve`, `endOfReserve` 
-        FROM `reserveTables` 
-        WHERE `idTable`=:idTable AND `valid`=1;";
+    public function getReservedDateOfTable($idTable) {
+        $select="SELECT `dateReserve`, `endOfReserve`
+        FROM `reserveTables`
+        WHERE `idTable`=:idTable AND `reserveTables`.`valid`=1;";
         $param=[['prep'=>':idTable', 'variable'=>$idTable],];
         return ActionDB::select($select, $param, 1);
     }
@@ -165,13 +164,25 @@ Class SQLAcessReserTables {
         }
         
     }
-    
     public function addReservedTableByUser($param){
         $insert = "INSERT INTO `reserveTables`
         ( `idUser`, `idTable`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`) 
         VALUES 
         (:idUser, :idTable, :numberPeople, :comment, :dateReserve, :endOfReserve, :idActivity, :idConsommation)";
         ActionDB::access($insert, $param, 1);
+    }
+    public function archiveReserveOfTable() {
+        $dateOfTheDay = new DateTime();
+        $date = $dateOfTheDay->format('Y-m-d H:i');
+        $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<:dateOfDay;";
+        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
+        return ActionDB::access($update, $param, 1);
+    }
+    public function nameOfTable($idTable) {
+        $select = "SELECT `name` FROM `gamesTables` WHERE `id`=:idTable";
+        $param=[['prep'=>':idTable', 'variable'=>$idTable],];
+        $name =  ActionDB::select($select, $param, 1);
+        return $name[0]['name'];
     }
     
 }

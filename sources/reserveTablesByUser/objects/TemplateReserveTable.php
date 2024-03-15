@@ -173,6 +173,12 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             }
         echo '</select>';
     }
+    public function currentAndFuturBookings($idTable){
+
+echo'<aside>
+        <a href="'.findTargetRoute(125).'&idTable='.$idTable.'">Voir les réservations</a>
+    </aside>';
+    }
 
     public function displayTableForUser ($idNav) {
         $pathPicture ="sources/pictures/pictureTables/";
@@ -203,15 +209,9 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             echo '<div>
             <button type="button" id="magic'.$value['PositionTable'].'" class="open">Ouvrir la table '.$value['name'].'</button>
             </div>
+            
             <div id="hiddenForm'.$value['PositionTable'].'" class="flex-rows">';
-            echo'<aside>
-                    <ul>';
-                    $dataReserve = $this->getReservedDateOfTable($value['id']);
-                    foreach($dataReserve as $valeur){
-                        echo '<li>Réservé le '.formatDateHeureFr($valeur['dateReserve']).' jusqu\'a '.justHeureFr($valeur['endOfReserve']).' </li>';
-                    }
-                    echo '</ul>
-                </aside>';
+            $this->currentAndFuturBookings($value['id']);
         echo '<form class="flex-colonne-form" action="'.encodeRoutage(50).'" method="post">
                 <h3 class="subTitleSite">Table '.$value['name'].'</h3>
                 <img class="modal" src="'.$pathPicture.$value['pictureOfTable'].'" alt=".'.$value['name'].'."/>
