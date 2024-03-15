@@ -383,6 +383,20 @@ width: 25%;}
     border: var(--color-blueOneChair) solid 1px;
   }
 
+  .itemReserveTable {
+    min-height: auto;
+    min-width: auto;
+    padding: 0.5em;
+    background: var(--color-chair);
+    color: rgb(32, 32, 32);
+    border-radius: var(--main-radiusInput);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border: var(--color-blueOneChair) solid 1px;
+    flex-direction: column;
+}
+
 
 /*Variable CSS boutton*/
 

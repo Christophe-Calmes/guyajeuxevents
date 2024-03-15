@@ -6,9 +6,8 @@ $table = new TemplateReserveTables();
 $dataBookingTable = $table->getReservedDateOfTable($idTable);
 $tableName = $table->nameOfTable($idTable);
 if($dataBookingTable != []) {
-    echo '<h3 class="">Table '.$tableName .'</h3>';
+    echo '<h3 class="">Les réservation de la Table '.$tableName .'</h3>';
     echo '<ul>';
-
     foreach($dataBookingTable as $value) {
        echo '<li>Réserver le '.formatDateHeureFr($value['dateReserve']).' jusqu\'à '.justHeureFr($value['endOfReserve']).'.</li>';
     }
@@ -20,4 +19,4 @@ if($dataBookingTable != []) {
 
 
 
-echo '<a href="'.findTargetRoute(122).'">Retour</a>';
+echo '<a href="'.findTargetRoute(128).'">Retour</a>';

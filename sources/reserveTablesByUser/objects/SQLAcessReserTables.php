@@ -184,5 +184,22 @@ Class SQLAcessReserTables {
         $name =  ActionDB::select($select, $param, 1);
         return $name[0]['name'];
     }
+    protected function bookingOneUser($idUser, $valid){
+        $select = "SELECT `reserveTables`.`id`, `idUser`, `idTable`, `gamesTables`.`name` AS `nameTable` ,`dateCreat`, `pictureOfTable`, 
+        `dateUpdate`, `numberPeople`, `comment`, `dateReserve`, 
+        `endOfReserve`, `idActivity`, `activity`.`name` AS `nameActivity`, `idConsommation`, `consommations`.`name` AS `nameConsommation`, `reserveTables`.`valid` 
+        FROM `reserveTables`
+        INNER JOIN `activity` ON `activity`.`id`=`idActivity`
+        INNER JOIN `consommations` ON `consommations`.`id`=`idConsommation`
+        INNER JOIN `gamesTables` ON `gamesTables`.`id`=`idTable`
+        WHERE `idUser`=:idUser AND `reserveTables`.`valid`=:valid AND `dateReserve`>=:dateOfday;";
+             $dateOfTheDay = new DateTime();
+             $date = $dateOfTheDay->format('Y-m-d H:i');
+        $param =[['prep'=>':idUser', 'variable'=>$idUser],
+                 ['prep'=>':dateOfday', 'variable'=>$date],
+                ['prep'=>':valid', 'variable'=>$valid]];
+        return ActionDB::select($select, $param, 1);
+        
+    }
     
 }

@@ -13,11 +13,13 @@ function inputOpenClose ($open, $close, $nameOpen, $nameClose) {
 Class TemplateReserveTables extends SQLAcessReserTables {
    private $dayOfWeek;
    private $yes;
+   private $pathPicture;
 
     public function __construct()
     {
         $this->dayOfWeek = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
         $this->yes=['Non', 'Oui'];
+        $this->pathPicture ="sources/pictures/pictureTables/";
     }
 
     public function displayScheduleShop ($idNav) {
@@ -181,7 +183,6 @@ echo'<aside>
     }
 
     public function displayTableForUser ($idNav) {
-        $pathPicture ="sources/pictures/pictureTables/";
         $dataValidTable = $this->getTables (1);
         echo '<style>';
         foreach($dataValidTable as $value) {
@@ -214,7 +215,7 @@ echo'<aside>
             $this->currentAndFuturBookings($value['id']);
         echo '<form class="flex-colonne-form" action="'.encodeRoutage(50).'" method="post">
                 <h3 class="subTitleSite">Table '.$value['name'].'</h3>
-                <img class="modal" src="'.$pathPicture.$value['pictureOfTable'].'" alt=".'.$value['name'].'."/>
+                <img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['name'].'."/>
                 <label class="bold" for="dateRserve">Le jour de votre réservation ?</label>
                 <input type="datetime-local" id="dateReserve" name="dateReserve" required/>
                 <label class="bold" for="endOfReserve">Horraire de fin de réservation</label>
@@ -287,6 +288,26 @@ Pas de commentaire.
             }
         }
        
+    }
+    public function displayAndAdminBookingTableByUser($idUser) {
+        $dataBooking = $this->bookingOneUser($idUser, 1);
+        print_r($dataBooking);
+        echo '<article class="gallery">';
+            foreach($dataBooking as $value) {
+                echo '<div class="itemReserveTable">';
+                echo '<h3 class="subTitleSite">Table '.$value['nameTable'].'</h3>';
+                echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
+                echo '<article>';
+                echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
+                echo '<p>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</p>';
+                echo '<p>Activité : '.$value['nameActivity'].'</p>';
+                echo '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>';
+                echo '<p>Consommation principale prévus : '.$value['nameConsommation'].'</p>';
+                echo '<p>Commentaire :<br/>'.$value['comment'].'</p>';
+                echo '</article>';
+                echo'</div>';
+            }
+        echo '</article>';
     }
 
 }
