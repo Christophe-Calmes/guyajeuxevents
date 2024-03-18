@@ -140,12 +140,6 @@ Class SQLAcessReserTables {
             ['prep'=>':endOfReserve', 'variable'=>$endOfReserve],];
         $data = ActionDB::select($select,$param,1);
         if($data[0]['total'] == 0) {
-            print_r($param);
-            echo'<br/>';
-            echo'<br/>';
-            echo'<br/>';
-            print_r($data);
-            
             return 0;
         } else {
             return 1;
@@ -162,8 +156,13 @@ Class SQLAcessReserTables {
 
     public function checkAReserveDate($dateTime) {
         $dayOfWeek = $this->weekOfDay($dateTime);
+        echo 'checkAReserveDate($dateTime)<br/>';
+        print_r($dayOfWeek);
         $opening = $this->openingDay($dayOfWeek);
-   
+        echo '<br/>';
+       
+        print_r($opening);
+        echo '<br/>';
         if($opening) {
             return $this->schedulingIntervall($dayOfWeek, $dateTime);
         } else {
@@ -206,8 +205,11 @@ Class SQLAcessReserTables {
         $param =[['prep'=>':idUser', 'variable'=>$idUser],
                  ['prep'=>':dateOfday', 'variable'=>$date],
                 ['prep'=>':valid', 'variable'=>$valid]];
-        return ActionDB::select($select, $param, 1);
-        
+        return ActionDB::select($select, $param, 1);   
+    }
+    public function delReservationByUser($param) {
+       $delete = "DELETE FROM `reserveTables` WHERE `id`=:id AND `idUser`=:idUser";
+       return ActionDB::access($delete, $param, 1); 
     }
     
 }

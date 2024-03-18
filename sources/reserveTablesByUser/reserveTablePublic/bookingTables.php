@@ -16,7 +16,5 @@ if($dataBookingTable != []) {
     echo '<h3 class="">Table '.$tableName.'</h3>';
     echo '<article>Aucune réservation pour le moment.</article>';
 }
-
-
-
 echo '<a href="'.findTargetRoute(128).'">Retour</a>';
+echo '<a href="'.findTargetRoute(129).'">Vos réservations</a>';

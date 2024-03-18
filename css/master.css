@@ -387,7 +387,7 @@ width: 25%;}
     padding: 0 1vw;
     max-width:100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, 400px);
+    grid-template-columns: repeat(auto-fit, 410px);
     grid-gap: 5px;
     justify-content: center;
   }
@@ -395,6 +395,8 @@ width: 25%;}
     min-height: auto;
     min-width: auto;
     padding: 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     background: var(--color-chair);
     color: rgb(32, 32, 32);
     border-radius: var(--main-radiusInput);

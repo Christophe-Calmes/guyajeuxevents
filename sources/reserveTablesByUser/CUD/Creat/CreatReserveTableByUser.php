@@ -7,7 +7,7 @@ array_push($controlePostData, $checkId->controleInteger($_POST['idTable']));
 array_push($controlePostData, $checkId->controleInteger($_POST['idActivity']));
 array_push($controlePostData, $checkId->controleInteger($_POST['idConsommation']));
 array_push($controlePostData, sizePost($_POST['comment'], 750));
-$mark = [1, 1, 1, 1, 0, 1, 0, 0];
+$mark = [1, 1, 1, 1, 0, 1, 1, 0];
 // Contrôle date vs sheduling shop 
 $dateReverseByCustomer = filter($_POST['dateReserve']);
 $dateTime = new DateTime(filter($_POST['dateReserve']));
@@ -23,7 +23,15 @@ if($mark == $controlePostData){
     $parametre = new Preparation();
     $param = $parametre->creationPrepIdUser ($_POST);
     $checkDateShedulingShop->addReservedTableByUser($param);
-    return header('location:../index.php?message=Réservation enregistré correctement&idNav='.$idNav);
+    echo 'Pas soucis horraire de réservation<br/>';
+    print_r($mark);
+    echo '<br/>';
+    print_r($controlePostData);
+    //return header('location:../index.php?message=Réservation enregistré correctement&idNav='.$idNav);
 } else {
-    return header('location:../index.php?message=Soucis horraire de réservation&idNav='.$idNav);
+    echo 'Soucis horraire de réservation<br/>';
+    print_r($mark);
+    echo '<br/>';
+    print_r($controlePostData);
+    //return header('location:../index.php?message=Soucis horraire de réservation&idNav='.$idNav);
 }

@@ -289,25 +289,35 @@ Pas de commentaire.
         }
        
     }
-    public function displayAndAdminBookingTableByUser($idUser) {
+    public function displayAndAdminBookingTableByUser($idUser, $idNav) {
         $dataBooking = $this->bookingOneUser($idUser, 1);
-        print_r($dataBooking);
         echo '<article class="galleryReserveTable">';
+        if($dataBooking !=[]) {
             foreach($dataBooking as $value) {
                 echo '<div class="itemReserveTable">';
-                echo '<h3 class="subTitleSite">Table '.$value['nameTable'].'</h3>';
-                echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
-                echo '<article class="reservedTable">';
-                echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
-                echo '<p>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</p>';
-                echo '<p>Activité : '.$value['nameActivity'].'</p>';
-                echo '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>';
-                echo '<p>Consommation principale prévus : '.$value['nameConsommation'].'</p>';
-                echo '<p>Commentaire :<br/>'.$value['comment'].'</p>';
-                echo '</article>';
-                echo'</div>';
-                
-            }
+                    echo '<h3 class="subTitleSite">Table '.$value['nameTable'].'</h3>';
+                    echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
+                    echo '<article class="reservedTable">';
+                    echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
+                    echo '<p>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</p>';
+                    echo '<p>Activité : '.$value['nameActivity'].'</p>';
+                    echo '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>';
+                    echo '<p>Consommation principale prévus : '.$value['nameConsommation'].'</p>';
+                    echo '<p>Commentaire :<br/>'.$value['comment'].'</p>';
+                    echo '</article>';
+                    echo'<form action="'.encodeRoutage(51).'" method="post">
+                            <input type="hidden" name="id" value="'.$value['id'].'"/>
+                            <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Annuler réservation</button>
+                        </form>';
+                echo'</div>';  
+                }
+        } else{
+            echo '<div class="itemReserveTable">';
+                echo '<a href="'.findTargetRoute(128).'">Aller réserver une table</a>';
+            echo'</div>'; 
+
+        }
+  
         echo '</article>';
     }
 
