@@ -18,20 +18,11 @@ $checkDateShedulingShop = new SQLAcessReserTables();
 array_push($controlePostData, $_POST['endOfReserve']>filter($_POST['dateReserve']));
 array_push($controlePostData, $checkDateShedulingShop->checkAReserveDate(filter($_POST['dateReserve'])));
 array_push($controlePostData,$checkDateShedulingShop->controleDoublonReservation(filter($_POST['idTable']),filter($_POST['dateReserve']), filter($_POST['endOfReserve'])));
-
 if($mark == $controlePostData){
     $parametre = new Preparation();
     $param = $parametre->creationPrepIdUser ($_POST);
     $checkDateShedulingShop->addReservedTableByUser($param);
-    echo 'Pas soucis horraire de réservation<br/>';
-    print_r($mark);
-    echo '<br/>';
-    print_r($controlePostData);
-    //return header('location:../index.php?message=Réservation enregistré correctement&idNav='.$idNav);
+    return header('location:../index.php?message=Réservation enregistré correctement&idNav='.$idNav);
 } else {
-    echo 'Soucis horraire de réservation<br/>';
-    print_r($mark);
-    echo '<br/>';
-    print_r($controlePostData);
-    //return header('location:../index.php?message=Soucis horraire de réservation&idNav='.$idNav);
+    return header('location:../index.php?message=Soucis horraire de réservation&idNav='.$idNav);
 }
