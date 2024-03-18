@@ -7,20 +7,23 @@ array_push($controlePostData, $checkId->controleInteger($_POST['idTable']));
 array_push($controlePostData, $checkId->controleInteger($_POST['idActivity']));
 array_push($controlePostData, $checkId->controleInteger($_POST['idConsommation']));
 array_push($controlePostData, sizePost($_POST['comment'], 750));
-$mark = [1, 1, 1, 1, 0];
+$mark = [1, 1, 1, 1, 0, 1, 0, 0];
 // Contrôle date vs sheduling shop 
 $dateReverseByCustomer = filter($_POST['dateReserve']);
 $dateTime = new DateTime(filter($_POST['dateReserve']));
 $date = $dateTime->format('Y-m-d');
 $dateTime->modify(filter($_POST['endOfReserve']));
-$_POST['endOfReserve']=$dateTime->format('Y-m-d H:i');
+$_POST['endOfReserve']=$dateTime->format('Y-m-d\TH:i');
 $checkDateShedulingShop = new SQLAcessReserTables();
-$checkDateShedulingShop->controleDoublonReservation(filter($_POST['idTable']),filter($_POST['dateReserve']), filter($_POST['endOfReserve']));
-if(($mark == $controlePostData)&&($checkDateShedulingShop->checkAReserveDate(filter($_POST['dateReserve'])))&&(!$checkDateShedulingShop->controleDoublonReservation(filter($_POST['idTable']),filter($_POST['dateReserve']), filter($_POST['endOfReserve'])))){
+array_push($controlePostData, $_POST['endOfReserve']>filter($_POST['dateReserve']));
+array_push($controlePostData, $checkDateShedulingShop->checkAReserveDate(filter($_POST['dateReserve'])));
+array_push($controlePostData,$checkDateShedulingShop->controleDoublonReservation(filter($_POST['idTable']),filter($_POST['dateReserve']), filter($_POST['endOfReserve'])));
+
+if($mark == $controlePostData){
     $parametre = new Preparation();
     $param = $parametre->creationPrepIdUser ($_POST);
     $checkDateShedulingShop->addReservedTableByUser($param);
     return header('location:../index.php?message=Réservation enregistré correctement&idNav='.$idNav);
 } else {
-    return header('location:../index.php?message=Chevauchement de réservation avec un autre utilisateurs&idNav='.$idNav);
+    return header('location:../index.php?message=Soucis horraire de réservation&idNav='.$idNav);
 }

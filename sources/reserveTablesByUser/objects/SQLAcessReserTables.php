@@ -126,29 +126,36 @@ Class SQLAcessReserTables {
         $Reserve = new DateTime($dateTime);
         $time = $Reserve->format("H:i");
         if(($time>=$data[0]['openMorning'])&&($time<$data[0]['closeMorning'])||(($time>=$data[0]['openAfternoon'])&&($time<$data[0]['closeAfternoon']))) {
-            return true;
+            return 1;
         } else {
-            return false;
+            return 0;
         }
     }
     public function controleDoublonReservation($idTable, $dateReserve, $endOfReserve){
-        $select="SELECT`dateReserve`, `endOfReserve` 
+        $select="SELECT COUNT(id) AS `total`
         FROM `reserveTables` 
-        WHERE `idTable`= :idTable AND `dateReserve`>= :dateReserve AND `endOfReserve`>=:endOfReserve;";
+        WHERE `idTable`= :idTable AND `valid`=1  AND `dateReserve` <= :dateReserve AND `endOfReserve`>= :endOfReserve;";
         $param=[['prep'=>':idTable', 'variable'=>$idTable],
             ['prep'=>':dateReserve', 'variable'=>$dateReserve],
             ['prep'=>':endOfReserve', 'variable'=>$endOfReserve],];
         $data = ActionDB::select($select,$param,1);
-        if($data ==[]) {
-            return false;
+        if($data[0]['total'] == 0) {
+            print_r($param);
+            echo'<br/>';
+            echo'<br/>';
+            echo'<br/>';
+            print_r($data);
+            
+            return 0;
         } else {
-            return true;
+            return 1;
         }
     }
     public function getReservedDateOfTable($idTable) {
         $select="SELECT `dateReserve`, `endOfReserve`
         FROM `reserveTables`
-        WHERE `idTable`=:idTable AND `reserveTables`.`valid`=1;";
+        WHERE `idTable`=:idTable AND `reserveTables`.`valid`=1
+        ORDER BY `dateReserve`;";
         $param=[['prep'=>':idTable', 'variable'=>$idTable],];
         return ActionDB::select($select, $param, 1);
     }
@@ -175,7 +182,6 @@ Class SQLAcessReserTables {
         $dateOfTheDay = new DateTime();
         $dateOfTheDay = $dateOfTheDay->modify('-24 hours');
         $date = $dateOfTheDay->format('Y-m-d H:i');
-        print_r($date);
         $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<:dateOfDay;";
         $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
         return ActionDB::access($update, $param, 1);
