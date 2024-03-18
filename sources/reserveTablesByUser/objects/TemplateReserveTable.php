@@ -188,21 +188,30 @@ echo'<aside>
         foreach($dataValidTable as $value) {
             echo '#hiddenForm'.$value['PositionTable'].' {
                 padding:0.5em;
-                top: 15%;
+                top: 10%;
                 left: 55%;
                 background-color: var(--main-background-MagicForm);
                 -webkit-box-shadow: var(--main-shadow);
                 box-shadow: var(--main-shadow);
                 position: absolute;
-                width: auto;
+                width: 20vw;
                 display: none;
                 border: var(--main-border);
                 border-radius: var(--main-radius);
                 z-index: 2;
               }
               #magic'.$value['PositionTable'].'{
+
               }';
         }
+        echo '@media only screen and (max-width: 768px) {';
+            foreach($dataValidTable as $value) {
+                echo '#hiddenForm'.$value['PositionTable'].' {
+                    left: 20%;
+                    width: 60vw;
+                }';
+            }
+        echo '}';
         echo '</style>';
         echo '<div class="flex-colonne-left">';
         foreach($dataValidTable as $value) {
