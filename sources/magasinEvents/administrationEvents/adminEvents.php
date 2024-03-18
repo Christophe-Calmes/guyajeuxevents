@@ -2,6 +2,8 @@
 require('functions/functionPagination.php');
 require ('sources/magasinEvents/objects/TemplateEvents.php');
 $events = new TemplateEvents();
+$events->archiveEvent();
+
 echo '<section><h1 class="subTitleSite">Administrer un événement</h1>';
 if(isset($_GET['page'])&&(!empty($_GET['page']))){
     $currentPage = filter($_GET['page']);

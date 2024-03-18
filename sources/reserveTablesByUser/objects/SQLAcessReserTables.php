@@ -173,7 +173,9 @@ Class SQLAcessReserTables {
     }
     public function archiveReserveOfTable() {
         $dateOfTheDay = new DateTime();
+        $dateOfTheDay = $dateOfTheDay->modify('-24 hours');
         $date = $dateOfTheDay->format('Y-m-d H:i');
+        print_r($date);
         $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<:dateOfDay;";
         $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
         return ActionDB::access($update, $param, 1);

@@ -292,12 +292,12 @@ Pas de commentaire.
     public function displayAndAdminBookingTableByUser($idUser) {
         $dataBooking = $this->bookingOneUser($idUser, 1);
         print_r($dataBooking);
-        echo '<article class="gallery">';
+        echo '<article class="galleryReserveTable">';
             foreach($dataBooking as $value) {
                 echo '<div class="itemReserveTable">';
                 echo '<h3 class="subTitleSite">Table '.$value['nameTable'].'</h3>';
                 echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
-                echo '<article>';
+                echo '<article class="reservedTable">';
                 echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
                 echo '<p>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</p>';
                 echo '<p>Activité : '.$value['nameActivity'].'</p>';
@@ -306,6 +306,7 @@ Pas de commentaire.
                 echo '<p>Commentaire :<br/>'.$value['comment'].'</p>';
                 echo '</article>';
                 echo'</div>';
+                
             }
         echo '</article>';
     }

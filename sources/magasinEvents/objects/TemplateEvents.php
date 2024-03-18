@@ -234,4 +234,14 @@ Class TemplateEvents extends SQLEvents{
         }
         echo '</div>';
     }
+    public function archiveEvent() {
+        $dateOfTheDay = new DateTime();
+        $interval = new DateInterval('P1D');
+        $dateOfTheDay = $dateOfTheDay->add($interval);
+        $date = $dateOfTheDay->format('Y-m-d H:i');
+        $update ="UPDATE `internalEvents` 
+        SET `archive`= 1 WHERE `dateEvent`<:dateOfDay;";
+        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
+        return ActionDB::access($update, $param, 1);
+    }
 }

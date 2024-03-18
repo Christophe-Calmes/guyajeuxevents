@@ -382,7 +382,15 @@ width: 25%;}
     justify-content: center;
     border: var(--color-blueOneChair) solid 1px;
   }
-
+  .galleryReserveTable {
+    margin: 2vh auto 0;
+    padding: 0 1vw;
+    max-width:100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 400px);
+    grid-gap: 5px;
+    justify-content: center;
+  }
   .itemReserveTable {
     min-height: auto;
     min-width: auto;
@@ -395,6 +403,12 @@ width: 25%;}
     justify-content: center;
     border: var(--color-blueOneChair) solid 1px;
     flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+}
+.reservedTable{
+  display: inline;
+  text-align: left;
 }
 
 
