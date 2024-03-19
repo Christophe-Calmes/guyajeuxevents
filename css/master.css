@@ -261,7 +261,7 @@ select {
 /*publish on site*/
 /*Marquage admin*/
 .red{
-  background-color: #da121933;
+  background-color: var(--color-blood);
 }
 .formAdmin {
   margin: 1em;

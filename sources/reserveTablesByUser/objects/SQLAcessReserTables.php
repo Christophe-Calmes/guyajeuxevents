@@ -125,7 +125,8 @@ Class SQLAcessReserTables {
         $data = ActionDB::select($select, $param, 1);
         $Reserve = new DateTime($dateTime);
         $time = $Reserve->format("H:i");
-        if(($time>=$data[0]['openMorning'])&&($time<$data[0]['closeMorning'])||(($time>=$data[0]['openAfternoon'])&&($time<$data[0]['closeAfternoon']))) {
+        
+        if(($time>=$data[0]['openMorning'])&&($time<$data[0]['closeMorning'])||(($time>=$data[0]['openAfternoon'])&&($time<=$data[0]['closeAfternoon']))) {
             return 1;
         } else {
             return 0;
@@ -177,13 +178,23 @@ Class SQLAcessReserTables {
         (:idUser, :idTable, :numberPeople, :comment, :dateReserve, :endOfReserve, :idActivity, :idConsommation)";
         ActionDB::access($insert, $param, 1);
     }
-    public function archiveReserveOfTable() {
+    private function dateOfLastDay() {
         $dateOfTheDay = new DateTime();
         $dateOfTheDay = $dateOfTheDay->modify('-24 hours');
         $date = $dateOfTheDay->format('Y-m-d H:i');
+        return $date;
+    }
+    public function archiveReserveOfTable() {
+        $date = $this->dateOfLastDay();
         $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<:dateOfDay;";
         $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
         return ActionDB::access($update, $param, 1);
+    }
+    public function trashArchiveOfBooking() {
+        $date = $this->dateOfLastDay();
+        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<:dateOfDay AND `valid` = 0;";
+        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
+        return ActionDB::access($delete, $param, 1);
     }
     public function nameOfTable($idTable) {
         $select = "SELECT `name` FROM `gamesTables` WHERE `id`=:idTable";
@@ -211,5 +222,33 @@ Class SQLAcessReserTables {
        $delete = "DELETE FROM `reserveTables` WHERE `id`=:id AND `idUser`=:idUser";
        return ActionDB::access($delete, $param, 1); 
     }
-    
+    public function getNumberOfReservationsTables($valid) {
+        $date = $this->dateOfLastDay();
+        $countReserve ="SELECT COUNT(`id`) AS `numberReserveTables` FROM `reserveTables` WHERE `valid`= :valid AND `dateReserve`>:dateReserve;";
+        $param = [['prep'=>':valid', 'variable'=>$valid],
+        ['prep'=>':dateReserve', 'variable'=>$date]];
+        $dataCount = ActionDB::select($countReserve, $param, 1);
+        return $dataCount[0]['numberReserveTables'];
+    }
+    protected function getReservationsTables($firstPage, $byPages, $valid) {
+        $select = "SELECT `reserveTables`.`id`, `reserveTables`.`idUser`, `idTable`, `dateCreat`, `dateUpdate`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`, `reserveTables`.`valid`,
+        `gamesTables`.`name` AS `nameTable`, `pictureOfTable`, 
+        `activity`.`name` AS `nameActivity`,
+        `consommations`.`name` AS `nameConsommation`,
+        `prenom`, `nom`, `login`
+        FROM `reserveTables`
+        INNER JOIN `activity` ON `activity`.`id`=`idActivity`
+        INNER JOIN `consommations` ON `consommations`.`id`=`idConsommation`
+        INNER JOIN `gamesTables` ON `gamesTables`.`id`=`idTable`
+        INNER JOIN `guyagraines`.`users` ON `reserveTables`.`idUser` = `guyagraines`.`users`.`idUser`
+        WHERE `reserveTables`.`valid`= :valid
+        ORDER BY `dateReserve` LIMIT {$firstPage}, {$byPages};";
+        $param= [['prep'=>':valid', 'variable'=>$valid]];
+        return ActionDB::select($select, $param, 1);
+    }
+    public function cancelBookingTableByAdmin($id) {
+        $update = "UPDATE `reserveTables` SET `valid`= 0 WHERE `id`= :id";
+        $param = [['prep'=>':id', 'variable'=>$id]];
+        return ActionDB::access($update, $param, 1);
+    }
 }

@@ -304,7 +304,7 @@ Pas de commentaire.
         if($dataBooking !=[]) {
             foreach($dataBooking as $value) {
                 echo '<div class="itemReserveTable">';
-                    echo '<h3 class="subTitleSite">Table '.$value['nameTable'].'</h3>';
+                    echo '<h3 class="subTitleSite">Table '.$value['nameTable'].' </h3>';
                     echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
                     echo '<article class="reservedTable">';
                     echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
@@ -316,7 +316,7 @@ Pas de commentaire.
                     echo '</article>';
                     echo'<form action="'.encodeRoutage(51).'" method="post">
                             <input type="hidden" name="id" value="'.$value['id'].'"/>
-                            <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Annuler réservation</button>
+                            <button class="buttonForm red" type="submit" name="idNav" value="'.$idNav.'">Annuler réservation</button>
                         </form>';
                 echo'</div>';  
                 }
@@ -328,6 +328,42 @@ Pas de commentaire.
         }
   
         echo '</article>';
+    }
+    public function displayReservationTablesAdmin($firstPage, $byPages, $idNav, $valid) {
+        $dataReservationTables = $this->getReservationsTables($firstPage, $byPages, $valid);
+        function buttonAnnuler ($valid, $id, $idNav) {
+            if($valid == 1) {
+                echo'<form action="'.encodeRoutage(53).'" method="post">
+                <input type="hidden" name="id" value="'.$id.'"/>
+                <button class="buttonForm red" type="submit" name="idNav" value="'.$idNav.'">Annuler réservation</button>
+            </form>';
+            } 
+         
+        }
+        if($dataReservationTables !=[]) {
+            echo '<article class="galleryReserveTable">';
+            foreach($dataReservationTables as $value) {
+                echo '<div class="itemReserveTable">';
+                    echo '<h3 class="subTitleSite">Table '.$value['nameTable'].'</h3>';
+                    echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
+                    echo '<article class="reservedTable">';
+                    echo '<p>Réservation au nom de : <strong>'.$value['prenom'].' '.$value['nom'].'</strong></p>';
+                    echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
+                    echo '<p><strong>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</strong></p>';
+                    echo '<p>Activité : '.$value['nameActivity'].'</p>';
+                    echo '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>';
+                    echo '<p>Consommation principale prévus : '.$value['nameConsommation'].'</p>';
+                    echo '<p>Commentaire :<br/>'.$value['comment'].'</p>';
+                    echo '</article>';
+                    buttonAnnuler ($valid, $value['id'], $idNav); 
+                echo'</div>';  
+                }
+            echo '</article>';
+
+        } else {
+            echo '<article>Aucune réservation de prévus actuellement</article>';
+        }
+        
     }
 
 }
