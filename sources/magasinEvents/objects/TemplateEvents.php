@@ -7,7 +7,7 @@ function unsubscribeUIserForm($idNav, $login, $idEvent, $idUser) {
     <form action="'.encodeRoutage(40).'" method="post">
         <input type="hidden" name="idEvent" value="'.$idEvent.'"/>
         <input type="hidden" name="idUser" value="'.$idUser.'"/>
-        <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Retirer  '.$login.'</button>
+        <button class="buttonForm red" type="submit" name="idNav" value="'.$idNav.'">Retirer  '.$login.'</button>
     </form>
     </li>';
 }
@@ -209,7 +209,14 @@ Class TemplateEvents extends SQLEvents{
         echo '</div>';
        
     }
+
     private function templateAdminEvent($variable, $idNav, $routage) {
+        function buttonDelUserOnEvent ( $id, $idNav) {
+                echo'<form action="'.encodeRoutage(55).'" method="post">
+                <input type="hidden" name="id" value="'.$id.'"/>
+                <button class="buttonForm red" type="submit" name="idNav" value="'.$idNav.'">Effacer tous les inscrits</button>
+            </form>';
+        }
         $picturePath='sources/pictures/picturesEvents/';
         if($routage == 36) {
             $buttonMessage = "Valider l'événement";
@@ -228,6 +235,7 @@ Class TemplateEvents extends SQLEvents{
                     echo '<article class="adminEventList">';
                         $this->registrationUserOnEvent($value['id'], $value['numberMax']);
                         $this->adminRegistrationUserOnEvent($value['id'], $value['numberMax'], $idNav);
+                        buttonDelUserOnEvent($value['id'], $idNav);
                     echo '</article>';
             echo '</div>';
 

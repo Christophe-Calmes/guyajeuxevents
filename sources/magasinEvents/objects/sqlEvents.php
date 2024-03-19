@@ -116,4 +116,9 @@ Class SQLEvents {
                 ['prep'=>':idUser', 'variable'=>$idUser]];
         return ActionDB::access($delete, $param,1);
     }
+    public function delAllUserOnOneEvent($id) {
+        $delete="DELETE FROM `reserveEvents` WHERE `idEvent`=:idEvent;";
+        $param=[['prep'=>':idEvent', 'variable'=>$id]];
+        return ActionDB::access($delete, $param,1);
+    }
 }
