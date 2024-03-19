@@ -175,14 +175,14 @@ Class TemplateReserveTables extends SQLAcessReserTables {
             }
         echo '</select>';
     }
-    public function currentAndFuturBookings($idTable){
+    public function currentAndFuturBookings($idTable, $targetRoute){
 
 echo'<aside>
-        <a href="'.findTargetRoute(125).'&idTable='.$idTable.'">Voir les réservations</a>
+        <a href="'.findTargetRoute($targetRoute).'&idTable='.$idTable.'">Voir les réservations</a>
     </aside>';
     }
 
-    public function displayTableForUser ($idNav) {
+    public function displayTableForUser ($idNav, $routage, $targetRoute) {
         $dataValidTable = $this->getTables (1);
         echo '<style>';
         foreach($dataValidTable as $value) {
@@ -221,8 +221,8 @@ echo'<aside>
             </div>
             
             <div id="hiddenForm'.$value['PositionTable'].'" class="flex-rows">';
-            $this->currentAndFuturBookings($value['id']);
-        echo '<form class="flex-colonne-form" action="'.encodeRoutage(50).'" method="post">
+            $this->currentAndFuturBookings($value['id'], $targetRoute);
+        echo '<form class="flex-colonne-form" action="'.encodeRoutage($routage).'" method="post">
                 <h3 class="subTitleSite">Table '.$value['name'].'</h3>
                 <img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['name'].'."/>
                 <label class="bold" for="dateRserve">Le jour de votre réservation ?</label>

@@ -4,7 +4,7 @@ $tables = new TemplateReserveTables();
 $tables->archiveReserveOfTable();
 echo '<section class="flex-rows">';
     echo '<article>';
-        $tables->displayTableForUser ($idNav, 50, 125);
+        $tables->displayTableForUser ($idNav, 54, 130);
     echo '</article>';
     echo '<aside class="hoursOfShopping"><h3 class="subTitleSite">Les horaires de guyajeux</h3>';
         $tables->schedulingShopping ();

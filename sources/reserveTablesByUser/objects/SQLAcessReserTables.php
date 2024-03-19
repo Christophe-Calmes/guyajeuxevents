@@ -210,7 +210,7 @@ Class SQLAcessReserTables {
         INNER JOIN `activity` ON `activity`.`id`=`idActivity`
         INNER JOIN `consommations` ON `consommations`.`id`=`idConsommation`
         INNER JOIN `gamesTables` ON `gamesTables`.`id`=`idTable`
-        WHERE `idUser`=:idUser AND `reserveTables`.`valid`=:valid AND `dateReserve`>=:dateOfday;";
+        WHERE `gamesTables`.`valid` = 1 AND `idUser`=:idUser AND `reserveTables`.`valid`=:valid AND `dateReserve`>=:dateOfday;";
              $dateOfTheDay = new DateTime();
              $date = $dateOfTheDay->format('Y-m-d H:i');
         $param =[['prep'=>':idUser', 'variable'=>$idUser],
@@ -241,7 +241,7 @@ Class SQLAcessReserTables {
         INNER JOIN `consommations` ON `consommations`.`id`=`idConsommation`
         INNER JOIN `gamesTables` ON `gamesTables`.`id`=`idTable`
         INNER JOIN `guyagraines`.`users` ON `reserveTables`.`idUser` = `guyagraines`.`users`.`idUser`
-        WHERE `reserveTables`.`valid`= :valid
+        WHERE `gamesTables`.`valid` = 1 AND `reserveTables`.`valid`= :valid
         ORDER BY `dateReserve` LIMIT {$firstPage}, {$byPages};";
         $param= [['prep'=>':valid', 'variable'=>$valid]];
         return ActionDB::select($select, $param, 1);
