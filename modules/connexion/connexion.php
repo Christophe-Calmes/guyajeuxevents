@@ -4,6 +4,9 @@ $formInscription = [['name'=>'login', 'message'=>'Votre login', 'type'=>0],
 $button = 'Connexion';
 formAction(2, $formInscription, 0, $button);
  ?>
+ <article class="flex-colonne-form">
  <h3>Vous n'avez pas encore de compte ?</h3>
 <a href="<?php echo findTargetRoute(73); ?>">Créer un compte ?</a>
 <a href="<?php echo findTargetRoute(136); ?>">Voir les CGU</a>
+<a href="<?php echo findTargetRoute(140); ?>">Vous avez perdu votre mot de passe ?</a>
+ </article>
