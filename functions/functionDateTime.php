@@ -59,7 +59,10 @@ function justHeureFr($data) {
   $formatter = new IntlDateFormatter(
     "fr_FR",
     IntlDateFormatter::NONE,
-    IntlDateFormatter::SHORT
+    IntlDateFormatter::NONE,
+    null,
+    null,
+    "HH'h'mm" 
   );
   return $formatter->format($dateDay);
 }

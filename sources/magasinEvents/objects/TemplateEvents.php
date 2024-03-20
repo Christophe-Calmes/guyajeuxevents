@@ -33,10 +33,12 @@ Class TemplateEvents extends SQLEvents{
             $contribution = $value['contribution'];
         }
             echo'<h2 class="subTitleSite titleEventItem '.$red.'">'.$soldOut.$value['title'].'</h2>';
+           
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
+                echo '<p class="bold">Heure du rendez-vous :'.justHeureFr($value['dateEvent']).'</p>';
                 echo '<p class="textEvents">'.$finalText.'</p>';
-                echo '<p>Nombre de participant max : '.$value['numberMax'].' personnes</p>';
+                echo '<p>Nombre de participant max '.$value['numberMax'].' personnes</p>';
                 echo '<p>Participation aux frais : '.$contribution.' €</p>';
             echo '</article>';
             echo '<img class="imgNews" src="'.$picturePath.$value['picture'].'" alt="illustration de'.$value['title'].'"/>';

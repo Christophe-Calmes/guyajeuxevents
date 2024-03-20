@@ -1,4 +1,20 @@
 <?php
+function testScheduling ($time, $interval, $cas) {
+    switch ($cas) {
+        case 1:
+            if($time >= $interval) {
+                return 1;
+            } else {
+                return 0;
+            }
+        case 2:
+            if($time <= $interval) {
+                return 1;
+            } else {
+                return 0;
+            }
+    }
+}
 Class SQLAcessReserTables {
     protected function scheduleShop () {
         $select = "SELECT `dayOfWeekW`, `openMorning`, `closeMorning`, `openAfternoon`, `closeAfternoon`, `closeDay` FROM `shopOpeingHours`;";
@@ -124,11 +140,29 @@ Class SQLAcessReserTables {
         $param =[['prep'=>':dayOfWeekW', 'variable'=>$dayOfWeek]];
         $data = ActionDB::select($select, $param, 1);
         $Reserve = new DateTime($dateTime);
-        $time = $Reserve->format("H:i");
-        
-        if(($time>=$data[0]['openMorning'])&&($time<$data[0]['closeMorning'])||(($time>=$data[0]['openAfternoon'])&&($time<=$data[0]['closeAfternoon']))) {
+        $time = $Reserve->format("H:i:s");
+        $mark = [1, 1];
+        $controles = array();
+        if($time <= $data[0]['closeMorning']) {
+            array_push($controles, testScheduling ($time, $data[0]['openMorning'], 1));
+            array_push($controles, testScheduling ($time, $data[0]['closeMorning'], 2)); 
+        } 
+        if($time >= $data[0]['openAfternoon']) {
+            array_push($controles, testScheduling ($time, $data[0]['openAfternoon'], 1));
+            array_push($controles, testScheduling ($time, $data[0]['closeAfternoon'], 2));
+        }
+        if($time < $data[0]['openMorning'] ) {
+            $controles = [3, 3];
+        }
+        if($time > $data[0]['closeAfternoon'] ) {
+            $controles = [4, 4];
+        }
+        if(($time > $data[0]['closeMorning'])&&($time < $data[0]['openAfternoon'])) {
+            $controles = [5, 5];
+        }
+        if($controles == $mark) {
             return 1;
-        } else {
+        } else {    
             return 0;
         }
     }
@@ -154,16 +188,9 @@ Class SQLAcessReserTables {
         $param=[['prep'=>':idTable', 'variable'=>$idTable],];
         return ActionDB::select($select, $param, 1);
     }
-
     public function checkAReserveDate($dateTime) {
         $dayOfWeek = $this->weekOfDay($dateTime);
-        echo 'checkAReserveDate($dateTime)<br/>';
-        print_r($dayOfWeek);
         $opening = $this->openingDay($dayOfWeek);
-        echo '<br/>';
-       
-        print_r($opening);
-        echo '<br/>';
         if($opening) {
             return $this->schedulingIntervall($dayOfWeek, $dateTime);
         } else {
