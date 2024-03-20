@@ -6,3 +6,4 @@ formAction(2, $formInscription, 0, $button);
  ?>
  <h3>Vous n'avez pas encore de compte ?</h3>
 <a href="<?php echo findTargetRoute(73); ?>">Créer un compte ?</a>
+<a href="<?php echo findTargetRoute(136); ?>">Voir les CGU</a>

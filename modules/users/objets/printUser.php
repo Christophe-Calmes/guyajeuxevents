@@ -4,7 +4,6 @@ private $role;
 private $yes;
   public function __construct() {
     $ROLES = $this->getRoles();
-    //print_r($ROLES);
     $roles = array();
     foreach ($ROLES as $key => $value) {
       array_push($roles, ['name'=>$value['typeRole'], 'role'=>$value['accreditation']]);
@@ -26,8 +25,6 @@ private $yes;
             <th>Date d\'inscription</th>
             <th>Modifier</th>
           </tr>';
-          //print_r($variable);
-          //  print_r($this->role);
           foreach ($variable as $key => $value) {
             echo '<tr>
                     <td>'.$value['login'].'</td>
@@ -63,6 +60,7 @@ private $yes;
           }
     echo '</table>
     </div>';}
+    
   }
   public function printProfilUser ($variable) {
       echo '<ul class="listeProfil">';
@@ -74,6 +72,10 @@ private $yes;
         echo '<li class="alignLi">Date d\'inscription : <p class="displayDate">'.brassageDate($value['dateCreation']).'</p></li>';
       }
     echo '</ul>';
+    if($variable[0]['role']== 1){
+      echo '<p>Vous avez accepté les CGU :</>';
+      echo '<a href="'.findTargetRoute(137).'">Voir les CGU</a>';
+    }
   }
   public function delUser($idNav) {
       echo '<form action="'.encodeRoutage(22).'" method="post">
