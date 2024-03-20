@@ -278,4 +278,21 @@ Class SQLAcessReserTables {
         $param = [['prep'=>':id', 'variable'=>$id]];
         return ActionDB::access($update, $param, 1);
     }
+    public function BookingInProgress($idUser) {
+        $param=[['prep'=>':idUser','variable'=>$idUser]];
+        $selectRole = "SELECT`role` FROM `users` WHERE `idUser` = :idUser";
+        $userRole = ActionDB::select($selectRole, $param, 0);
+        if($userRole[0]['role'] == 3) {
+            $limit = 180;
+        } else {
+            $limit = 12;
+        }
+        $select = "SELECT COUNT(`id`) AS `totalOfBooking` FROM `reserveTables` WHERE `idUser` = :idUser;";
+        $countBooking = ActionDB::select($select, $param, 1);
+        if($countBooking[0]['totalOfBooking'] > $limit) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
