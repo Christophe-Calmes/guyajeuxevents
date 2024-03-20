@@ -287,12 +287,18 @@ Class SQLAcessReserTables {
         } else {
             $limit = 12;
         }
-        $select = "SELECT COUNT(`id`) AS `totalOfBooking` FROM `reserveTables` WHERE `idUser` = :idUser;";
+        $select = "SELECT COUNT(`id`) AS `totalOfBooking` FROM `reserveTables` WHERE `idUser` = :idUser AND `valid` = 1;";
         $countBooking = ActionDB::select($select, $param, 1);
         if($countBooking[0]['totalOfBooking'] > $limit) {
             return 1;
         } else {
             return 0;
         }
+    }
+    public function numberBookingInProgress($idUser) {
+        $param=[['prep'=>':idUser','variable'=>$idUser]];
+        $select = "SELECT COUNT(`id`) AS `totalOfBooking` FROM `reserveTables` WHERE `idUser` = :idUser AND `valid` = 1;";
+        $countBooking = ActionDB::select($select, $param, 1);
+        return $countBooking[0]['totalOfBooking'];
     }
 }
