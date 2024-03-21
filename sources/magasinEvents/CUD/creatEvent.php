@@ -11,7 +11,18 @@ array_push($controlePostData, borneSelect($_POST['publish'], 1));
 array_push($controlePostData, borneSelect($_POST['numberMax'], 25));
 array_push($controlePostData, borneSelect($_POST['contribution'], 50));
 $mark = [1,1,1,0,0,0,0,0];
-if($mark == $controlePostData) {
+print_r($_POST);
+echo'<br/>';
+$idTable = array();
+foreach ($_POST as $key => $value) {
+    if(str_contains($key, 'idTable')) {
+        array_push($idTable, substr($key, 7));
+    }
+}
+echo'<br/>';
+print_r($idTable);
+
+/*if($mark == $controlePostData) {
     $namePicture = genToken (6).date('Y').filter($_FILES['picture']['name']);
     $_POST['picture'] = $namePicture;
     $parametre = new Preparation();
@@ -31,4 +42,4 @@ if($mark == $controlePostData) {
     
 } else {
     return header('location:../index.php?message=Soucis d\'enregistrement');
-}
+}*/

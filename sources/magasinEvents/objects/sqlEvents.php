@@ -121,4 +121,8 @@ Class SQLEvents {
         $param=[['prep'=>':idEvent', 'variable'=>$id]];
         return ActionDB::access($delete, $param,1);
     }
+    protected function selectAllTables() {
+        $select ="SELECT `id`, `name`, `max` FROM `gamesTables` WHERE `valid` = 1;";
+        return ActionDB::select($select, [], 1);
+    }
 }

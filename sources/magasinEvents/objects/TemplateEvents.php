@@ -1,7 +1,6 @@
 <?php
 require('sqlEvents.php');
-require ('functions/functionDateTime.php');
-require('functions/functionPresentationText.php');
+require('sources/reserveTablesByUser/objects/TemplateReserveTable.php');
 function unsubscribeUIserForm($idNav, $login, $idEvent, $idUser) {
     echo '<li>
     <form action="'.encodeRoutage(40).'" method="post">
@@ -253,5 +252,45 @@ Class TemplateEvents extends SQLEvents{
         SET `archive`= 1 WHERE `dateEvent`<:dateOfDay;";
         $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
         return ActionDB::access($update, $param, 1);
+    }
+    public function creatEventsAndBookingTables ($idNav) {
+        $numberOfChair = new TemplateReserveTables();
+        echo '<article>
+        <h1 class="subTitleSite">Ajouter un événements</h1>
+        <form class="flex-colonne-form" action="'.encodeRoutage(34).'" method="post" enctype="multipart/form-data">
+        <label class="bold" for="title">Titre événement</label>
+        <input type="text" id="title" name="title" placeholder="Titre de votre news"/>
+        <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
+        <input type="datetime-local" id="dateEvent" name="dateEvent"/>
+        <label class="bold" for="description">Votre événement</label>
+    <textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
+    </textarea>
+            <aside class="flex-colonne-form">
+                <label class="bold" for="numberMax">Nombre maximum de participants</label>
+                <input type="number" id="numberMax" name="numberMax" min="1" max="'.$numberOfChair->readNumberOfChairAdmin().'" value="10"/>
+                <label class="bold" for="contribution">Participation au frais en €</label>
+                <input type="number" id="numberMax" name="contribution" min="0" max="50" value="12"/>
+                <label class="bold" for="publish">Publier</label>
+                <select id="publish" name="publish">
+                    <option value="0">Non</option>
+                    <option value="1" selected>Oui</option>
+                </select>
+                <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
+                <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
+            </aside>';
+            echo '<label class="bold" for="endOfReserve">Horraire de fin de l\'événement ?</label>
+            <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="23:59" required/>';
+            $dataTables = $this->selectAllTables();
+            foreach($dataTables as $value){
+                echo '<label for="">'.$value['name'].' max personne = '.$value['max'].'</label>';
+                echo '<input type="checkbox" name="idTable'.$value['id'].'"/>';
+            }
+
+     
+      echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Ajouter</button>
+        </form>
+    </article>';
+    
+
     }
 }

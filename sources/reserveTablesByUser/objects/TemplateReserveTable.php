@@ -59,7 +59,7 @@ Class TemplateReserveTables extends SQLAcessReserTables {
         }
         echo'</table>';
     }
-    private function readNumberOfChairAdmin() {
+    public function readNumberOfChairAdmin() {
         $dataNumberOfChair = $this->readNumberOfChair ();
         return $dataNumberOfChair[0]['numberOfChair'];
     }
