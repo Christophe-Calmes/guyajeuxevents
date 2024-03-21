@@ -38,13 +38,13 @@ Suivant la loi Informatique et Libertés en date du 6 janvier 1978, articles 39 
 </ul>   
     
 <h4>Article 5: Propriété intellectuelle</h4>
-<p>Les marques, logos ainsi que les contenus du site lapetiteperle (illustrations graphiques, textes…) sont protégés par le Code de la propriété intellectuelle et par le droit d’auteur.
+<p>Les marques, logos ainsi que les contenus du site <?=$dataSite[0]['titre']?>(illustrations graphiques, textes…) sont protégés par le Code de la propriété intellectuelle et par le droit d’auteur.
 La reproduction et la copie des contenus par l’Utilisateur requièrent une autorisation préalable du site. Dans ce cas, toute utilisation à des usages commerciaux ou à des fins publicitaires est proscrite.
 </p>
 <h4>Article 6: Responsabilité</h4>
 <p>
 Bien que les informations publiées sur le site soient réputées fiables, le site se réserve la faculté d’une non-garantie de la fiabilité des sources.
-Les informations diffusées sur le site lapetiteperle sont présentées à titre purement informatif et sont sans valeur contractuelle. 
+Les informations diffusées sur le site <?=$dataSite[0]['titre']?> sont présentées à titre purement informatif et sont sans valeur contractuelle. 
 En dépit des mises à jour régulières, la responsabilité du site ne peut être engagée en cas de modification des dispositions administratives et 
 juridiques apparaissant après la publication. 
 Il en est de même pour l’utilisation et l’interprétation des informations communiquées sur la plateforme.

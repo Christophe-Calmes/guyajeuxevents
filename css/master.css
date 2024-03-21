@@ -117,7 +117,10 @@ a {
 .displayDate::first-letter{
   text-transform: uppercase;
 }
-  
+ /*zone element*/ 
+ .down {
+  margin-top: 15vh;
+ }
 
 /*Flex*/
 .hoursOfShopping {
