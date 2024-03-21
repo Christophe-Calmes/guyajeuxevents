@@ -1,18 +1,6 @@
 /*Présentation Graine*/
 /*Variables CSS*/
-/*@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');*/
-@font-face {
-  font-family: "ANNA ITC TT REGULAR";
-  src: url("fonts/annai.ttf") format("woff2"),
-       url("fonts/annai.woff2") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-family: "FREEHAND 471 REGULAR";
-  src: url("fonts/Freehand471BT-Regular.woff2") format("woff2"),
-       url("fonts/Freehand471BT-Regular.woff2") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 :root {
   /*Variables Button*/
   --main-background-color: #03470D;
@@ -21,7 +9,7 @@
   --main-border: none;
   --main-radius:20px;
   --main-radiusInput: 5px;
-  --main-color: #f1df57;
+  --main-color: #FCDD09;
   --body-color:#fae9cbc4;
   --main-padding: 15px 32px;
   --main-text-align: center;
@@ -33,22 +21,19 @@
   /*Variables global*/
   --main-radius: 0.5em;
   --main-shadow: 2px 4px 5px 1px #151515;
-  /*--font-family: "Bebas Neue", sans-serif;*/
-  --font-family: "ANNA ITC TT REGULAR", sans-serif;
-  --font-family-titleEvent: "FREEHAND 471 REGULAR", sans-serif;
+  --font-family: "Bebas Neue", sans-serif;
   --font-weight: 400;
-  --font-style: italic;
+  --font-style: normal;
   --color-title: #DA1401;
   --color-subTitle: #4585B5;
   /*Variable color*/
-  --color-green: #4f8b36;
-  --color-yellow: #f1df57;
+  --color-green: #078930;
+  --color-yellow: #FCDD09;
   --color-chair: #D3A08E;
   --color-blueOneChair: #1B384D;
-  --color-red:#cc3915;
+  --color-red:#DA121A;
   --color-blood: #700B15;
   --color-darkGreen: #03470D;
-  --color-orange: #cc3915;
 
 }
 /*Presentation basique*/
@@ -91,8 +76,6 @@ h2 {
 }
 .titleEventItem {
   color: var(--color-blueOneChair);
-  font-family: var(--font-family-titleEvent);
-  font-style: var(--font-style);
 }
 h3 {
   font-size: 1.5em;
@@ -278,7 +261,7 @@ select {
 /*publish on site*/
 /*Marquage admin*/
 .red{
-  background-color: var(--color-orange);
+  background-color: var(--color-blood);
 }
 .formAdmin {
   margin: 1em;
