@@ -293,7 +293,7 @@ Pas de commentaire.
                 <div class="CloseAfternoon">'.$hour.'</div>
               </div>';
             } else {
-                echo '<div>Fermeture le '.$this->dayOfWeek[$value['dayOfWeekW']].'</div>';
+                echo '<div class="red close">Fermeture le '.$this->dayOfWeek[$value['dayOfWeekW']].'</div>';
             }
         }
        

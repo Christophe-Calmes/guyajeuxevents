@@ -534,21 +534,44 @@ transition: display 3s;
 .shoppingHour {  display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  gap: 0em 5px;
+  gap: 5px 5px;
   grid-auto-flow: row;
   grid-template-areas:
     "dayOfWeek OpenMorning CloseMorning OpenAfternoon CloseAfternoon";
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+}
+.close {
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+  margin: 0.8em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.dayOfWeek { 
+  grid-area: dayOfWeek;
+  margin: var(--main-marginButton);
 }
 
-.dayOfWeek { grid-area: dayOfWeek; }
+.OpenMorning { 
+  grid-area: OpenMorning;
+  margin: var(--main-marginButton);
+}
 
-.OpenMorning { grid-area: OpenMorning; }
+.CloseMorning { 
+  grid-area: CloseMorning; 
+  margin: var(--main-marginButton);
+}
 
-.CloseMorning { grid-area: CloseMorning; }
+.OpenAfternoon { 
+  grid-area: OpenAfternoon; 
+  margin: var(--main-marginButton);
+}
 
-.OpenAfternoon { grid-area: OpenAfternoon; }
-
-.CloseAfternoon { grid-area: CloseAfternoon; }
+.CloseAfternoon { 
+  grid-area: CloseAfternoon; 
+  margin: var(--main-marginButton);
+}
 
 .moduleNav {
   display: grid;
