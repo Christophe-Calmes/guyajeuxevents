@@ -11,7 +11,7 @@ if(isset($_GET['page']) && (!empty($_GET['page']))) {
   } else {
     $currentPage = 1;
   }
-  $parPage = 9;
+  $parPage = 4;
   $nbrTables = $dashboardTables->getNumberOfReservationsTables($valid);
  $pages = ceil($nbrTables/$parPage);
  $premier = ($currentPage * $parPage) - $parPage;
