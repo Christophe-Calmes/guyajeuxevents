@@ -118,7 +118,7 @@ Class SQLAcessReserTables {
         return ActionDB::access($delete, $param, 1);
     }
     protected function abstractParam($tableName) {
-        $select ="SELECT `id`, `name`, `valid` FROM `{$tableName}` WHERE `valid`=1";
+        $select ="SELECT `id`, `name`, `valid` FROM `{$tableName}` WHERE `valid`=1 ORDER BY `name`";
         return ActionDB::select($select, [], 1);
     }
     private function weekOfDay($dateTime){
@@ -300,5 +300,25 @@ Class SQLAcessReserTables {
         $select = "SELECT COUNT(`id`) AS `totalOfBooking` FROM `reserveTables` WHERE `idUser` = :idUser AND `valid` = 1;";
         $countBooking = ActionDB::select($select, $param, 1);
         return $countBooking[0]['totalOfBooking'];
+    }
+    public function delReservedTableInEventCase ($startEvent, $endEvent, $idTable) {
+        $param = [['prep'=>':dateReserve', 'variable'=>$startEvent],
+                    ['prep'=>':endOfReserve', 'variable'=>$endEvent],
+                    ['prep'=>':idTable', 'variable'=>$idTable]];
+        $delete = "DELETE FROM `reserveTables`
+        WHERE (
+            `dateReserve` BETWEEN :dateReserve AND :endOfReserve
+            OR `endOfReserve` BETWEEN :dateReserve AND :endOfReserve
+            OR (:dateReserve BETWEEN `dateReserve` AND `endOfReserve`)
+            OR (:endOfReserve BETWEEN `dateReserve` AND `endOfReserve`)
+        )
+        AND `idTable` = :idTable;";
+        return ActionDB::access($delete, $param, 1);
+    }
+    public function numberOfChairOfOneTable($idTable) {
+        $select = "SELECT `max` FROM `gamesTables` WHERE `id` = :idTable";
+        $param = [['prep'=>':idTable', 'variable'=>$idTable]];
+        $dataMax = ActionDB::select($select, $param, 1);
+        return $dataMax[0]['max'];
     }
 }

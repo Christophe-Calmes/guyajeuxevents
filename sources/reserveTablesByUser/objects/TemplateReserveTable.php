@@ -166,7 +166,7 @@ Class TemplateReserveTables extends SQLAcessReserTables {
       }
 
     }
-    private function selectAbstractParam($tableName, $fieldName, $label) {
+    public function selectAbstractParam($tableName, $fieldName, $label) {
         $data = $this->abstractParam($tableName);
         echo '<label class="bold"  for="id'.$fieldName.'">'.$label.'</label>';
         echo '<select name="id'.$fieldName.'">';

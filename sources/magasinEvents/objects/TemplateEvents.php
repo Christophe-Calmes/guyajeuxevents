@@ -278,6 +278,8 @@ Class TemplateEvents extends SQLEvents{
                 <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
                 <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
             </aside>';
+            $numberOfChair->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
+            $numberOfChair->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
             echo '<label class="bold" for="endOfReserve">Horraire de fin de l\'événement ?</label>
             <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="23:59" required/>';
             $dataTables = $this->selectAllTables();
