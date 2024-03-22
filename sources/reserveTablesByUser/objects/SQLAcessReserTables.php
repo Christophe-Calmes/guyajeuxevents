@@ -199,10 +199,10 @@ Class SQLAcessReserTables {
         
     }
     public function addReservedTableByUser($param){
-        $insert = "INSERT INTO `reserveTables`
-        ( `idUser`, `idTable`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`) 
-        VALUES 
-        (:idUser, :idTable, :numberPeople, :comment, :dateReserve, :endOfReserve, :idActivity, :idConsommation)";
+            $insert = "INSERT INTO `reserveTables`
+            ( `idUser`, `idTable`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`) 
+            VALUES 
+            (:idUser, :idTable, :numberPeople, :comment, :dateReserve, :endOfReserve, :idActivity, :idConsommation)";
         ActionDB::access($insert, $param, 1);
     }
     private function dateOfLastDay() {
@@ -320,5 +320,21 @@ Class SQLAcessReserTables {
         $param = [['prep'=>':idTable', 'variable'=>$idTable]];
         $dataMax = ActionDB::select($select, $param, 1);
         return $dataMax[0]['max'];
+    }
+    public function affectedIdEvent($param) {
+        $update = "UPDATE `reserveTables` 
+                SET `idEvent`=:idEvent 
+                WHERE `idTable` = :idTable 
+                AND`idUser`=:idUser 
+                AND `dateReserve`=:dateReserve 
+                AND `endOfReserve`=:endOfReserve";
+        return ActionDB::access($update, $param, 1);
+    }
+    public function sortTableEvent ($idEvent) {
+        $select = "SELECT  `idTable`
+        FROM `reserveTables` 
+        WHERE `idEvent` = :idEvent;";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        return ActionDB::select($select, $param, 1);
     }
 }

@@ -49,6 +49,7 @@
   --color-blood: #700B15;
   --color-darkGreen: #03470D;
   --color-orange: #cc3915;
+  --color-neutralBone: #fdfdf8;
 
 }
 /*Presentation basique*/
@@ -142,6 +143,10 @@ a {
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
+}
+.flex-center {
+  align-items: center;
+  justify-content: center;
 }
 .flex-colonne {
   display: flex;
@@ -388,6 +393,28 @@ width: 25%;}
     grid-template-columns: repeat(auto-fit, 300px);
     grid-gap: 5px;
     justify-content: center;
+  }
+  .gallery3 {
+    margin: 2vh auto 0;
+    padding: 0 1vw;
+    max-width:100%;
+    display: grid;
+    /*grid-template-columns: repeat(auto-fit, 300px);*/
+    grid-gap: 5px;
+    justify-content: center;
+  }
+  .itemCheckBox {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    min-width: auto;
+    padding: 0.5em;
+    background: var(--color-chair);
+    color: rgb(32, 32, 32);
+    border-radius: var(--main-radiusInput);
+    align-items: center;
+    justify-content: center;
+    border: var(--color-blueOneChair) solid 1px;
   }
 
 .item {

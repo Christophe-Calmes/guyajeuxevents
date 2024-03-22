@@ -12,12 +12,8 @@ array_push($controlePostData, borneSelect($_POST['publish'], 1));
 array_push($controlePostData, borneSelect($_POST['numberMax'], 25));
 array_push($controlePostData, borneSelect($_POST['contribution'], 50));
 $mark = [1,1,1,0,0,0,0,0];
-echo'<br/>';
 $idTable = array();
-echo'<br/>';
 $idUser = $checkId->idUser($_SESSION);
-
-
 $checkDateShedulingShop = new SQLAcessReserTables();
 $dateTime = new DateTime(filter($_POST['dateEvent']));
 $date = $dateTime->format('Y-m-d');
@@ -30,7 +26,6 @@ foreach ($_POST as $key => $value) {
 }
 foreach($idTable as $value) {
     $checkDateShedulingShop->delReservedTableInEventCase ($value['start'], $value['end'], $value['idTable']);
-    echo $value['idTable'].'<br/>';
     // sendEmail
     $param = [['prep'=>':idUser', 'variable'=>$idUser],
             ['prep'=>':idTable', 'variable'=>$value['idTable']],
@@ -60,6 +55,19 @@ if($mark == $controlePostData && controlePicture($_FILES, 75000)) {
         if(move_uploaded_file($_FILES['picture']['tmp_name'], $f = '../sources/pictures/picturesEvents/'.$namePicture)) {
             chmod($f, 0644);
             ActionDB::access($insert, $param, 1);
+            $select = "SELECT `id` FROM `internalEvents` ORDER BY `id` DESC LIMIT 1;";
+            $data = ActionDB::select($select, [], 1);
+            $idEvent = $data[0]['id'];
+            print_r($idEvent);
+            foreach($idTable as $value) {
+                // Affecter les réservations à l'ID de l'événement.
+                $param = [['prep'=>':idUser', 'variable'=>$idUser],
+                ['prep'=>':idTable', 'variable'=>$value['idTable']],
+                ['prep'=>':dateReserve', 'variable'=>$value['start']],
+                ['prep'=>':endOfReserve', 'variable'=>$value['end']],
+                ['prep'=>':idEvent', 'variable'=>$idEvent]];
+                $checkDateShedulingShop->affectedIdEvent($param);
+            }
             return header('location:../index.php?message=Nouvel événement enregistré');
         } 
     } else {
