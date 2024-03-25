@@ -17,6 +17,20 @@ Class TemplateEvents extends SQLEvents{
         $result = strongHTML($result);
         return $result;
     }
+    private function formAddOneMemberOnEvent($idEvent, $idNav) {
+        $data = $this->selectAllMembres();
+        echo '<form class="flex-colonne" action="'.encodeRoutage(58).'" method="post">
+                <label for="idUser">Listes des membres :</label>
+                <select id="idUser" name="idUser">';
+                foreach($data as $value) {
+                    echo'<option value="'.$value['idUser'].'">'.$value['prenom'].' '.$value['nom'].'</option>';
+                }
+            echo'</select><div class="select-arrow"></div>
+                <input type="hidden" name="idEvent" value="'.$idEvent.'"/>
+            <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscrire</button>
+        </form>';
+
+    }
     private function templateOneEvent($value, $picturePath) {
         $soldOut = null;
         $red = null;
@@ -300,6 +314,7 @@ Class TemplateEvents extends SQLEvents{
                     echo '<article class="adminEventList">';
                         $this->registrationUserOnEvent($value['id'], $value['numberMax']);
                         $this->adminRegistrationUserOnEvent($value['id'], $value['numberMax'], $idNav);
+                        $this->formAddOneMemberOnEvent($value['id'], $idNav);
                         buttonDelUserOnEvent($value['id'], $idNav);
                     echo '</article>';
             echo '</div>';

@@ -125,4 +125,12 @@ Class SQLEvents {
         $select ="SELECT `id`, `name`, `max` FROM `gamesTables` WHERE `valid` = 1;";
         return ActionDB::select($select, [], 1);
     }
+    protected function selectAllMembres() {
+        $sql = new SelectRequest(['idUser', 'prenom', 'nom', 'login'],
+                                 'users', [
+                                    ['champs'=>'role', 'operator'=>'=', 'param'=>1],
+                                    ['champs'=>'valide', 'operator'=>'=', 'param'=>1]]);
+        $select = $sql->requestSelect(0);
+        return ActionDB::select($select, []);
+    }
 }

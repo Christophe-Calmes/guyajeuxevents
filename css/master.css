@@ -247,8 +247,27 @@ input, textarea {
 
 }
 select {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
   background-color: var(--main-background-MagicForm);
   border-radius: var(--main-radiusInput);
+}
+select:hover {
+  background-color: var(--color-green);
+}
+select:disabled {
+  color:var(--color-neutralBone);
+}
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border: 1px solid #ccc;
+  border-top-width: 0;
+  border-right-width: 0;
 }
 
 .textAreaNew {
