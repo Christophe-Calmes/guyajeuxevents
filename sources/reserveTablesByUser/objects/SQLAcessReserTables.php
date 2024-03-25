@@ -254,11 +254,11 @@ Class SQLAcessReserTables {
         return $dataCount[0]['numberReserveTables'];
     }
     protected function getReservationsTables($firstPage, $byPages, $valid) {
-        $select = "SELECT `reserveTables`.`id`, `reserveTables`.`idUser`, `idTable`, `dateCreat`, `dateUpdate`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`, `reserveTables`.`valid`,
+        $select = "SELECT `reserveTables`.`id`, `reserveTables`.`idUser`, `idTable`, `reserveTables`.`dateCreat`, `reserveTables`.`dateUpdate`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`, `reserveTables`.`valid`,
         `gamesTables`.`name` AS `nameTable`, `pictureOfTable`, 
         `activity`.`name` AS `nameActivity`,
         `consommations`.`name` AS `nameConsommation`,
-        `prenom`, `nom`, `login`
+        `prenom`, `nom`, `login`, `idEvent`
         FROM `reserveTables`
         INNER JOIN `activity` ON `activity`.`id`=`idActivity`
         INNER JOIN `consommations` ON `consommations`.`id`=`idConsommation`
@@ -268,6 +268,13 @@ Class SQLAcessReserTables {
         ORDER BY `dateReserve` LIMIT {$firstPage}, {$byPages};";
         $param= [['prep'=>':valid', 'variable'=>$valid]];
         return ActionDB::select($select, $param, 1);
+    }
+    protected function getTitleEvent ($idEvent) {
+        $select = "SELECT  `title` FROM `internalEvents` WHERE `id` = :idEvent";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        $data = ActionDB::select($select, $param, 1);
+        return $data[0]['title'];
+
     }
     public function cancelBookingTableByAdmin($id) {
         $update = "UPDATE `reserveTables` SET `valid`= 0 WHERE `id`= :id";
@@ -337,5 +344,17 @@ Class SQLAcessReserTables {
         $delete = "DELETE FROM `reserveTables` WHERE `idEvent`=:idEvent;";
         $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
         return ActionDB::access($delete, $param, 1);
+    }
+    protected function selectAllMembres() {
+        $sql = new SelectRequest(['idUser', 'prenom', 'nom', 'login'],
+                                 'users', [
+                                    ['champs'=>'role', 'operator'=>'=', 'param'=>1],
+                                    ['champs'=>'valide', 'operator'=>'=', 'param'=>1]]);
+        $select = $sql->requestSelect(0);
+        return ActionDB::select($select, []);
+    }
+    public function affectedTableForUser($param) {
+        $update = "UPDATE `reserveTables` SET `idUser`=:idUser WHERE `id`=:id";
+        return ActionDB::access($update, $param, 1);
     }
 }
