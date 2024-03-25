@@ -1,7 +1,7 @@
 <?php 
 Class SQLEvents {
     protected function nextEvent () {
-       $select = "SELECT  `id`, `dateEvent`, `title`, `description`, `picture`, `contribution`, `numberMax`
+       $select = "SELECT  `id`, `dateEvent`, `dateEndEvent`, `title`, `description`, `picture`, `contribution`, `numberMax`
        FROM `internalEvents` 
        WHERE `publish` =1 AND `valid` = 1 AND `archive` = 0 
        ORDER BY `dateEvent` ASC 

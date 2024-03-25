@@ -212,16 +212,12 @@ Class SQLAcessReserTables {
         return $date;
     }
     public function archiveReserveOfTable() {
-        $date = $this->dateOfLastDay();
-        $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<:dateOfDay;";
-        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
-        return ActionDB::access($update, $param, 1);
+        $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);";
+        return ActionDB::access($update, [], 1);
     }
     public function trashArchiveOfBooking() {
-        $date = $this->dateOfLastDay();
-        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<:dateOfDay";
-        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
-        return ActionDB::access($delete, $param, 1);
+        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)";
+        return ActionDB::access($delete, [], 1);
     }
     public function nameOfTable($idTable) {
         $select = "SELECT `name` FROM `gamesTables` WHERE `id`=:idTable";

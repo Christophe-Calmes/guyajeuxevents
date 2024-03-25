@@ -348,7 +348,7 @@ Pas de commentaire.
                     echo '<article class="reservedTable">';
                     echo '<p>Réservation au nom de : <strong>'.$value['prenom'].' '.$value['nom'].'</strong></p>';
                     echo '<p><strong>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</strong></p>';
-                    echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
+                    echo '<p>Date de création : '.formatDateHeureFr($value['dateCreat']).'</p>';
                     echo '<p>Activité : '.$value['nameActivity'].'</p>';
                     echo '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>';
                     echo '<p>Consommation principale prévus : '.$value['nameConsommation'].'</p>';

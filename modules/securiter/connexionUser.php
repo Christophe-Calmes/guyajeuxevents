@@ -2,6 +2,7 @@
 include '../functions/functionToken.php';
 require ('../sources/reserveTablesByUser/objects/SQLAcessReserTables.php');
 
+
 //Vérifier le mot de passe :
 $select = "SELECT `idUser`, `login`, `mdp`, `role` FROM `users` WHERE `login` = :login AND `valide` = 1";
 $param = [['prep'=>':login', 'variable'=>filter($_POST['login'])]];
@@ -25,6 +26,7 @@ if (password_verify(filter($_POST['mdp']), $dataTraiter[0]['mdp'])) {
                 ActionDB::access($insert, $log);
                 $maintenanceOfReservedTable = new SQLAcessReserTables();
                 $maintenanceOfReservedTable->trashArchiveOfBooking();
+
               header('location:../index.php?message=bienvenu '.$_SESSION['login']);
 
 } else {
