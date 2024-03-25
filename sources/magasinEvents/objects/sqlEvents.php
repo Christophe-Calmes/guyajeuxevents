@@ -18,7 +18,7 @@ Class SQLEvents {
         return $dataNumber[0]['numberOfEvent'];
     }
     protected function readEventPagination($firstPage, $parPage, $archive, $valid) {
-        $select="SELECT `id`, `dateCreat`, `dateUpdate`, `dateEvent`, `title`, `description`, 
+        $select="SELECT `id`, `dateCreat`, `dateUpdate`, `dateEvent`, `dateEndEvent`, `title`, `description`, 
         `picture`, `numberMax`, `contribution`, `publish`, `archive`, `valid`, `sucess`, 
         `prenom`, `nom`
         FROM `internalEvents`
@@ -41,7 +41,7 @@ Class SQLEvents {
         return ActionDB::access($update, $param, 1);
     }
     protected function readOneEvent($id) {
-        $select = "SELECT `id`, `idAuthor`, `dateCreat`, `dateUpdate`, `dateEvent`, `title`, 
+        $select = "SELECT `id`, `idAuthor`, `dateCreat`, `dateUpdate`, `dateEvent`, `dateEndEvent`, `title`, 
         `description`, `picture`, `numberMax`, `contribution`, `publish`, `archive`, `valid`, 
         `sucess`, `prenom`, `nom`
         FROM `internalEvents`

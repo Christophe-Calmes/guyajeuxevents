@@ -219,7 +219,7 @@ Class SQLAcessReserTables {
     }
     public function trashArchiveOfBooking() {
         $date = $this->dateOfLastDay();
-        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<:dateOfDay AND `valid` = 0;";
+        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<:dateOfDay";
         $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
         return ActionDB::access($delete, $param, 1);
     }
@@ -336,5 +336,10 @@ Class SQLAcessReserTables {
         WHERE `idEvent` = :idEvent;";
         $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
         return ActionDB::select($select, $param, 1);
+    }
+    public function deleteTableEvent ($idEvent) {
+        $delete = "DELETE FROM `reserveTables` WHERE `idEvent`=:idEvent;";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        return ActionDB::access($delete, $param, 1);
     }
 }

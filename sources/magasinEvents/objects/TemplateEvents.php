@@ -24,7 +24,6 @@ Class TemplateEvents extends SQLEvents{
             $soldOut = 'Complet -';
             $red = 'red';
         }
-
         $finalText = $this->presentationText($value['description'], 'listClass');
         if($value['contribution'] == 0) {
             $contribution = 'Gratuit';
@@ -36,6 +35,7 @@ Class TemplateEvents extends SQLEvents{
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
                 echo '<p class="bold">Heure du rendez-vous :'.justHeureFr($value['dateEvent']).'</p>';
+                echo '<p class="bold">Fin de l\'événenement :'.justHeureFr($value['dateEndEvent']).'</p>';
                 echo '<p class="textEvents">'.$finalText.'</p>';
                 echo '<p>Nombre de participant max '.$value['numberMax'].' personnes</p>';
                 echo '<p>Participation aux frais : '.$contribution.' €</p>';
@@ -63,21 +63,25 @@ Class TemplateEvents extends SQLEvents{
         $this->templateAdminEvent($dataEvents, $idNav, $routage);
     }
     private function updateFormEvent($data, $idNav) {
+        $numberOfChair = new TemplateReserveTables();
         echo '<h1 class="subTitleSite">Modifier un événements</h1>
             <form class="flex-colonne-form" action="'.encodeRoutage(37).'" method="post" enctype="multipart/form-data">
             <label class="bold" for="title">Titre événement</label>
             <input type="text" id="title" name="title" value="'.$data['title'].'"/>
             <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
             <input type="datetime-local" id="dateEvent" name="dateEvent" value="'.$data['dateEvent'].'"/>
+            <label class="bold" for="dateEndEvent">Horraire de fin de l\'événement ?</label>
+            <input type="datetime-local" name="dateEndEvent" id="dateEndEvent" value="'.$data['dateEndEvent'].'"  required/>
+            </div>
             <label class="bold" for="description">Votre événement</label>
-            <textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
-            '.$data['description'].'
-        </textarea>
+<textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
+'.$data['description'].'
+</textarea>
         <aside class="flex-colonne-form">
             <label class="bold" for="numberMax">Nombre maximum de participants</label>
-            <input type="number" id="numberMax" name="numberMax" min="1" max="25" value="'.$data['numberMax'].'"/>
+            <input type="number" id="numberMax" name="numberMax" min="1" max="'.$numberOfChair->readNumberOfChairAdmin().'" value="'.$data['numberMax'].'"/>
             <label class="bold" for="contribution">Participation au frais en €</label>
-            <input type="number" id="numberMax" name="contribution" min="0" max="50" value="'.$data['contribution'].'"/>
+            <input type="number" id="numberMax" name="contribution" min="0" max="250" value="'.$data['contribution'].'"/>
             <label class="bold" for="publish">Publier</label>
             <select id="publish" name="publish">'; 
             optionSelect($data['publish']);
@@ -96,9 +100,9 @@ Class TemplateEvents extends SQLEvents{
             <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
             <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
         </aside>';
+        $numberOfChair->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
+        $numberOfChair->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
         $dataTables = $this->selectAllTables();
-      
-    
             echo '<aside class="gallery3">';
             echo '<style>';
             foreach($dataTables as $value) {
@@ -145,18 +149,17 @@ Class TemplateEvents extends SQLEvents{
             $tableForOneEvent = new SQLAcessReserTables();
             $idTables = $tableForOneEvent->sortTableEvent ($data['id']);
             $idTableSimple = array_column($idTables, 'idTable');
-        
-            foreach($dataTables as $value){
-                $checked = null;
-               if(array_search($value['id'],$idTableSimple)) {
+            foreach($dataTables as $value){   
+                if(array_search($value['id'],$idTableSimple) !== FALSE) {
                 $checked = 'checked';
+               } else {
+                $checked = null;
                }
                 echo '<div class="itemCheckBox">';
                     echo '<label class="dayweek" for="idTable'.$value['id'].'">'.$value['name'].'<br/> Max personne = '.$value['max'].'</label>';
                     echo '<input type="checkbox" class="checkbox'.$value['id'].'" id="switch'.$value['id'].'" name="idTable'.$value['id'].'" '.$checked.'/>';
                     echo '<label for="switch'.$value['id'].'" class="toggle'.$value['id'].'">';
                     echo '<p class="checkedText'.$value['id'].'"></p>';
-                   
                 echo '</div>';
             }
         echo '<input type="hidden" name="id" value="'.$data['id'].'"/>
@@ -317,14 +320,16 @@ Class TemplateEvents extends SQLEvents{
     public function creatEventsAndBookingTables ($idNav) {
         $numberOfChair = new TemplateReserveTables();
         echo '<article>
-        
        <div>
         <form class="flex-colonne-form" action="'.encodeRoutage(34).'" method="post" enctype="multipart/form-data">
         <h1 class="subTitleSite">Ajouter un événements</h1>
         <label class="bold" for="title">Titre événement</label>
         <input type="text" id="title" name="title" placeholder="Titre de votre news"/>
         <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
-        <input type="datetime-local" id="dateEvent" name="dateEvent"/>
+        <input type="datetime-local" id="dateEvent" name="dateEvent" required/>
+        <label class="bold" for="dateEndEvent">Horraire de fin de l\'événement ?</label>
+            <input type="datetime-local" name="dateEndEvent" id="dateEndEvent" required/>
+            </div>
         <label class="bold" for="description">Votre événement</label>
 <textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
 </textarea>
@@ -332,7 +337,7 @@ Class TemplateEvents extends SQLEvents{
                 <label class="bold" for="numberMax">Nombre maximum de participants</label>
                 <input type="number" id="numberMax" name="numberMax" min="1" max="'.$numberOfChair->readNumberOfChairAdmin().'" value="10"/>
                 <label class="bold" for="contribution">Participation au frais en €</label>
-                <input type="number" id="numberMax" name="contribution" min="0" max="50" value="12"/>
+                <input type="number" id="numberMax" name="contribution" min="0" max="250" value="12"/>
                 <label class="bold" for="publish">Publier</label>
                 <select id="publish" name="publish">
                     <option value="0">Non</option>
@@ -343,9 +348,6 @@ Class TemplateEvents extends SQLEvents{
             </aside>';
             $numberOfChair->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
             $numberOfChair->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
-            echo '<label class="bold" for="endOfReserve">Horraire de fin de l\'événement ?</label>
-            <input type="time" name="endOfReserve" id="endOfReserve" min="10:00" max="23:59" required/>
-            </div>';
             $dataTables = $this->selectAllTables();
           
             echo '<aside class="gallery3">';

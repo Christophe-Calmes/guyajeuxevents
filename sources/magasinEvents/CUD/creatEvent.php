@@ -11,20 +11,18 @@ array_push($controlePostData, sizePost($_POST['description'], 10500));
 array_push($controlePostData, borneSelect($_POST['publish'], 1));
 array_push($controlePostData, borneSelect($_POST['numberMax'], 25));
 array_push($controlePostData, borneSelect($_POST['contribution'], 50));
-$mark = [1,1,1,0,0,0,0,0];
+array_push($controlePostData, filter($_POST['dateEvent'])<filter($_POST['dateEndEvent']));
+$mark = [1,1,1,0,0,0,0,0,1];
 $idTable = array();
 $idUser = $checkId->idUser($_SESSION);
-$checkDateShedulingShop = new SQLAcessReserTables();
-$dateTime = new DateTime(filter($_POST['dateEvent']));
-$date = $dateTime->format('Y-m-d');
-$dateTime->modify(filter($_POST['endOfReserve']));
-$_POST['endOfReserve']=$dateTime->format('Y-m-d\TH:i');
+$_POST['endOfReserve']=filter($_POST['dateEndEvent']);
 foreach ($_POST as $key => $value) {
     if(str_contains($key, 'idTable')) {
         array_push($idTable, ['idTable'=>substr($key, 7), 'start'=>filter($_POST['dateEvent']), 'end'=>$_POST['endOfReserve']]);
     }
 }
 foreach($idTable as $value) {
+    $checkDateShedulingShop = new SQLAcessReserTables();
     $checkDateShedulingShop->delReservedTableInEventCase ($value['start'], $value['end'], $value['idTable']);
     // sendEmail
     $param = [['prep'=>':idUser', 'variable'=>$idUser],
@@ -43,7 +41,6 @@ if($mark == $controlePostData && controlePicture($_FILES, 75000)) {
     unset($_POST['idActivity']);
     unset($_POST['idConsommation']);
     unset($_POST['endOfReserve']);
-    unset($_POST['endOfReserve']);
     $_POST['idAuthor'] = $idUser;
     $namePicture = genToken (6).date('Y').filter($_FILES['picture']['name']);
     $_POST['picture'] = $namePicture;
@@ -58,7 +55,6 @@ if($mark == $controlePostData && controlePicture($_FILES, 75000)) {
             $select = "SELECT `id` FROM `internalEvents` ORDER BY `id` DESC LIMIT 1;";
             $data = ActionDB::select($select, [], 1);
             $idEvent = $data[0]['id'];
-            print_r($idEvent);
             foreach($idTable as $value) {
                 // Affecter les réservations à l'ID de l'événement.
                 $param = [['prep'=>':idUser', 'variable'=>$idUser],
@@ -74,5 +70,6 @@ if($mark == $controlePostData && controlePicture($_FILES, 75000)) {
         return header('location:../index.php?message=Le fichier destination n\'existe pas');
     }
 } else {
+    
     return header('location:../index.php?message=Soucis d\'enregistrement');
 }
