@@ -1,7 +1,6 @@
 <?php
-require('sqlEvents.php');
-require ('functions/functionDateTime.php');
-require('functions/functionPresentationText.php');
+require('sources/magasinEvents/objects/sqlEvents.php');
+require('sources/reserveTablesByUser/objects/TemplateReserveTable.php');
 function unsubscribeUIserForm($idNav, $login, $idEvent, $idUser) {
     echo '<li>
     <form action="'.encodeRoutage(40).'" method="post">
@@ -18,6 +17,20 @@ Class TemplateEvents extends SQLEvents{
         $result = strongHTML($result);
         return $result;
     }
+    private function formAddOneMemberOnEvent($idEvent, $idNav) {
+        $data = $this->selectAllMembres();
+        echo '<form class="flex-colonne" action="'.encodeRoutage(58).'" method="post">
+                <label for="idUser">Listes des membres :</label>
+                <select id="idUser" name="idUser">';
+                foreach($data as $value) {
+                    echo'<option value="'.$value['idUser'].'">'.$value['prenom'].' '.$value['nom'].'</option>';
+                }
+            echo'</select><div class="select-arrow"></div>
+                <input type="hidden" name="idEvent" value="'.$idEvent.'"/>
+            <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscrire</button>
+        </form>';
+
+    }
     private function templateOneEvent($value, $picturePath) {
         $soldOut = null;
         $red = null;
@@ -25,7 +38,6 @@ Class TemplateEvents extends SQLEvents{
             $soldOut = 'Complet -';
             $red = 'red';
         }
-
         $finalText = $this->presentationText($value['description'], 'listClass');
         if($value['contribution'] == 0) {
             $contribution = 'Gratuit';
@@ -37,6 +49,7 @@ Class TemplateEvents extends SQLEvents{
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
                 echo '<p class="bold">Heure du rendez-vous :'.justHeureFr($value['dateEvent']).'</p>';
+                echo '<p class="bold">Fin de l\'événenement :'.justHeureFr($value['dateEndEvent']).'</p>';
                 echo '<p class="textEvents">'.$finalText.'</p>';
                 echo '<p>Nombre de participant max '.$value['numberMax'].' personnes</p>';
                 echo '<p>Participation aux frais : '.$contribution.' €</p>';
@@ -64,21 +77,25 @@ Class TemplateEvents extends SQLEvents{
         $this->templateAdminEvent($dataEvents, $idNav, $routage);
     }
     private function updateFormEvent($data, $idNav) {
+        $numberOfChair = new TemplateReserveTables();
         echo '<h1 class="subTitleSite">Modifier un événements</h1>
-    <form class="flex-colonne-form" action="'.encodeRoutage(37).'" method="post" enctype="multipart/form-data">
-    <label class="bold" for="title">Titre événement</label>
-    <input type="text" id="title" name="title" value="'.$data['title'].'"/>
-    <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
-    <input type="datetime-local" id="dateEvent" name="dateEvent" value="'.$data['dateEvent'].'"/>
-    <label class="bold" for="description">Votre événement</label>
+            <form class="flex-colonne-form" action="'.encodeRoutage(37).'" method="post" enctype="multipart/form-data">
+            <label class="bold" for="title">Titre événement</label>
+            <input type="text" id="title" name="title" value="'.$data['title'].'"/>
+            <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
+            <input type="datetime-local" id="dateEvent" name="dateEvent" value="'.$data['dateEvent'].'"/>
+            <label class="bold" for="dateEndEvent">Horraire de fin de l\'événement ?</label>
+            <input type="datetime-local" name="dateEndEvent" id="dateEndEvent" value="'.$data['dateEndEvent'].'"  required/>
+            </div>
+            <label class="bold" for="description">Votre événement</label>
 <textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
 '.$data['description'].'
 </textarea>
         <aside class="flex-colonne-form">
             <label class="bold" for="numberMax">Nombre maximum de participants</label>
-            <input type="number" id="numberMax" name="numberMax" min="1" max="25" value="'.$data['numberMax'].'"/>
+            <input type="number" id="numberMax" name="numberMax" min="1" max="'.$numberOfChair->readNumberOfChairAdmin().'" value="'.$data['numberMax'].'"/>
             <label class="bold" for="contribution">Participation au frais en €</label>
-            <input type="number" id="numberMax" name="contribution" min="0" max="50" value="'.$data['contribution'].'"/>
+            <input type="number" id="numberMax" name="contribution" min="0" max="250" value="'.$data['contribution'].'"/>
             <label class="bold" for="publish">Publier</label>
             <select id="publish" name="publish">'; 
             optionSelect($data['publish']);
@@ -93,13 +110,73 @@ Class TemplateEvents extends SQLEvents{
             <select id="archive" name="archive">
             '; 
             optionSelect($data['archive']);
-        echo'
-            </select>
-            
+        echo'</select>
             <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
             <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
-        </aside>
-        <input type="hidden" name="id" value="'.$data['id'].'"/>
+        </aside>';
+        $numberOfChair->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
+        $numberOfChair->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
+        $dataTables = $this->selectAllTables();
+            echo '<aside class="gallery3">';
+            echo '<style>';
+            foreach($dataTables as $value) {
+               echo '.toggle'.$value['id'].' {
+                    position : relative ;
+                    display : inline-block;
+                    width : 5.5em;
+                    height : 1.6em;
+                    background-color: var(--color-neutralBone);
+                    border-radius: 30px;
+                    border: 2px solid var(--color-blueOneChair);
+                }
+                .toggle'.$value['id'].':after {
+                    content: "";
+                    position: absolute;
+                    width: 1.48em;
+                    height: 1.48em;
+                    border-radius: 50%;
+                    background-color: var(--color-orange);
+                    top: 1px;
+                    left: 2px;
+                    transition:  all 0.7s;
+                }
+                .checkedText'.$value['id'].' {
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: bold;
+                    font-size: 0.8em;
+                    display: flex;
+                    padding-left: 0.2em;
+                    padding-bottom: 0px;
+                }
+                .checkbox'.$value['id'].':checked + .toggle'.$value['id'].'::after {
+                    left : 3.85em;
+                    background-color: var(--color-green);
+                }
+                .checkbox'.$value['id'].':checked + .toggle'.$value['id'].' {
+                    background-color: var(--color-darkGreen);
+                }
+                .checkbox'.$value['id'].' {
+                    display : none;
+                }';
+            }
+            echo '</style>';
+            $tableForOneEvent = new SQLAcessReserTables();
+            $idTables = $tableForOneEvent->sortTableEvent ($data['id']);
+            $idTableSimple = array_column($idTables, 'idTable');
+            foreach($dataTables as $value){   
+                if(array_search($value['id'],$idTableSimple) !== FALSE) {
+                $checked = 'checked';
+               } else {
+                $checked = null;
+               }
+                echo '<div class="itemCheckBox">';
+                    echo '<label class="dayweek" for="idTable'.$value['id'].'">'.$value['name'].'<br/> Max personne = '.$value['max'].'</label>';
+                    echo '<input type="checkbox" class="checkbox'.$value['id'].'" id="switch'.$value['id'].'" name="idTable'.$value['id'].'" '.$checked.'/>';
+                    echo '<label for="switch'.$value['id'].'" class="toggle'.$value['id'].'">';
+                    echo '<p class="checkedText'.$value['id'].'"></p>';
+                echo '</div>';
+            }
+        echo '<input type="hidden" name="id" value="'.$data['id'].'"/>
     <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>
     </form>';
     }
@@ -237,6 +314,7 @@ Class TemplateEvents extends SQLEvents{
                     echo '<article class="adminEventList">';
                         $this->registrationUserOnEvent($value['id'], $value['numberMax']);
                         $this->adminRegistrationUserOnEvent($value['id'], $value['numberMax'], $idNav);
+                        $this->formAddOneMemberOnEvent($value['id'], $idNav);
                         buttonDelUserOnEvent($value['id'], $idNav);
                     echo '</article>';
             echo '</div>';
@@ -245,13 +323,103 @@ Class TemplateEvents extends SQLEvents{
         echo '</div>';
     }
     public function archiveEvent() {
-        $dateOfTheDay = new DateTime();
-        $interval = new DateInterval('P1D');
-        $dateOfTheDay = $dateOfTheDay->add($interval);
-        $date = $dateOfTheDay->format('Y-m-d H:i');
-        $update ="UPDATE `internalEvents` 
-        SET `archive`= 1 WHERE `dateEvent`<:dateOfDay;";
-        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
-        return ActionDB::access($update, $param, 1);
+        $update ="UPDATE internalEvents
+        SET archive = 1
+        WHERE dateEvent < DATE_SUB(CURRENT_DATE(), INTERVAL 2 DAY);";
+        return ActionDB::access($update, [], 1);
+    }
+    public function creatEventsAndBookingTables ($idNav) {
+        $numberOfChair = new TemplateReserveTables();
+        echo '<article>
+       <div>
+        <form class="flex-colonne-form" action="'.encodeRoutage(34).'" method="post" enctype="multipart/form-data">
+        <h1 class="subTitleSite">Ajouter un événements</h1>
+        <label class="bold" for="title">Titre événement</label>
+        <input type="text" id="title" name="title" placeholder="Titre de votre news"/>
+        <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
+        <input type="datetime-local" id="dateEvent" name="dateEvent" required/>
+        <label class="bold" for="dateEndEvent">Horraire de fin de l\'événement ?</label>
+            <input type="datetime-local" name="dateEndEvent" id="dateEndEvent" required/>
+            </div>
+        <label class="bold" for="description">Votre événement</label>
+<textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
+</textarea>
+            <aside class="flex-colonne-form">
+                <label class="bold" for="numberMax">Nombre maximum de participants</label>
+                <input type="number" id="numberMax" name="numberMax" min="1" max="'.$numberOfChair->readNumberOfChairAdmin().'" value="10"/>
+                <label class="bold" for="contribution">Participation au frais en €</label>
+                <input type="number" id="numberMax" name="contribution" min="0" max="250" value="12"/>
+                <label class="bold" for="publish">Publier</label>
+                <select id="publish" name="publish">
+                    <option value="0">Non</option>
+                    <option value="1" selected>Oui</option>
+                </select>
+                <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
+                <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
+            </aside>';
+            $numberOfChair->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
+            $numberOfChair->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
+            $dataTables = $this->selectAllTables();
+          
+            echo '<aside class="gallery3">';
+            echo '<style>';
+            foreach($dataTables as $value) {
+               echo '.toggle'.$value['id'].' {
+                    position : relative ;
+                    display : inline-block;
+                    width : 5.5em;
+                    height : 1.6em;
+                    background-color: var(--color-neutralBone);
+                    border-radius: 30px;
+                    border: 2px solid var(--color-blueOneChair);
+                }
+                .toggle'.$value['id'].':after {
+                    content: "";
+                    position: absolute;
+                    width: 1.48em;
+                    height: 1.48em;
+                    border-radius: 50%;
+                    background-color: var(--color-orange);
+                    top: 1px;
+                    left: 2px;
+                    transition:  all 0.7s;
+                }
+                .checkedText'.$value['id'].' {
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: bold;
+                    font-size: 0.8em;
+                    display: flex;
+                    padding-left: 0.2em;
+                    padding-bottom: 0px;
+                }
+                .checkbox'.$value['id'].':checked + .toggle'.$value['id'].'::after {
+                    left : 3.85em;
+                    background-color: var(--color-green);
+                }
+                .checkbox'.$value['id'].':checked + .toggle'.$value['id'].' {
+                    background-color: var(--color-darkGreen);
+                }
+                .checkbox'.$value['id'].' {
+                    display : none;
+                }';
+            }
+            echo '</style>';
+            foreach($dataTables as $value){
+                echo '<div class="itemCheckBox">';
+                    echo '<label class="dayweek" for="idTable'.$value['id'].'">'.$value['name'].'<br/> Max personne = '.$value['max'].'</label>';
+                    echo '<input type="checkbox" class="checkbox'.$value['id'].'" id="switch'.$value['id'].'" name="idTable'.$value['id'].'"/>';
+                    echo '<label for="switch'.$value['id'].'" class="toggle'.$value['id'].'">';
+                    echo '<p class="checkedText'.$value['id'].'"></p>';
+                   
+                echo '</div>';
+            }
+           
+     
+      echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Ajouter</button>';
+      echo '</aside>
+      </form>
+    </article>';
+    
+
     }
 }

@@ -21,7 +21,20 @@ Class TemplateReserveTables extends SQLAcessReserTables {
         $this->yes=['Non', 'Oui'];
         $this->pathPicture ="sources/pictures/pictureTables/";
     }
+    private function formAddOneMemberOnEvent($idReserveTable, $idNav) {
+        $data = $this->selectAllMembres();
+        echo '<form class="flex-colonne" action="'.encodeRoutage(59).'" method="post">
+                <label for="idUser">Listes des membres :</label>
+                <select id="idUser" name="idUser">';
+                foreach($data as $value) {
+                    echo'<option value="'.$value['idUser'].'">'.$value['prenom'].' '.$value['nom'].'</option>';
+                }
+            echo'</select><div class="select-arrow"></div>
+                <input type="hidden" name="id" value="'.$idReserveTable.'"/>
+            <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Affecter</button>
+        </form>';
 
+    }
     public function displayScheduleShop ($idNav) {
         $schedule = $this->scheduleShop ();
         echo '<table class="scheduleShop">';
@@ -59,7 +72,7 @@ Class TemplateReserveTables extends SQLAcessReserTables {
         }
         echo'</table>';
     }
-    private function readNumberOfChairAdmin() {
+    public function readNumberOfChairAdmin() {
         $dataNumberOfChair = $this->readNumberOfChair ();
         return $dataNumberOfChair[0]['numberOfChair'];
     }
@@ -166,7 +179,7 @@ Class TemplateReserveTables extends SQLAcessReserTables {
       }
 
     }
-    private function selectAbstractParam($tableName, $fieldName, $label) {
+    public function selectAbstractParam($tableName, $fieldName, $label) {
         $data = $this->abstractParam($tableName);
         echo '<label class="bold"  for="id'.$fieldName.'">'.$label.'</label>';
         echo '<select name="id'.$fieldName.'">';
@@ -307,7 +320,6 @@ Pas de commentaire.
                     echo '<h3 class="subTitleSite">Table '.$value['nameTable'].' </h3>';
                     echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
                     echo '<article class="reservedTable">';
-                    echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
                     echo '<p>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</p>';
                     echo '<p>Activité : '.$value['nameActivity'].'</p>';
                     echo '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>';
@@ -343,19 +355,27 @@ Pas de commentaire.
         if($dataReservationTables !=[]) {
             echo '<article class="galleryReserveTable">';
             foreach($dataReservationTables as $value) {
+           
                 echo '<div class="itemReserveTable">';
+              
                     echo '<h3 class="subTitleSite">Table '.$value['nameTable'].'</h3>';
+                    if($value['idEvent'] != null) {
+                        echo '<p class="dayweek">Réservation pour l\'événement : '.$this->getTitleEvent ($value['idEvent']).'</p>';
+                    }
                     echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
                     echo '<article class="reservedTable">';
                     echo '<p>Réservation au nom de : <strong>'.$value['prenom'].' '.$value['nom'].'</strong></p>';
-                    echo '<p>Date de la réservation : '.brassageDate($value['dateCreat']).'</p>';
                     echo '<p><strong>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</strong></p>';
+                    echo '<p>Date de création : '.formatDateHeureFr($value['dateCreat']).'</p>';
                     echo '<p>Activité : '.$value['nameActivity'].'</p>';
                     echo '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>';
                     echo '<p>Consommation principale prévus : '.$value['nameConsommation'].'</p>';
                     echo '<p>Commentaire :<br/>'.$value['comment'].'</p>';
                     echo '</article>';
                     buttonAnnuler ($valid, $value['id'], $idNav); 
+                    if($value['idEvent'] == null) {
+                        $this->formAddOneMemberOnEvent($value['id'], $idNav);
+                    }
                 echo'</div>';  
                 }
             echo '</article>';

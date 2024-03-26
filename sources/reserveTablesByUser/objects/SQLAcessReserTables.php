@@ -118,7 +118,7 @@ Class SQLAcessReserTables {
         return ActionDB::access($delete, $param, 1);
     }
     protected function abstractParam($tableName) {
-        $select ="SELECT `id`, `name`, `valid` FROM `{$tableName}` WHERE `valid`=1";
+        $select ="SELECT `id`, `name`, `valid` FROM `{$tableName}` WHERE `valid`=1 ORDER BY `name`";
         return ActionDB::select($select, [], 1);
     }
     private function weekOfDay($dateTime){
@@ -199,10 +199,10 @@ Class SQLAcessReserTables {
         
     }
     public function addReservedTableByUser($param){
-        $insert = "INSERT INTO `reserveTables`
-        ( `idUser`, `idTable`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`) 
-        VALUES 
-        (:idUser, :idTable, :numberPeople, :comment, :dateReserve, :endOfReserve, :idActivity, :idConsommation)";
+            $insert = "INSERT INTO `reserveTables`
+            ( `idUser`, `idTable`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`) 
+            VALUES 
+            (:idUser, :idTable, :numberPeople, :comment, :dateReserve, :endOfReserve, :idActivity, :idConsommation)";
         ActionDB::access($insert, $param, 1);
     }
     private function dateOfLastDay() {
@@ -212,16 +212,12 @@ Class SQLAcessReserTables {
         return $date;
     }
     public function archiveReserveOfTable() {
-        $date = $this->dateOfLastDay();
-        $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<:dateOfDay;";
-        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
-        return ActionDB::access($update, $param, 1);
+        $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);";
+        return ActionDB::access($update, [], 1);
     }
     public function trashArchiveOfBooking() {
-        $date = $this->dateOfLastDay();
-        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<:dateOfDay AND `valid` = 0;";
-        $param=[['prep'=>':dateOfDay', 'variable'=>$date]];
-        return ActionDB::access($delete, $param, 1);
+        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)";
+        return ActionDB::access($delete, [], 1);
     }
     public function nameOfTable($idTable) {
         $select = "SELECT `name` FROM `gamesTables` WHERE `id`=:idTable";
@@ -258,11 +254,11 @@ Class SQLAcessReserTables {
         return $dataCount[0]['numberReserveTables'];
     }
     protected function getReservationsTables($firstPage, $byPages, $valid) {
-        $select = "SELECT `reserveTables`.`id`, `reserveTables`.`idUser`, `idTable`, `dateCreat`, `dateUpdate`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`, `reserveTables`.`valid`,
+        $select = "SELECT `reserveTables`.`id`, `reserveTables`.`idUser`, `idTable`, `reserveTables`.`dateCreat`, `reserveTables`.`dateUpdate`, `numberPeople`, `comment`, `dateReserve`, `endOfReserve`, `idActivity`, `idConsommation`, `reserveTables`.`valid`,
         `gamesTables`.`name` AS `nameTable`, `pictureOfTable`, 
         `activity`.`name` AS `nameActivity`,
         `consommations`.`name` AS `nameConsommation`,
-        `prenom`, `nom`, `login`
+        `prenom`, `nom`, `login`, `idEvent`
         FROM `reserveTables`
         INNER JOIN `activity` ON `activity`.`id`=`idActivity`
         INNER JOIN `consommations` ON `consommations`.`id`=`idConsommation`
@@ -272,6 +268,13 @@ Class SQLAcessReserTables {
         ORDER BY `dateReserve` LIMIT {$firstPage}, {$byPages};";
         $param= [['prep'=>':valid', 'variable'=>$valid]];
         return ActionDB::select($select, $param, 1);
+    }
+    protected function getTitleEvent ($idEvent) {
+        $select = "SELECT  `title` FROM `internalEvents` WHERE `id` = :idEvent";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        $data = ActionDB::select($select, $param, 1);
+        return $data[0]['title'];
+
     }
     public function cancelBookingTableByAdmin($id) {
         $update = "UPDATE `reserveTables` SET `valid`= 0 WHERE `id`= :id";
@@ -300,5 +303,58 @@ Class SQLAcessReserTables {
         $select = "SELECT COUNT(`id`) AS `totalOfBooking` FROM `reserveTables` WHERE `idUser` = :idUser AND `valid` = 1;";
         $countBooking = ActionDB::select($select, $param, 1);
         return $countBooking[0]['totalOfBooking'];
+    }
+    public function delReservedTableInEventCase ($startEvent, $endEvent, $idTable) {
+        $param = [['prep'=>':dateReserve', 'variable'=>$startEvent],
+                    ['prep'=>':endOfReserve', 'variable'=>$endEvent],
+                    ['prep'=>':idTable', 'variable'=>$idTable]];
+        $delete = "DELETE FROM `reserveTables`
+        WHERE (
+            `dateReserve` BETWEEN :dateReserve AND :endOfReserve
+            OR `endOfReserve` BETWEEN :dateReserve AND :endOfReserve
+            OR (:dateReserve BETWEEN `dateReserve` AND `endOfReserve`)
+            OR (:endOfReserve BETWEEN `dateReserve` AND `endOfReserve`)
+        )
+        AND `idTable` = :idTable;";
+        return ActionDB::access($delete, $param, 1);
+    }
+    public function numberOfChairOfOneTable($idTable) {
+        $select = "SELECT `max` FROM `gamesTables` WHERE `id` = :idTable";
+        $param = [['prep'=>':idTable', 'variable'=>$idTable]];
+        $dataMax = ActionDB::select($select, $param, 1);
+        return $dataMax[0]['max'];
+    }
+    public function affectedIdEvent($param) {
+        $update = "UPDATE `reserveTables` 
+                SET `idEvent`=:idEvent 
+                WHERE `idTable` = :idTable 
+                AND`idUser`=:idUser 
+                AND `dateReserve`=:dateReserve 
+                AND `endOfReserve`=:endOfReserve";
+        return ActionDB::access($update, $param, 1);
+    }
+    public function sortTableEvent ($idEvent) {
+        $select = "SELECT  `idTable`
+        FROM `reserveTables` 
+        WHERE `idEvent` = :idEvent;";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        return ActionDB::select($select, $param, 1);
+    }
+    public function deleteTableEvent ($idEvent) {
+        $delete = "DELETE FROM `reserveTables` WHERE `idEvent`=:idEvent;";
+        $param = [['prep'=>':idEvent', 'variable'=>$idEvent]];
+        return ActionDB::access($delete, $param, 1);
+    }
+    protected function selectAllMembres() {
+        $sql = new SelectRequest(['idUser', 'prenom', 'nom', 'login'],
+                                 'users', [
+                                    ['champs'=>'role', 'operator'=>'=', 'param'=>1],
+                                    ['champs'=>'valide', 'operator'=>'=', 'param'=>1]]);
+        $select = $sql->requestSelect(0);
+        return ActionDB::select($select, []);
+    }
+    public function affectedTableForUser($param) {
+        $update = "UPDATE `reserveTables` SET `idUser`=:idUser WHERE `id`=:id";
+        return ActionDB::access($update, $param, 1);
     }
 }

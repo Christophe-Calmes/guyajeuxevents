@@ -1,7 +1,7 @@
 <?php 
 Class SQLEvents {
     protected function nextEvent () {
-       $select = "SELECT  `id`, `dateEvent`, `title`, `description`, `picture`, `contribution`, `numberMax`
+       $select = "SELECT  `id`, `dateEvent`, `dateEndEvent`, `title`, `description`, `picture`, `contribution`, `numberMax`
        FROM `internalEvents` 
        WHERE `publish` =1 AND `valid` = 1 AND `archive` = 0 
        ORDER BY `dateEvent` ASC 
@@ -18,7 +18,7 @@ Class SQLEvents {
         return $dataNumber[0]['numberOfEvent'];
     }
     protected function readEventPagination($firstPage, $parPage, $archive, $valid) {
-        $select="SELECT `id`, `dateCreat`, `dateUpdate`, `dateEvent`, `title`, `description`, 
+        $select="SELECT `id`, `dateCreat`, `dateUpdate`, `dateEvent`, `dateEndEvent`, `title`, `description`, 
         `picture`, `numberMax`, `contribution`, `publish`, `archive`, `valid`, `sucess`, 
         `prenom`, `nom`
         FROM `internalEvents`
@@ -41,7 +41,7 @@ Class SQLEvents {
         return ActionDB::access($update, $param, 1);
     }
     protected function readOneEvent($id) {
-        $select = "SELECT `id`, `idAuthor`, `dateCreat`, `dateUpdate`, `dateEvent`, `title`, 
+        $select = "SELECT `id`, `idAuthor`, `dateCreat`, `dateUpdate`, `dateEvent`, `dateEndEvent`, `title`, 
         `description`, `picture`, `numberMax`, `contribution`, `publish`, `archive`, `valid`, 
         `sucess`, `prenom`, `nom`
         FROM `internalEvents`
@@ -120,5 +120,17 @@ Class SQLEvents {
         $delete="DELETE FROM `reserveEvents` WHERE `idEvent`=:idEvent;";
         $param=[['prep'=>':idEvent', 'variable'=>$id]];
         return ActionDB::access($delete, $param,1);
+    }
+    protected function selectAllTables() {
+        $select ="SELECT `id`, `name`, `max` FROM `gamesTables` WHERE `valid` = 1;";
+        return ActionDB::select($select, [], 1);
+    }
+    protected function selectAllMembres() {
+        $sql = new SelectRequest(['idUser', 'prenom', 'nom', 'login'],
+                                 'users', [
+                                    ['champs'=>'role', 'operator'=>'=', 'param'=>1],
+                                    ['champs'=>'valide', 'operator'=>'=', 'param'=>1]]);
+        $select = $sql->requestSelect(0);
+        return ActionDB::select($select, []);
     }
 }

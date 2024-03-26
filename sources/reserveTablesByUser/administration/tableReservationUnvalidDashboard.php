@@ -4,8 +4,8 @@ require('sources/reserveTablesByUser/objects/TemplateReserveTable.php');
 require ('functions/functionPagination.php');
 $valid = 0;
 $dashboardTables = new TemplateReserveTables();
-$dashboardTables->archiveReserveOfTable();
-$dashboardTables->trashArchiveOfBooking();
+//$dashboardTables->archiveReserveOfTable();
+//$dashboardTables->trashArchiveOfBooking();
 if(isset($_GET['page']) && (!empty($_GET['page']))) {
     $currentPage = filter($_GET['page']);
   } else {
