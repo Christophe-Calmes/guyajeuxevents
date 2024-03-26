@@ -312,9 +312,9 @@ Class TemplateEvents extends SQLEvents{
                     </form>';
                     echo '<a  href="'.findTargetRoute(112).'&idEvent='.$value['id'].'">Modifier</a>';
                     echo '<article class="adminEventList">';
+                        $this->formAddOneMemberOnEvent($value['id'], $idNav);
                         $this->registrationUserOnEvent($value['id'], $value['numberMax']);
                         $this->adminRegistrationUserOnEvent($value['id'], $value['numberMax'], $idNav);
-                        $this->formAddOneMemberOnEvent($value['id'], $idNav);
                         buttonDelUserOnEvent($value['id'], $idNav);
                     echo '</article>';
             echo '</div>';
@@ -331,15 +331,15 @@ Class TemplateEvents extends SQLEvents{
     public function creatEventsAndBookingTables ($idNav) {
         $numberOfChair = new TemplateReserveTables();
         echo '<article>
-       <div>
-        <form class="flex-colonne-form" action="'.encodeRoutage(34).'" method="post" enctype="multipart/form-data">
-        <h1 class="subTitleSite">Ajouter un événements</h1>
-        <label class="bold" for="title">Titre événement</label>
-        <input type="text" id="title" name="title" placeholder="Titre de votre news"/>
-        <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
-        <input type="datetime-local" id="dateEvent" name="dateEvent" required/>
-        <label class="bold" for="dateEndEvent">Horraire de fin de l\'événement ?</label>
-            <input type="datetime-local" name="dateEndEvent" id="dateEndEvent" required/>
+            <div>
+                <form class="flex-colonne-form" action="'.encodeRoutage(34).'" method="post" enctype="multipart/form-data">
+                <h1 class="subTitleSite">Ajouter un événements</h1>
+                <label class="bold" for="title">Titre événement</label>
+                <input type="text" id="title" name="title" placeholder="Titre de votre news"/>
+                <label class="bold" for="dateEvent">Le jour et l\'heure de votre événement</label>
+                <input type="datetime-local" id="dateEvent" name="dateEvent" required/>
+                <label class="bold" for="dateEndEvent">Horraire de fin de l\'événement ?</label>
+                    <input type="datetime-local" name="dateEndEvent" id="dateEndEvent" required/>
             </div>
         <label class="bold" for="description">Votre événement</label>
 <textarea class="textAreaNew" id="description" name="description" rows="25" cols="50">
@@ -355,12 +355,11 @@ Class TemplateEvents extends SQLEvents{
                     <option value="1" selected>Oui</option>
                 </select>
                 <label class="bold" for="picture">Image d\'illustration de l\'événement ?</label>
-                <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>
-            </aside>';
+                <input id="picture" type="file" name="picture" accept="image/png, image/jpeg, image/webp"/>';
             $numberOfChair->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
             $numberOfChair->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
+            echo '</aside>';
             $dataTables = $this->selectAllTables();
-          
             echo '<aside class="gallery3">';
             echo '<style>';
             foreach($dataTables as $value) {

@@ -29,8 +29,7 @@ Class TemplateReserveTables extends SQLAcessReserTables {
                 foreach($data as $value) {
                     echo'<option value="'.$value['idUser'].'">'.$value['prenom'].' '.$value['nom'].'</option>';
                 }
-            echo'</select><div class="select-arrow"></div>
-                <input type="hidden" name="id" value="'.$idReserveTable.'"/>
+            echo'<input type="hidden" name="id" value="'.$idReserveTable.'"/>
             <button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Affecter</button>
         </form>';
 

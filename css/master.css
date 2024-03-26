@@ -70,6 +70,9 @@ main {
 footer {
     text-align: center;
 }
+aside {
+  margin: 0.25em;
+}
 
 h1 {
   font-size: 2em;
@@ -143,6 +146,10 @@ a {
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
+}
+.flex-rows-simple {
+  display: flex;
+  flex-direction: row;
 }
 .flex-center {
   align-items: center;
@@ -239,7 +246,7 @@ a {
 }
 input, label {
   margin-bottom: 0.25em;
-  padding: auto;
+  padding: 0.3em;
 }
 input, textarea {
   background-color: var(--color-chair);
@@ -258,17 +265,7 @@ select:hover {
 select:disabled {
   color:var(--color-neutralBone);
 }
-.select-arrow {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border: 1px solid #ccc;
-  border-top-width: 0;
-  border-right-width: 0;
-}
+
 
 .textAreaNew {
   text-align: left;
@@ -312,6 +309,7 @@ select:disabled {
 }
 
 /*Grid*/
+
 .adminTable {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
