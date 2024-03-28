@@ -6,7 +6,8 @@
   $internaute = $roles->setRoles();
   $dataMenuDeroulant = $readNav->getMenuDeroulant();
 ?>
-<h3>Ajouter un lien de navigation</h3>
+<?php if($dev){?>
+  <h3>Ajouter un lien de navigation</h3>
 <form class="formulaireClassique" action="<?php echo encodeRoutage(4); ?>" method="post">
   <label for="nomNav">Nom du lien</label>
   <input id="nomNav" type="text" name="nomNav" required>
@@ -25,12 +26,14 @@
       } ?>
     </select>
       <?php
-        $readNav->selectZoneMenu($dataMenuDeroulant);
-        $readNav->menuDeroulant($dataMenuDeroulant);
+        $readNav->selectZoneMenu($dataMenuDeroulant, 0);
+        $readNav->menuDeroulant($dataMenuDeroulant, 0);
         $readNav->modulesList();
       ?>
     <button class="buttonForm" type="submit" name="idNav" value="<?=$idNav?>">Ajouter</button>
 </form>
+<?php } ?>
+
 <h3>Les menus</h3>
 <?php
 

@@ -1,6 +1,8 @@
 <?php
 //encodeRoutage(50)
 require('../sources/reserveTablesByUser/objects/SQLAcessReserTables.php');
+require('../sources/comEmail/objets/FindEmail.php');
+require('../sources/comEmail/objets/EmailForReservedTable.php');
 $checkDateShedulingShop = new SQLAcessReserTables();
 $dateReverseByCustomer = filter($_POST['dateReserve']);
 $dateTime = new DateTime(filter($_POST['dateReserve']));
@@ -23,6 +25,8 @@ if($mark == $controlePostData){
     $parametre = new Preparation();
     $param = $parametre->creationPrepIdUser ($_POST);
     $checkDateShedulingShop->addReservedTableByUser($param);
+    $sendEmail = new SendEmailForReservedTable ($param[7]['variable'], $param[0]['variable'], $param[3]['variable']);
+    $sendEmail->sendEmailBookingTable(true);
     return header('location:../index.php?message=Réservation enregistré correctement&idNav='.$idNav);
 } else {
     return header('location:../index.php?message=Soucis horraire de réservation&idNav='.$idNav);

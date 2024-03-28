@@ -5,7 +5,6 @@ require '../functions/functionToken.php';
 $_POST['targetRoute'] = IntToken(20);
 $parametre = new Preparation();
 $param = $parametre->creationPrep ($_POST);
-print_r($_POST);
 $update = "UPDATE `navigation`
 SET `nomNav`= :nomNav, `cheminNav`=:cheminNav, `menuVisible`=:menuVisible,
 `zoneMenu`=:zoneMenu, `ordre`=:ordre, `niveau`=:niveau, `valide`=:valide,

@@ -21,13 +21,12 @@ function haschage($data) {
   return $data;
 }
 function champsVide($data) {
-  $ok = 0;
-  foreach ($data as $key => $value) {
-    if ($value === '') {
-        $ok = 1;
+  foreach ($data as $value) {
+    if ($value == '') {
+      return 1;
     }
   }
-  return $ok;
+  return 0;
 }
 function sizePost($data, $size) {
   if(strlen($data) <= $size) {

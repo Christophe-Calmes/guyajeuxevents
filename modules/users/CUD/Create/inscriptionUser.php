@@ -28,6 +28,7 @@ foreach ($arrayDoublon as $key => $value) {
 for ($i=0; $i <count($security); $i++) {
   array_push($stamp, 0);
 }
+
 if($security === $stamp) {
   // Instruction de traitement de $_POST
   $test = true;
@@ -35,14 +36,19 @@ if($security === $stamp) {
   unset($_POST['mpdA']);
   $_POST['mdp'] = haschage(filter($_POST['mdp']));
   $_POST['token'] = genToken(16);
+ 
 }
 if($test) {
-  //print_r($_POST);
   $sql = new InsertRequest();
   $insert = $sql->requestInsert($_POST, 3, 'users');
   $parametre = new Preparation();
   $param = $parametre->creationPrep ($_POST);
   ActionDB::access($insert, $param);
+  $to = filter($_POST['email']);
+  $subject = 'Valider votre compte guyajeux réservation';
+  $message = 'Vous vous êtes pré-inscrit à  le guyajeux réservation '.date('d-m-y').', rendez-vous à l\'adresse suivante : https://guyajeux.graines1901.com/ pour confirmer votre adhésion. Votre token de sécurité actuel est le '.$_POST['token'];
+  $headers = 'From: no-reply@guyajeux.fr';
+  mail($to, $subject, $message, $headers);
   header('location:../index.php?message=Vous avez reçus un mail pour confirmer votre inscription&idNav='.$idNav);
 } else {
   header('location:../index.php?message=Soucis de traitement');

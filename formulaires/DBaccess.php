@@ -25,7 +25,12 @@ if($securiter == 0) {
     // Controle champs vide
     $controleForm = array();
     array_push($controleForm, champsVide($_POST));
-      if($controleForm == [0]) { include '../'.$chemin; } else { header('location:../index.php?message=Un ou plusieurs champs sont vide.'); }
+      if($controleForm == [0]) 
+      { include '../'.$chemin; } 
+      else 
+      { 
+        header('location:../index.php?message=Un ou plusieurs champs sont vide.'); 
+      }
   } else {
     header('location:../../index.php?message=Erreur de traitement');
   }
@@ -42,6 +47,7 @@ if($securiter == 0) {
               if($controleForm == [0]) {
                   include '../'.$chemin;
                 } else {
+               
                     header('location:../index.php?message=Un ou plusieurs champs sont vide.');
                   }
                 } else {

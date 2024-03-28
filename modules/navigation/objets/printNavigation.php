@@ -1,11 +1,22 @@
 <?php
+ function wathIsMenu ($menu, $data) {
+  if($data != 0) {
+      foreach ($menu as $value) {
+        if($value['idMenuDeroulant']==$data) {
+          return $value['titreMenu'];
+        }
+      }
+  } else {
+    return 'Bandeau de navigation';
+  }
+}
 Class PrintNavigation extends GetNavigation {
 
   private function rolesUsers() {
     $roles = new GetUser();
     $data = $roles->getRoles();
     $rolesUsers = array();
-    foreach ($data as $key => $value) {
+    foreach ($data as $value) {
         array_push($rolesUsers, ['name'=>$value['typeRole'], 'role'=>$value['accreditation']]);
     }
     return $rolesUsers;
@@ -43,21 +54,31 @@ Class PrintNavigation extends GetNavigation {
       });
     </script>';
   }
-  public function selectZoneMenu($variable) {
+  public function selectZoneMenu($variable, $dataTarget) {
     echo '<label for="zoneMenu">Zone du menu</label>
           <select id="zoneMenu" name="zoneMenu">
           <option value="0">Bandeau de navigation</option>';
           foreach ($variable  as $value) {
-            echo '<option value="'.$value['idMenuDeroulant'].'">'.$value['titreMenu'].'</option>';
+            if($value['idMenuDeroulant'] == $dataTarget) {
+              echo '<option value="'.$value['idMenuDeroulant'].'" selected>'.$value['titreMenu'].'</option>';
+            } else {
+              echo '<option value="'.$value['idMenuDeroulant'].'">'.$value['titreMenu'].'</option>';
+            }
+           
           }
     echo'</select>';
   }
-  public function menuDeroulant($variable) {
+  public function menuDeroulant($variable, $dataTarget) {
     echo '<label for="deroulant">Menu déroulant ?</label>
           <select id="deroulant" name="deroulant">
           <option value="0">Non</option>';
-          foreach ($variable as $key => $value) {
-            echo '<option value="'.$value['idMenuDeroulant'].'">'.$value['titreMenu'].'</option>';
+          foreach ($variable as $value) {
+            if($value['idMenuDeroulant'] == $dataTarget) {
+              echo '<option value="'.$value['idMenuDeroulant'].'" selected>'.$value['titreMenu'].'</option>';
+            } else {
+              echo '<option value="'.$value['idMenuDeroulant'].'">'.$value['titreMenu'].'</option>';
+            }
+            
           }
     echo'</select>';
   }
@@ -89,17 +110,6 @@ Class PrintNavigation extends GetNavigation {
     $variable  = $this->getAllNav();
     $menu = $this->getMenuDeroulant();
     $accreditation = '';
-    function wathIsMenu ($menu, $data) {
-      if($data != 0) {
-          foreach ($menu as $key => $value) {
-            if($value['idMenuDeroulant']==$data) {
-              return $value['titreMenu'];
-            }
-          }
-      } else {
-        return 'Bandeau de navigation';
-      }
-    }
     echo '<div class="moduleNav nav">
             <div class="nomNav">Nom navigation</div>
             <div class="phat">Chemin</div>
@@ -110,8 +120,8 @@ Class PrintNavigation extends GetNavigation {
             <div class="deroulant">Menu déroulant</div>
             <div class="valide">Valide ?</div>
         </div>';
-        foreach ($variable as $key => $value) {
-          foreach ($roles as $keyRoles => $valueRoles) {
+        foreach ($variable as $value) {
+          foreach ($roles as  $valueRoles) {
             if($valueRoles['role'] == $value['niveau']) {
               $accreditation = $valueRoles['name'];
             }
@@ -120,6 +130,7 @@ Class PrintNavigation extends GetNavigation {
           if($value['deroulant'] != 0) {
             $nav = 'nav';
           }
+
           echo '<a class="lienTab" href="'.findTargetRoute(93).'&id='.$value['idNav'].'">
                   <div class="moduleNav '.$nav.'">
                         <div class="nomNav">'.$value['nomNav'].'</div>
@@ -136,9 +147,29 @@ Class PrintNavigation extends GetNavigation {
   }
   public function updateNav($id, $idNav) {
     $roles = $this->rolesUsers();
-    //print_r($roles);
     $yes = ['Non', 'Oui'];
     $data = $this->getNavParam($id)[0];
+    $menu = $this->getMenuDeroulant();
+    echo '<div class="adminNav">
+            <div class="nomNav">Nom Nav</div>
+            <div class="phat">Chemin</div>
+            <div class="visible">Visible ?</div>
+            <div class="zoneMenu">Zone menus</div>
+            <div class="Ordre">Ordre apparition</div>
+            <div class="Niveau">Niveau</div>
+            <div class="deroulant">Menu déroulant</div>
+            <div class="valide">Valide</div>
+          </div>';
+  echo '<div class="adminNav">
+            <div class="nomNav">'.$data['nomNav'].'</div>
+            <div class="phat">'.$data['cheminNav'].'</div>
+            <div class="visible">'.yes($data['menuVisible']).'</div>
+            <div class="zoneMenu">'.wathIsMenu($menu, $data['zoneMenu']).'</div>
+            <div class="Ordre">'.$data['ordre'].'</div>
+            <div class="Niveau">'.$roles[$data['niveau']]['name'].'</div>
+            <div class="deroulant">'.wathIsMenu($menu, $data['zoneMenu']).'</div>
+            <div class="valide">'.yes($data['valide']).'</div>
+        </div>';
 
     echo '<h3>Modifier un lien de navigation</h3>
     <form class="formulaireClassique" action="'.encodeRoutage(20).'" method="post">
@@ -148,24 +179,42 @@ Class PrintNavigation extends GetNavigation {
       <label for="cheminNav">chemin du lien</label>
       <input id="cheminNav" type="text" name="cheminNav" value="'.$data['cheminNav'].'"required>
       <label for="valide">Lien valide ?</label>
-      <select id="valide" name="valide">
-        <option value="1">Oui</option>
-        <option value="0">Non</option>
-      </select>
+      <select id="valide" name="valide">'; 
+      for ($i=0; $i < count($yes) ; $i++) {  
+        if($data['valide'] == $i) {
+          echo '<option value="'.$i.'" selected>'.$yes[$i].'</option>'; 
+        } else {
+          echo '<option value="'.$i.'">'.$yes[$i].'</option>'; 
+        }
+        
+      }
+    echo'</select>
       <label for="menuVisible">Menu visible ? '.$yes[$data['menuVisible']].'</label>
         <select id="menuVisible" name="menuVisible">';
-          for ($i=0; $i < count($yes) ; $i++) {  echo '<option value="'.$i.'">'.$yes[$i].'</option>'; }
+          for ($i=0; $i < count($yes) ; $i++) {  
+            if($data['menuVisible'] == $i) {
+              echo '<option value="'.$i.'" selected>'.$yes[$i].'</option>'; 
+            } else {
+              echo '<option value="'.$i.'">'.$yes[$i].'</option>'; 
+            }
+            
+          }
   echo '</select>
       <label for="ordre">Ordre d\'apparition : '.$data['ordre'].'</label>
       <input id="ordre" type="number" name="ordre" min="0" max="20" value="'.$data['ordre'].'" required>
-      <label for="niveau">Niveau d\'acréditation : '.$roles[$data['niveau']].'</label>
+      <label for="niveau">Niveau d\'acréditation :</label>
         <select id="niveau" name="niveau">';
-        foreach ($roles as $key => $value) {
-          echo '<option value="'.$value['role'].'">'.$value['name'].'</option>';
+        foreach ($roles as $value) {
+          if($data['niveau'] == $value['role']) {
+            echo '<option value="'.$value['role'].'" selected>'.$value['name'].'</option>';
+          } else {
+            echo '<option value="'.$value['role'].'">'.$value['name'].'</option>';
+          }
+          
         }
     echo '</select>';
-            $this->selectZoneMenu($this->getMenuDeroulant());
-            $this->menuDeroulant($this->getMenuDeroulant());
+            $this->selectZoneMenu($this->getMenuDeroulant(), $data['zoneMenu']);
+            $this->menuDeroulant($this->getMenuDeroulant(), $data['deroulant']);
         echo '<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Modifier</button>
     </form>';
 echo '<form class="formulaireClassique" action="'.encodeRoutage(21).'" method="post">
@@ -181,9 +230,7 @@ echo '<form class="formulaireClassique" action="'.encodeRoutage(21).'" method="p
       foreach ($dataModule as $key => $value) {
         echo '<option value="'.$value['id'].'">'.$value['module'].'</option>';
       }
-      echo'
-      </select>
-    ';
+      echo'</select>';
   }
   public function displayModulesList($idNav) {
     echo '<ul class="listeProfil">';
@@ -215,13 +262,13 @@ echo '<form class="formulaireClassique" action="'.encodeRoutage(21).'" method="p
       <label for="niveau">Niveau d\'acréditation du nouveau menu</label>
       <select id="niveau"  name="niveau">';
 
-      foreach ($roles as $key => $value) {
+      foreach ($roles as $value) {
         echo '<option value="'.$value['role'].'">'.$value['name'].'</option>';
       }
     echo '</select>
       <label for="idModule">Module du menu déroulant</label>
         <select id="idModule" name="idModule">';
-          foreach ($modules as $key => $value) {
+          foreach ($modules as $value) {
             echo '<option value="'.$value['id'].'">'.$value['module'].'</option>';
           }
   echo'</select>

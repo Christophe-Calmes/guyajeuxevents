@@ -309,6 +309,33 @@ select:disabled {
 }
 
 /*Grid*/
+.adminNav {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "nomNav phat visible zoneMenu Ordre Niveau deroulant valide";
+}
+
+.nomNav { grid-area: nomNav; }
+
+.phat { 
+  grid-area: phat;
+  width: 27vw;  
+}
+
+.visible { grid-area: visible; }
+
+.zoneMenu { grid-area: zoneMenu; }
+
+.Ordre { grid-area: Ordre; }
+
+.Niveau { grid-area: Niveau; }
+
+.deroulant { grid-area: deroulant; }
+
+.valide { grid-area: valide; }
 
 .adminTable {
   display: grid;

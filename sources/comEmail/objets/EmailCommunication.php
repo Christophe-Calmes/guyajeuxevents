@@ -1,5 +1,6 @@
 <?php
-Class EmailCommunication {
+require('sources/comEmail/objets/FindEmail.php');
+Class EmailCommunication extends FindEmail {
     private $objet;
     private $message;
     private $header;
@@ -9,34 +10,15 @@ public function __construct($objet, $message)
             // message => contenus du message
             $this->objet = $objet;
             $this->message = $message;
-            $this->header = 'noreply@guyajeux.com';
+            $this->header = 'From: no-reply@guyajeux.com';
         }
     private function sendEmail ($emailRecipient) {
         return mail($emailRecipient, $this->objet, $this->message, $this->header);
     }
-    public function findAndSendAnEmailToUserSession($session) {
-        $param = [['prep'=>':token', 'variable'=>$session['tokenConnexion']]];
-        $select = "SELECT  `email` 
-        FROM `users` 
-        WHERE `token`=:token AND `valide`=1 AND `role`=1";
-        $DataEmail = ActionDB::select($select, $param, 0);
-        if($DataEmail != []){
-            $this->sendEmail($DataEmail[0]['email']);
-        } else {
-            return false;
-        }
+    public function sendSimpleEmailByIdUser($idUser) {
+        $this->sendEmail($this->findEmailToUserId($idUser));
     }
-    public function findAndSendAnEmailToUserId($idUser) {
-        $param = [['prep'=>':idUser', 'variable'=>$idUser]];
-        $select = "SELECT  `email` 
-        FROM `users` 
-        WHERE `idUser`=:idUser AND `valide`=1 AND `role`=1";
-        $DataEmail = ActionDB::select($select, $param, 0);
-        if($DataEmail != []){
-            $this->sendEmail($DataEmail[0]['email']);
-        } else {
-            return false;
-        } 
+    public function sendSimpleEmailByUserSession($session) {
+        $this->sendEmail($this->findEmailToUserSession($session));
     }
 }
-
