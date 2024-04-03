@@ -28,7 +28,7 @@ Class PrintNavigation extends GetNavigation {
               <div class="btn-line"></div>
           </div>';
     echo '<nav class="nav menu"><ul class="navigationBandeau">';
-    echo '<li><a href="index.php">Acceuil</a></li>';
+    echo '<li><a href="index.php">Accueil</a></li>';
       foreach ($variable as $value) {
         if(($value['zoneMenu'] == 0)&&($value['deroulant'] == 0)) {
           echo '<li><a href="index.php?idNav='.$value['targetRoute'].'">'.$value['nomNav'].'</a></li>';
@@ -45,8 +45,14 @@ Class PrintNavigation extends GetNavigation {
         }
       }
     echo '</ul>
-    </nav>';
-    include 'javaScript/magicBurger.php';
+    </nav>
+    <script>
+    const menuBtn = document.querySelector(\'.menu-btn\');
+      const menu = document.querySelector(\'.menu\');
+      menuBtn.addEventListener(\'click\', () => {
+          menu.classList.toggle(\'active\');
+      });
+    </script>';
   }
   public function selectZoneMenu($variable, $dataTarget) {
     echo '<label for="zoneMenu">Zone du menu</label>

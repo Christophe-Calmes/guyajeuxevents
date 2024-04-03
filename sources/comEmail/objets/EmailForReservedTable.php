@@ -18,7 +18,7 @@ Class SendEmailForReservedTable extends FindEmail {
     private $clearDate;
     private $header;
     private $idTable;
-    public function __construct($idUser, $dateBooking, $idTable)
+    public function __construct($idUser, $dateBooking , $idTable)
     {
         $this->idUser = $idUser;
         $this->dateBooking = $dateBooking;
@@ -55,4 +55,5 @@ Class SendEmailForReservedTable extends FindEmail {
         }
 
     }
+
 }

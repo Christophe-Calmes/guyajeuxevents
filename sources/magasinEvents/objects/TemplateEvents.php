@@ -124,7 +124,7 @@ Class TemplateEvents extends SQLEvents{
                     position : relative ;
                     display : inline-block;
                     width : 5.5em;
-                    height : 1.6em;
+                    height : 1em;
                     background-color: var(--color-neutralBone);
                     border-radius: 30px;
                     border: 2px solid var(--color-blueOneChair);

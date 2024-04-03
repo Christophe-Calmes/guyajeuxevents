@@ -25,5 +25,12 @@ Class FindEmail {
             return false;
         } 
     }
+    public function findInfoUserByReservedTable($idBooking) {
+        $select = "SELECT `idUser`, `idTable`,`dateReserve` 
+                    FROM `reserveTables` 
+                    WHERE `id` = :id AND `valid` = 1";
+        $param = [['prep'=>':id', 'variable'=>$idBooking]];
+        return ActionDB::select($select, $param, 1);
+    }
 }
 
