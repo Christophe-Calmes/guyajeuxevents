@@ -315,8 +315,13 @@ Pas de commentaire.
         echo '<article class="galleryReserveTable">';
         if($dataBooking !=[]) {
             foreach($dataBooking as $value) {
+                $detail =  '<p>Nombre de personnes prévus : '.$value['numberPeople'].'</p>
+                            <p>Activité : '.$value['nameActivity'].'</p>
+                            <p>Consommation principale prévus : '.$value['nameConsommation'].'</p>
+                            <p>Commentaire :<br/>'.$value['comment'].'</p>';
                 echo '<div class="itemReserveTable">';
-                    echo '<h3 class="subTitleSite">Table '.$value['nameTable'].' </h3>';
+                    echo '<a class="link" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Guyajeux réservation de la table '.$value['nameTable'].'&dates='.dateAndTimeAgendaGoogle ($value['dateReserve']).'/'. dateAndTimeAgendaGoogle ($value['endOfReserve']).'&details='.$detail.'&sf=true&output=xml" target="_blank">
+                    <h3 class="subTitleSite">Table '.$value['nameTable'].' </h3></a>';
                     echo '<img class="modal" src="'.$this->pathPicture.$value['pictureOfTable'].'" alt=".'.$value['nameTable'].'."/>';
                     echo '<article class="reservedTable">';
                     echo '<p>Résevation : '.formatDateHeureFr($value['dateReserve']).' à '.justHeureFr($value['endOfReserve']).'.</p>';

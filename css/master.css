@@ -546,6 +546,7 @@ a {
   font-size: 1em;
   cursor: var(--main-cursor);
   margin: 0em;
+  text-align: center;
 }
 .lienTab {
   background-color: #ffffff;

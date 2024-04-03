@@ -44,8 +44,7 @@ Class TemplateEvents extends SQLEvents{
         } else {
             $contribution = $value['contribution'];
         }
-            echo'<h2 class="subTitleSite titleEventItem '.$red.'">'.$soldOut.$value['title'].'</h2>';
-           
+            echo'<a class="link subTitleSite titleEventItem '.$red.'" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='.$value['title'].'&dates='.dateAndTimeAgendaGoogle ($value['dateEvent']).'/'. dateAndTimeAgendaGoogle ($value['dateEndEvent']).'&details='.$finalText.'PAF:'.$contribution.'&sf=true&output=xml" target="_blank"><h2>'.$soldOut.$value['title'].'</h2></a>';
             echo '<article>';
                 echo '<p class="bold">Le '.brassageDate($value['dateEvent']).'</p>';
                 echo '<p class="bold">Heure du rendez-vous :'.justHeureFr($value['dateEvent']).'</p>';

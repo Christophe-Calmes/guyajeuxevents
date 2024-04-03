@@ -66,3 +66,8 @@ function justHeureFr($data) {
   );
   return $formatter->format($dateDay);
 }
+function dateAndTimeAgendaGoogle ($date) {
+  $dateTime = new DateTime($date);
+  $date_format = $dateTime->format("Ymd\THis");
+  return $date_format;
+}
