@@ -1,6 +1,13 @@
 <?php 
 Class SQLEvents {
+    private function archiveEvent () {
+        $update = "UPDATE `internalEvents` 
+        SET `archive`=1, `publish`=0
+        WHERE DATE(`dateEndEvent`) <= DATE(NOW()) AND TIME(`dateEndEvent`) >= TIME(NOW()) - INTERVAL 24 HOUR;";
+         return ActionDB::access($update, [],1);
+    }
     protected function nextEvent () {
+        $this->archiveEvent ();
        $select = "SELECT  `id`, `dateEvent`, `dateEndEvent`, `title`, `description`, `picture`, `contribution`, `numberMax`
        FROM `internalEvents` 
        WHERE `publish` =1 AND `valid` = 1 AND `archive` = 0 
