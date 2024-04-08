@@ -18,12 +18,13 @@
     $nbr = ActionDB::select($count, $element);
     $nbrArticles = $nbr[0]['nbr'];
     $pages = ceil($nbrArticles/$parPage);
+    print_r($pages);
     $premier = ($currentPage * $parPage) - $parPage;
     // Element d'affichage renseignement utilisateurs.
       $dataUsers = $users->getUserCurrentPage($premier, $parPage, $valide);
     // Affichage
       $users->userTable($dataUsers, $idNav);
     // Fin affichage
-  for ($page=1; $page <= $pages ; $page++ ) {
-    echo '<a class="lienNav" href="index.php?idNav='.$idNav.'&start='.$page.'">'.$page.'</a>';
-  }
+    for ($page=1; $page <= $pages ; $page++ ) {
+      echo '<a class="lienNav" href="index.php?idNav='.$idNav.'&page='.$page.'">'.$page.'</a>';
+    }

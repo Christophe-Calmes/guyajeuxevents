@@ -26,8 +26,7 @@ if (password_verify(filter($_POST['mdp']), $dataTraiter[0]['mdp'])) {
                 ActionDB::access($insert, $log);
                 $maintenanceOfReservedTable = new SQLAcessReserTables();
                 $maintenanceOfReservedTable->trashArchiveOfBooking();
-
-              header('location:../index.php?message=bienvenu '.$_SESSION['login']);
+              return header('location:../index.php?message=bienvenu '.$_SESSION['login']);
 
 } else {
   $insert="INSERT INTO `journaux`(`ipUser`, `login`, `mdpHacker`)
@@ -36,5 +35,5 @@ if (password_verify(filter($_POST['mdp']), $dataTraiter[0]['mdp'])) {
           ['prep'=>':login', 'variable'=>filter($_POST['login'])],
           ['prep'=>':mdpHacker', 'variable'=>filter($_POST['mdp'])],];
           ActionDB::access($insert, $log);
-    header('location:../index.php?message=Erreur d\'authentification');
+    return header('location:../index.php?message=Erreur d\'authentification');
 }

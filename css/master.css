@@ -40,6 +40,8 @@
   --font-style: italic;
   --color-title: #DA1401;
   --color-subTitle: #4585B5;
+  /*Présentation*/
+  --padding-sheddulingShop: 0.2em 0 0.2em 0;
   /*Variable color*/
   --color-green: #4f8b36;
   --color-yellow: #f1df57;
@@ -613,36 +615,62 @@ transition: display 3s;
   font-family: var(--font-family);
   font-style: var(--font-style);
 }
+.shoppingHourCloseMorning {  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 5px 5px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "dayOfWeek close OpenAfternoon CloseAfternoon";
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+}
+.shoppingHourCloseAfternoon {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr  2fr;
+  grid-template-rows: 1fr;
+  gap: 5px 5px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "dayOfWeek OpenMorning CloseMorning close";
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+}
+
 .close {
   font-family: var(--font-family);
   font-style: var(--font-style);
   margin: 0.8em;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  padding: var(--padding-sheddulingShop);
+  color:var(--color-neutralBone);
 }
 .dayOfWeek { 
   grid-area: dayOfWeek;
   margin: var(--main-marginButton);
+  padding: var(--padding-sheddulingShop);
 }
 
 .OpenMorning { 
   grid-area: OpenMorning;
   margin: var(--main-marginButton);
+  padding: var(--padding-sheddulingShop);
 }
 
 .CloseMorning { 
   grid-area: CloseMorning; 
   margin: var(--main-marginButton);
+  padding: var(--padding-sheddulingShop);
 }
 
 .OpenAfternoon { 
   grid-area: OpenAfternoon; 
   margin: var(--main-marginButton);
+  padding: var(--padding-sheddulingShop);
 }
 
 .CloseAfternoon { 
   grid-area: CloseAfternoon; 
   margin: var(--main-marginButton);
+  padding: var(--padding-sheddulingShop);
 }
 
 .moduleNav {
@@ -872,6 +900,10 @@ nav {
   }
   .open {
     width: 20em;
+  }
+  .modal {
+    width: 95%;
+    margin-left: 11vw;
   }
 }
 /*Burger Menu*/

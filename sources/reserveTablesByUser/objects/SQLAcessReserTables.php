@@ -212,7 +212,9 @@ Class SQLAcessReserTables {
         return $date;
     }
     public function archiveReserveOfTable() {
-        $update = "UPDATE `reserveTables` SET `valid`=0 WHERE `endOfReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);";
+        $update = "UPDATE `reserveTables` 
+        SET `valid`=0 
+        WHERE `endOfReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY);";
         return ActionDB::access($update, [], 1);
     }
     public function trashArchiveOfBooking() {

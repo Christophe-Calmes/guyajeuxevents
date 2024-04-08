@@ -19,6 +19,7 @@ $dataNbrC = ActionDB::select($requetteSQL, $param);
 $nbrArticle = $dataNbrC[0]['nbrConnexion'];
 // nombre de page total arrondit au chiffre suppérieur.
 $pages = ceil($nbrArticle/$parPage);
+print_r($pages);
 // Calcul du premier article dans la page.
 $premier = ($currentPage * $parPage) - $parPage;
 $requetteSQL = "SELECT *

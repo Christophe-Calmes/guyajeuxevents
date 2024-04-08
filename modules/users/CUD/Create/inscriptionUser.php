@@ -8,11 +8,15 @@ if((filter($_POST['mpdA']) == filter($_POST['mdp']))){
   array_push($security, 0);
 } else {
   array_push($security, 1);
+  return header('location:../index.php?message=Votre mot de passe de confirmation et différent du mot de passe initial');
 }
 if(strlen(filter($_POST['mpdA']))>9) {
   array_push($security, 0);
 } else {
   array_push($security, 1);
+  $sizeMDP = strlen(filter($_POST['mpdA']));
+  $sub = 9-$sizeMDP;
+  return header('location:../index.php?message=Votre mot de passe est trop il manque '.$sub.' caractères.');
 }
 $elements = [['post'=>'email', 'size'=>80], ['post'=>'prenom', 'size'=>60], ['post'=>'nom', 'size'=>60], ['post'=>'login', 'size'=>60], ['post'=>'mdp', 'size'=>120]];
 foreach ($elements as $key => $value) {

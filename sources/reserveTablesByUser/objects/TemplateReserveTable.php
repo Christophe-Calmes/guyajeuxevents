@@ -247,7 +247,7 @@ echo'<aside>
                     $this->selectAbstractParam('activity', 'Activity', 'Vos activités prévus ?');
                     $this->selectAbstractParam('consommations', 'Consommation', 'Quelles type consommations ?');
             echo '<label class="bold" for="comment">Nous faire parvenir un commentaire ?</label>
-<textarea class="textAreaNew" id="text" name="comment" rows="7" cols="30">
+<textarea class="textAreaNew" id="text" name="comment" rows="7" cols="22">
 Pas de commentaire.
 </textarea>';
             echo'<button class="buttonForm" type="submit" name="idNav" value="'.$idNav.'">Inscription</button>
@@ -291,19 +291,45 @@ Pas de commentaire.
               </div>';
        
         foreach($dataScheduling as $value) {
-            if($value['closeDay'] == 0) {
-                if(substr($value['closeAfternoon'],0,-3) == '23:59') {
-                    $hour = '00:00';
+            $closeMorning = false;
+            if((substr($value['openMorning'],0,-3) == '11:59')&&(substr($value['closeMorning'],0,-3))== '12:00') {
+                $class='shoppingHourCloseMorning';
+                $morning = '<div class="close red">Fermer le matin</div>';
+                $closeMorning = true;
+            } else {
+                $class='shoppingHour';
+                $morning =  '<div class="OpenMorning">'.substr($value['openMorning'],0,-3).'</div>
+                <div class="CloseMorning">'.substr($value['closeMorning'],0,-3).'</div>';
+            }
+            if(substr($value['closeAfternoon'],0,-3) == '23:59') {
+                $hour = '00:00';
+            } else {
+                $hour = substr($value['closeAfternoon'],0,-3);
+            }
+            if((substr($value['openAfternoon'],0,-3) == '18:59')&&(substr($value['closeAfternoon'],0,-3) == '19:00')) {
+                $class='shoppingHourCloseAfternoon';
+                $afternoon = '<div class="close red">Fermer l\'après midi</div>';
+            } else {
+                if($closeMorning) {
+                    $class='shoppingHourCloseMorning';
                 } else {
-                    $hour = substr($value['closeAfternoon'],0,-3);
+                    $class='shoppingHour';
                 }
-                echo '<div class="shoppingHour">
-                <div class="dayOfWeek">'.$this->dayOfWeek[$value['dayOfWeekW']].'</div>
-                <div class="OpenMorning">'.substr($value['openMorning'],0,-3).'</div>
-                <div class="CloseMorning">'.substr($value['closeMorning'],0,-3).'</div>
-                <div class="OpenAfternoon">'.substr($value['openAfternoon'],0,-3).'</div>
-                <div class="CloseAfternoon">'.$hour.'</div>
-              </div>';
+                
+                $afternoon = '<div class="OpenAfternoon">'.substr($value['openAfternoon'],0,-3).'</div>
+                <div class="CloseAfternoon">'.$hour.'</div>';
+            }
+
+
+         
+
+            if($value['closeDay'] == 0) {
+            
+                echo '<div class="'.$class.'">
+                <div class="dayOfWeek">'.$this->dayOfWeek[$value['dayOfWeekW']].'</div>';
+               echo $morning;
+               echo $afternoon;
+            echo'</div>';
             } else {
                 echo '<div class="red close">Fermeture le '.$this->dayOfWeek[$value['dayOfWeekW']].'</div>';
             }
