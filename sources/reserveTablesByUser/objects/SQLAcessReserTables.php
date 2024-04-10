@@ -218,7 +218,9 @@ Class SQLAcessReserTables {
         return ActionDB::access($update, [], 1);
     }
     public function trashArchiveOfBooking() {
-        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)";
+        /*$delete = "DELETE FROM `reserveTables`
+        WHERE `dateReserve`<DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)";*/
+        $delete = "DELETE FROM `reserveTables` WHERE `endOfReserve` < DATE_ADD(NOW(), INTERVAL -6 HOUR);";
         return ActionDB::access($delete, [], 1);
     }
     public function nameOfTable($idTable) {

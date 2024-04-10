@@ -1,7 +1,7 @@
 <?php
 require('SqlAcessNews.php');
-require('functions/functionDateTime.php');
-require('functions/functionPresentationText.php');
+include_once('functions/functionDateTime.php');
+include_once('functions/functionPresentationText.php');
 
 
 Class TemplateArticle extends SQLAcessNews {

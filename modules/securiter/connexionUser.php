@@ -27,7 +27,6 @@ if (password_verify(filter($_POST['mdp']), $dataTraiter[0]['mdp'])) {
                 $maintenanceOfReservedTable = new SQLAcessReserTables();
                 $maintenanceOfReservedTable->trashArchiveOfBooking();
               return header('location:../index.php?message=bienvenu '.$_SESSION['login']);
-
 } else {
   $insert="INSERT INTO `journaux`(`ipUser`, `login`, `mdpHacker`)
   VALUES (:ipUser, :login, :mdpHacker)";

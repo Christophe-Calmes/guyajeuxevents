@@ -68,7 +68,13 @@ Class TemplateEvents extends SQLEvents{
     }
     public function displayEventPublic() {
         $dataNextEvent = $this->nextEvent ();
-       $this->templateEvent($dataNextEvent);
+        if(!empty($dataNextEvent)) {
+            $this->templateEvent($dataNextEvent);
+        } else {
+            echo '<h3 class="subTitleSite">Pas d\'événements programmés dans les prochains jours.</h3>';
+            require ('sources/news/displayArticle.php');
+        }
+       
     }
     
     public function adminEvents($firstPage, $parPage, $archive, $valid, $idNav, $routage) {
@@ -274,7 +280,7 @@ Class TemplateEvents extends SQLEvents{
     }
     public function registrationOneEvent($session, $idNav){
         $dataNextEvent = $this->nextEvent ();
-   
+        if(!empty($dataNextEvent)) {
         $picturePath='sources/pictures/picturesEvents/';
         echo '<div class="gallery">';
         foreach ($dataNextEvent as $value) {
@@ -285,6 +291,10 @@ Class TemplateEvents extends SQLEvents{
             echo '</div>';
         };
         echo '</div>';
+        } else {
+            echo '<h3 class="subTitleSite">Pas d\'événements programmés dans les prochains jours.</h3>';
+            require ('sources/news/displayArticle.php');
+        }
        
     }
 

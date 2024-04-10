@@ -1,6 +1,6 @@
 
     <footer class="flex-rows">
-      <nav><a href="https://guyajeux.salon/boutique/">Eshop Guyajeux</a></nav>
+      <!--<nav><a href="https://guyajeux.salon/boutique/">Eshop Guyajeux</a></nav>-->
   <div class="centrale">
       Copyrigth &copy; <?=date('Y')?> &nbsp;
   </div>

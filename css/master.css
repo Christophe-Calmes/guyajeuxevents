@@ -536,6 +536,9 @@ a {
   cursor: var(--main-cursor);
   margin: var(--main-marginButton);
 }
+.buttonClosingModal {
+  font-size: 0.9em;
+}
 .link {
   background-color: #fae9cb00;
   border: none;
@@ -768,9 +771,9 @@ nav {
   text-decoration: none;
 }
 .logo {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
+  position: absolute;
+  left: 1em;
+  margin-right: 0.25em;
 }
 .logoPicture {
   height: 15vh;
@@ -798,6 +801,9 @@ nav {
 
 
 @media only screen and (max-width: 768px) {
+  body {
+  
+  }
   h1 {
     display : none;
   }
@@ -821,6 +827,10 @@ nav {
     margin-left: 0em;
   }
   .menu-btn {
+      position: absolute;
+      top: 3vh;
+      display: block;
+      width: fit-content;
       display: flex;
       background-color: var(--main-background-navBar);
       padding: 1em;
@@ -847,9 +857,13 @@ nav {
       margin-bottom: 10px;
   }
   .logo{
-    display: none;
+    position: static;
+  
   }
-  .centrale{
+  .logoPicture {
+    height: 13vh;
+  }
+    .centrale{
     display: none;
   }
   .adress {
@@ -861,9 +875,17 @@ nav {
     width: 64%;
   }
 
-.indexArticle {  
-  display: inline;
+ 
+  .indexArticle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
+.hoursOfShopping {
+font-size: 0.8em;
+}
+
 .TitleNews { 
   grid-area: TitleNews;
   width: 100%;
@@ -875,6 +897,7 @@ nav {
   width: 100%;
 }
   .listClass { 
+    text-indent: -20vw;
     list-style: none;
     text-align: left;
     padding:0vw;
@@ -902,8 +925,9 @@ nav {
     width: 20em;
   }
   .modal {
-    width: 95%;
-    margin-left: 11vw;
+    width: 70vw;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 /*Burger Menu*/

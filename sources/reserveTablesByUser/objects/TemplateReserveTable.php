@@ -188,10 +188,12 @@ Class TemplateReserveTables extends SQLAcessReserTables {
         echo '</select>';
     }
     public function currentAndFuturBookings($idTable, $targetRoute){
-
-echo'<aside>
+        echo '<aside>
         <a href="'.findTargetRoute($targetRoute).'&idTable='.$idTable.'">Voir les réservations</a>
+        <button class="buttonClosingModal red" id="close'.$idTable.'2" type="button">X</button>   
     </aside>';
+
+   
     }
 
     public function displayTableForUser ($idNav, $routage, $targetRoute) {
@@ -213,14 +215,13 @@ echo'<aside>
                 z-index: 2;
               }
               #magic'.$value['PositionTable'].'{
-
               }';
         }
         echo '@media only screen and (max-width: 768px) {';
             foreach($dataValidTable as $value) {
                 echo '#hiddenForm'.$value['PositionTable'].' {
-                    left: 20%;
-                    width: 60vw;
+                    left: 14%;
+                    width: 80vw;
                 }';
             }
         echo '}';
@@ -229,9 +230,8 @@ echo'<aside>
         foreach($dataValidTable as $value) {
             $valueNumber = round(log($value['max']))+2;
             echo '<div>
-            <button type="button" id="magic'.$value['PositionTable'].'" class="open">Ouvrir la table '.$value['name'].'</button>
-            </div>
-            
+                <button type="button" id="magic'.$value['PositionTable'].'" class="open">Ouvrir la table '.$value['name'].'</button>
+                </div>
             <div id="hiddenForm'.$value['PositionTable'].'" class="flex-rows">';
             $this->currentAndFuturBookings($value['id'], $targetRoute);
         echo '<form class="flex-colonne-form" action="'.encodeRoutage($routage).'" method="post">
@@ -259,9 +259,19 @@ Pas de commentaire.
         echo '</div>';
         echo '<script type="text/javascript" defer>';
         foreach($dataValidTable as $value) {
-            echo 'let jeckyl'.$value['id'].' = document.getElementById("magic'.$value['PositionTable'].'");
+            echo '
+            let jeckyl'.$value['id'].' = document.getElementById("magic'.$value['PositionTable'].'");
             let magax'.$value['id'].' = document.getElementById("hiddenForm'.$value['PositionTable'].'");
             let open'.$value['PositionTable'].' = false;
+            let close'.$value['id'].'2 = document.getElementById("close'.$value['id'].'2");
+            close'.$value['id'].'2.addEventListener("click", function() {
+                jeckyl'.$value['id'].'.innerText = "Ouvrir la table '.$value['name'].'";
+                jeckyl'.$value['id'].'.style.backgroundColor = "#03470D";
+                magax'.$value['id'].'.style.display = "none";
+                open'.$value['PositionTable'].' = false;
+                return open'.$value['PositionTable'].';
+            });
+      
             jeckyl'.$value['id'].'.addEventListener("click", function(){
               if(!open'.$value['PositionTable'].') {
                 jeckyl'.$value['id'].'.innerText = "Fermer la table '.$value['name'].'";
@@ -276,7 +286,6 @@ Pas de commentaire.
               }
               return open'.$value['PositionTable'].';
             });';
-         
         }
         echo '</script>';
     }
