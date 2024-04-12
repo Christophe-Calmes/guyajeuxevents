@@ -70,6 +70,8 @@ main {
   text-align: center;
 }
 footer {
+    padding-top: 2vh;
+    margin-bottom: 2vh;
     text-align: center;
 }
 aside {
@@ -163,6 +165,10 @@ a {
   justify-content: space-around;
   align-items: flex-start;
 }
+.paddingLeft {
+  padding-left: 4vw;
+}
+
 .flex-colonne-form {
   display: flex;
   flex-direction: column;
@@ -270,6 +276,7 @@ select:disabled {
 
 
 .textAreaNew {
+  padding-top: 2vh;
   text-align: left;
 }
 .buttonForm {
@@ -801,9 +808,9 @@ nav {
 
 
 @media only screen and (max-width: 768px) {
-  body {
-  
-  }
+  /*body {
+    
+  }*/
   h1 {
     display : none;
   }

@@ -65,7 +65,7 @@ private $yes;
   public function printProfilUser ($variable) {
       echo '<ul class="listeProfil">';
       echo '<li><h4>Votre profil</h4></li>';
-      foreach ($variable as $key => $value) {
+      foreach ($variable as $value) {
         echo '<li>Identité : '.$value['prenom'].' '.$value['nom'].'</li>';
         echo '<li>Pseudo : '.$value['login'].'</li>';
         echo '<li>Role : '.$this->role[$value['role']]['name'].'</li>';

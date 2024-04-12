@@ -37,7 +37,7 @@ Class SQLAcessReserTables {
         $insert ="INSERT INTO `maxOfChair`( `numberOfChair`) VALUES (:numberOfChair);";
         return ActionDB::access($insert, $param, 1);
     }
-    protected function readNumberOfChair () {
+    public function readNumberOfChair () {
         $select = "SELECT `numberOfChair`, `dateCreat` FROM `maxOfChair` ORDER BY `dateCreat` DESC LIMIT 1;";
         return ActionDB::select($select, [], 1);
     }

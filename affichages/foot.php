@@ -1,6 +1,14 @@
 
-    <footer class="flex-rows">
-      <!--<nav><a href="https://guyajeux.salon/boutique/">Eshop Guyajeux</a></nav>-->
+<footer class="flex-rows">
+      <nav>
+      <?php 
+        if(empty($_SESSION)) {
+          echo '<a class="link" href="'.findTargetRoute(136).'">Voir les CGU</a>';
+        } 
+        else if($_SESSION['role'] == 1) {
+            echo '<a class="link" href="'.findTargetRoute(137).'">Voir les CGU</a>';
+        }
+      ?></nav>
   <div class="centrale">
       Copyrigth &copy; <?=date('Y')?> &nbsp;
   </div>
