@@ -9,10 +9,10 @@ if(isset($_GET['page']) && (!empty($_GET['page']))) {
   } else {
     $currentPage = 1;
   }
-$parPage = 3;
+$parPage = 10;
 $nbrPicture = $pictureManaging->nbrValidPicture ();
 $premier = ($currentPage * $parPage) - $parPage;
-
+$pictureManaging->displayPicture ($premier, $parPage, $idNav);
 $pages = ceil($nbrPicture/$parPage);
 for ($page=1; $page <= $pages ; $page++ ) {
     echo '<a class="lienNav" href="index.php?idNav='.$idNav.'&page='.$page.'">'.$page.'</a>';
