@@ -1,11 +1,11 @@
 <?php
 require('sources/imagesCarousel/objects/SQLCarousel.php');
 Class displayCarousel extends SQLCarousel {
-    private $picturePath;
+   
     private $yes;
     public function __construct()
     {
-        $this->picturePath = 'sources/pictures/picturesCarousel/';
+        parent::__construct();
         $this->yes = ['non', 'oui'];
     }
     public function displayPicture ($premier, $parPage, $idNav) {

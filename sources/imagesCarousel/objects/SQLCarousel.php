@@ -1,5 +1,10 @@
 <?php
 Class SQLCarousel {
+    protected $picturePath;
+    public function __construct()
+    {
+        $this->picturePath = 'sources/pictures/picturesCarousel/';        
+    }
     public function nbrValidPicture () {
         $select = "SELECT count(`id`) as `nbrPicture` 
         FROM `shopPicture` 
@@ -39,5 +44,24 @@ Class SQLCarousel {
         `valid`=:valid
         WHERE `id` = :id";
         return ActionDB::access($update, $param, 1);
+    }
+    public function firstPicture () {
+        $select = "SELECT  `pictureName`, `legend`
+        FROM `shopPicture` 
+        WHERE `valid`= 1 
+        ORDER BY `orderPicture` ASC 
+        LIMIT 1;";
+        return ActionDB::select($select, [], 1);
+    }
+    public function listPictureJS () {
+        $select = "SELECT `pictureName`, `legend` 
+        FROM `shopPicture` 
+        WHERE `valid` = 1 
+        ORDER BY`orderPicture`;";
+        $dataPicture = ActionDB::select($select, [], 1);
+        foreach($dataPicture as $key =>$value) {
+            $dataPicture [$key]['pictureName'] = $this->picturePath.$value['pictureName'];
+        }
+        return $dataPicture;
     }
 }
