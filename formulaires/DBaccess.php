@@ -3,6 +3,12 @@ session_start();
 include '../objets/objetsGeneraux.php';
 include '../functions/fonctionsDB.php';
 include '../modules/navigation/objets/getNavigation.php';
+require ('../modules/securiter/securingConnections.php');
+$ipCheck = new SecuringConnections ($_SERVER['REMOTE_ADDR']);
+if($ipCheck->ipIsProhibited ()) {
+  return header('location:../index.php?message=Can you contact the administrator with reference CZ404');
+};
+
 $route = filter($_GET['route']);
 // Trouver la référence
 $dataRoute = new GetNavigation();
